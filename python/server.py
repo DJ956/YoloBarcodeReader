@@ -1,11 +1,12 @@
 import socket
 import threading
 import sys
+import datetime
 import numpy as np
 import cv2
 
-BUFFER_IMG = 480 * 640 * 3
-BUFFER_MSG = 13
+BUFFER_IMG = 4096
+BUFFER_MSG = 6
 
 MAX_ACCEPT = 10
 
@@ -36,43 +37,45 @@ class Server:
 			handle_thread.start()
 
 	def read_msg(self, con, address):
-		while True:
-			try:
-				data = con.recv(BUFFER_MSG)
-			except ConnectionResetError:
-				self.remove_connection(con, address)
-				break
-			else:
-				if not data:
-					self.remove_connection(con, address)
-					break
-				else:					
-					msg = data.decode('utf-8')
-					print("Recieve:{} - {}".format(address, msg))
-					width, height, size = msg.split(",")
-					return int(size)
+		try:
+			data = con.recv(BUFFER_MSG)
+		except ConnectionResetError:
+			self.remove_connection(con, address)
 
-	def read_img(self, con, address):
-		while True:
+		msg = data.decode('utf-8')						
+		return int(msg)
+
+	def read_img(self, con, address, size):		
+		
+		data = b''
+		while len(data) < size:
 			try:
-				data = con.recv(BUFFER_IMG)
+				to_read = size - len(data)
+				data += con.recv(BUFFER_IMG if to_read > BUFFER_IMG else to_read)
 			except ConnectionResetError:
 				self.remove_connection(con, address)
 				break
-			else:
-				if not data:
-					self.remove_connection(con, address)
-					break
-				else:
-					img_raw = np.frombuffer(data, dtype=np.uint8)
-					img = np.reshape(img_raw, (480, 640, 3))				
-					return img
+				
+		img_raw = np.frombuffer(data, dtype=np.uint8)		
+		img = np.reshape(img_raw, (480, 640, 3))
+				
+		return img
 			
 
-	def handler(self, con, address):		
-		#self.read_msg(con, address)
-		img = self.read_img(con, address)
-		cv2.imshow("server:{}".format(address), img)
+	def handler(self, con, address):
+		cnt = 0
+		while True:		
+			size = self.read_msg(con, address)
+			img = self.read_img(con, address, size)
+
+			now = datetime.datetime.now()
+			sys.stdout.write("\r[{}]From:{} - {}".format(now, address, size))
+			sys.stdout.flush()
+
+			path = "./img/img_{}.jpg".format(cnt)
+			cv2.imwrite(path, img)
+			cnt = cnt + 1
+
 
 def main():
 	argv = sys.argv
