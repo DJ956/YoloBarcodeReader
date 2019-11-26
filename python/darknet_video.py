@@ -33,88 +33,86 @@ def cvDrawBoxes(detections, img):
                     [0, 255, 0], 2)
     return img
 
+class YOLO():
 
-netMain = None
-metaMain = None
-altNames = None
+	def __init__(self, cnf_path, weight_path, meta_path, width, height):
+		self.cnf_path = cnf_path
+		self.weight_path = weight_path
+		self.meta_path = meta_path
+
+		self.netMain = None
+		self.metaMain = None
+		self.altNames = None
+
+		if not os.exists(self.cnf_path):
+			raise ValueError("Invalid config path {}".format(os.path.abspath(configPath)))
+		if not os.exists(self.weight_path):
+			raise ValueError("Invalid weight path {}".format(os.path.abspath(weightPath)))
+		if not os.exists(self.meta_path):
+			raise ValueError("Invalid data file path {}".format(os.path.abspath(metaPath)))
+
+		self.cap = cv2.VideoCapture(0)
+		self.cap.set(3, width)
+		self.cap.set(4, height)
+
+	def start_yolo(self):
+		if self.netMain is None:
+			self.netMain = darknet.load_net_custom(self.cnf_path.encode("ascii"), self.weight_path.encode("ascii"), 0, 1)  # batch size = 1
+
+		if self.metaMain is None:
+			self.metaMain = darknet.load_meta(self.metaPath.encode("ascii"))
+
+		if self.altNames is None:
+			try:
+				with open(self.self.meta_path) as metaFH:
+					metaContents = metaFH.read()
+					import re
+					match = re.search("names *= *(.*)$", metaContents, re.IGNORECASE | re.MULTILINE)
+
+					if match:
+						result = match,group(1)
+					else:
+						result = None
+					try:
+						if os.path.exists(result):
+							with open(result) as namesFH:
+								nameList = namesFH.read().strip().split("\n")
+								self.altNames = [x.strip() for x in nameList]
+					except TypeError:
+						pass
+			except Exception:
+				pass
+
+		self.out = cv2.VideoWriter(out_path, cv2.VideoWriter_fourcc(*"MJPG"), 10.0,
+			(darknet.network_width(self.netMain), darknet.network_height(self.netMain)))
+
+		self.darknet_image = darknet.make_image(darknet.network_width(self.netMain),
+												darknet.network_height(self.netMain), 3)
 
 
-def YOLO():
+	def run_yolo(self, out_path = "output.avi"):
+		print("Starting the YOLO loop...")
+		while True:
+			prev_time = time.time()
+			ret, frame_read = self.cap.read()
+			frame_rgb = cv2.cvtColor(frame_read, cv2.COLOR_BGR2RGB)
+			frame_resized = cv2.resize(frame_rgb,
+										darknet.network_width(self.netMain),
+										darknet.network_height(self.netMain),
+										interpolation=cv2.INTER_LINEAR)
 
-    global metaMain, netMain, altNames
-    configPath = "./cfg/yolov3.cfg"
-    weightPath = "./yolov3.weights"
-    metaPath = "./cfg/coco.data"
-    if not os.path.exists(configPath):
-        raise ValueError("Invalid config path `" +
-                         os.path.abspath(configPath)+"`")
-    if not os.path.exists(weightPath):
-        raise ValueError("Invalid weight path `" +
-                         os.path.abspath(weightPath)+"`")
-    if not os.path.exists(metaPath):
-        raise ValueError("Invalid data file path `" +
-                         os.path.abspath(metaPath)+"`")
-    if netMain is None:
-        netMain = darknet.load_net_custom(configPath.encode(
-            "ascii"), weightPath.encode("ascii"), 0, 1)  # batch size = 1
-    if metaMain is None:
-        metaMain = darknet.load_meta(metaPath.encode("ascii"))
-    if altNames is None:
-        try:
-            with open(metaPath) as metaFH:
-                metaContents = metaFH.read()
-                import re
-                match = re.search("names *= *(.*)$", metaContents,
-                                  re.IGNORECASE | re.MULTILINE)
-                if match:
-                    result = match.group(1)
-                else:
-                    result = None
-                try:
-                    if os.path.exists(result):
-                        with open(result) as namesFH:
-                            namesList = namesFH.read().strip().split("\n")
-                            altNames = [x.strip() for x in namesList]
-                except TypeError:
-                    pass
-        except Exception:
-            pass
-    cap = cv2.VideoCapture(0)
-    #cap = cv2.VideoCapture("test.mp4")
-    cap.set(3, 1280)
-    cap.set(4, 720)
-    out = cv2.VideoWriter(
-        "output.avi", cv2.VideoWriter_fourcc(*"MJPG"), 10.0,
-        (darknet.network_width(netMain), darknet.network_height(netMain)))
-    print("Starting the YOLO loop...")
+			darknet.copy_image_from_bytes(darknet_image, frame_resized.tobytes())
 
-    # Create an image we reuse for each detect
-    darknet_image = darknet.make_image(darknet.network_width(netMain),
-                                    darknet.network_height(netMain),3)
-    while True:
-        prev_time = time.time()
-        ret, frame_read = cap.read()
-        frame_rgb = cv2.cvtColor(frame_read, cv2.COLOR_BGR2RGB)
-        frame_resized = cv2.resize(frame_rgb,
-                                   (darknet.network_width(netMain),
-                                    darknet.network_height(netMain)),
-                                   interpolation=cv2.INTER_LINEAR)
+			detections = darknet.detect_image(self.netMain, self.metaMain, self.darknet_image, thresh=0.25)
+			image = cvDrawBoxes(detections, frame_resized)
+			image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+			print(1/(time.time() - prev_time))
+			cv2.imshow("Demo", image)
+			self.out.write(image)
 
-        darknet.copy_image_from_bytes(darknet_image,frame_resized.tobytes())
+			if cv2.waitKey(1) == 27:
+				break
 
-        detections = darknet.detect_image(netMain, metaMain, darknet_image, thresh=0.25)
-        image = cvDrawBoxes(detections, frame_resized)
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        print(1/(time.time()-prev_time))
-        cv2.imshow('Demo', image)
-        out.write(image)
-        
-        key = cv2.waitKey(1)
-        if key == 27:
-        	break
 
-    cap.release()
-    out.release()
-
-if __name__ == "__main__":
-    YOLO()
+		self.cap.release()
+		self.out.release()
