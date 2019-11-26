@@ -34,7 +34,6 @@ def cvDrawBoxes(detections, img):
     return img
 
 class YOLO():
-
 	def __init__(self, cnf_path, weight_path, meta_path, width, height):
 		self.cnf_path = cnf_path
 		self.weight_path = weight_path
@@ -50,10 +49,6 @@ class YOLO():
 			raise ValueError("Invalid weight path {}".format(os.path.abspath(weightPath)))
 		if not os.exists(self.meta_path):
 			raise ValueError("Invalid data file path {}".format(os.path.abspath(metaPath)))
-
-		self.cap = cv2.VideoCapture(0)
-		self.cap.set(3, width)
-		self.cap.set(4, height)
 
 	def start_yolo(self):
 		if self.netMain is None:
@@ -82,37 +77,22 @@ class YOLO():
 						pass
 			except Exception:
 				pass
-
+		"""
 		self.out = cv2.VideoWriter(out_path, cv2.VideoWriter_fourcc(*"MJPG"), 10.0,
 			(darknet.network_width(self.netMain), darknet.network_height(self.netMain)))
-
+		"""
 		self.darknet_image = darknet.make_image(darknet.network_width(self.netMain),
 												darknet.network_height(self.netMain), 3)
 
 
-	def run_yolo(self, out_path = "output.avi"):
-		print("Starting the YOLO loop...")
-		while True:
-			prev_time = time.time()
-			ret, frame_read = self.cap.read()
-			frame_rgb = cv2.cvtColor(frame_read, cv2.COLOR_BGR2RGB)
-			frame_resized = cv2.resize(frame_rgb,
-										darknet.network_width(self.netMain),
-										darknet.network_height(self.netMain),
-										interpolation=cv2.INTER_LINEAR)
+	def run_yolo(self, frame_read):		
+		frame_rgb = cv2.cvtColor(frame_read, cv2.COLOR_BGR2RGB)
+		frame_resized = cv2.resize(frame_rgb,
+									darknet.network_width(self.netMain),
+									darknet.network_height(self.netMain),
+									interpolation=cv2.INTER_LINEAR)
 
-			darknet.copy_image_from_bytes(darknet_image, frame_resized.tobytes())
+		darknet.copy_image_from_bytes(darknet_image, frame_resized.tobytes())
+		detections = darknet.detect_image(self.netMain, self.metaMain, self.darknet_image, thresh=0.25)
 
-			detections = darknet.detect_image(self.netMain, self.metaMain, self.darknet_image, thresh=0.25)
-			image = cvDrawBoxes(detections, frame_resized)
-			image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-			print(1/(time.time() - prev_time))
-			cv2.imshow("Demo", image)
-			self.out.write(image)
-
-			if cv2.waitKey(1) == 27:
-				break
-
-
-		self.cap.release()
-		self.out.release()
+		return detections

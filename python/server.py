@@ -4,17 +4,27 @@ import sys
 import datetime
 import numpy as np
 import cv2
+import darknet_video
 
 BUFFER_IMG = 4096
 BUFFER_MSG = 6
 
 MAX_ACCEPT = 10
 
+CFG = "./cfg/yolov3_bb.cfg"
+WEIGHT = "./yolov3_bb_last.weights"
+META = "./cfg/bb.data"
+
+WIDTH = 640
+HEIGHT = 480
+
 class Server:
 	def __init__(self, port):
 		self.address = "localhost"
 		self.port = port
 		self.clients = []
+		self.Yolo = YOLO(CFG, WEIGHT, META, WIDTH, HEIGHT)
+		self.Yolo.start_yolo()
 
 	def remove_connection(self, con, address):
 		con.close()
@@ -68,11 +78,15 @@ class Server:
 			size = self.read_msg(con, address)
 			img = self.read_img(con, address, size)
 
+			print(detections)
+			img = cvDrawBoxes(detections, img)
+
 			now = datetime.datetime.now()
 			sys.stdout.write("\r[{}]From:{} - {}".format(now, address, size))
 			sys.stdout.flush()
 
 			path = "./img/img_{}.jpg".format(cnt)
+
 			cv2.imwrite(path, img)
 			cnt = cnt + 1
 
