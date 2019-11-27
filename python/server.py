@@ -4,6 +4,8 @@ import sys
 import datetime
 import numpy as np
 import cv2
+import time
+from pyzbar.pyzbar import decode
 import darknet_video
 
 BUFFER_IMG = 4096
@@ -12,18 +14,21 @@ BUFFER_MSG = 6
 MAX_ACCEPT = 10
 
 CFG = "./cfg/yolov3_bb.cfg"
-WEIGHT = "./yolov3_bb_last.weights"
+WEIGHT = "./backup/bb/yolov3_bb_last.weights"
 META = "./cfg/bb.data"
 
 WIDTH = 640
 HEIGHT = 480
 
 class Server:
-	def __init__(self, port):
-		self.address = "localhost"
+	def __init__(self, own_address, port, out_path):
+		self.address = own_address
 		self.port = port
 		self.clients = []
-		self.Yolo = YOLO(CFG, WEIGHT, META, WIDTH, HEIGHT)
+		self.out = cv2.VideoWriter(
+			out_path, cv2.VideoWriter_fourcc(*"MJPG"), 10.0,
+			(WIDTH, HEIGHT))
+		self.Yolo = darknet_video.YOLO(CFG, WEIGHT, META)
 		self.Yolo.start_yolo()
 
 	def remove_connection(self, con, address):
@@ -72,34 +77,53 @@ class Server:
 		return img
 			
 
+	def read_barcode(self, img):
+		data = decode(img)
+		if not data:
+			return None
+		return data[0][0].decode("utf-8", "ignore")
+
 	def handler(self, con, address):
-		cnt = 0
 		while True:		
 			size = self.read_msg(con, address)
 			img = self.read_img(con, address, size)
 
+			prev_time = time.time()
+			detections, resize_img = self.Yolo.run_yolo(img)
+			#print("FPS:{}".format(1/(time.time() - prev_time)))
+
 			print(detections)
-			img = cvDrawBoxes(detections, img)
+			resize_img = darknet_video.cvDrawBoxes(detections, resize_img)
+			data = self.read_barcode(resize_img)
+			if not data is None:
+				print("Code:{}".format(data))
+
+			cv2.imshow("demo", resize_img)
 
 			now = datetime.datetime.now()
 			sys.stdout.write("\r[{}]From:{} - {}".format(now, address, size))
 			sys.stdout.flush()
 
-			path = "./img/img_{}.jpg".format(cnt)
+			#self.out.write(resize_img)
+			if cv2.waitKey(1) == 27:
+				break
 
-			cv2.imwrite(path, img)
-			cnt = cnt + 1
+		#self.out.release()
+		cv2.destroyAllWindows()
+		self.remove_connection(con, address)
 
 
 def main():
 	argv = sys.argv
 	argc = len(argv)
-	if argc != 2:
-		print("Usage: python {} port".format(argv[0]))
+	if argc != 4:
+		print("Usage: python {} own_address port out(*.avi)".format(argv[0]))
 		quit(-1)
 
-	port = int(argv[1])
-	server = Server(port)
+	own_address = argv[1]
+	port = int(argv[2])
+	out_path = argv[3]
+	server = Server(own_address, port, out_path)
 	server.start()
 
 if __name__ == '__main__':

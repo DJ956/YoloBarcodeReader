@@ -34,7 +34,7 @@ def cvDrawBoxes(detections, img):
     return img
 
 class YOLO():
-	def __init__(self, cnf_path, weight_path, meta_path, width, height):
+	def __init__(self, cnf_path, weight_path, meta_path):
 		self.cnf_path = cnf_path
 		self.weight_path = weight_path
 		self.meta_path = meta_path
@@ -43,23 +43,23 @@ class YOLO():
 		self.metaMain = None
 		self.altNames = None
 
-		if not os.exists(self.cnf_path):
-			raise ValueError("Invalid config path {}".format(os.path.abspath(configPath)))
-		if not os.exists(self.weight_path):
-			raise ValueError("Invalid weight path {}".format(os.path.abspath(weightPath)))
-		if not os.exists(self.meta_path):
-			raise ValueError("Invalid data file path {}".format(os.path.abspath(metaPath)))
+		if not os.path.exists(self.cnf_path):
+			raise ValueError("Invalid config path {}".format(os.path.abspath(self.cnf_path)))
+		if not os.path.exists(self.weight_path):
+			raise ValueError("Invalid weight path {}".format(os.path.abspath(self.weight_path)))
+		if not os.path.exists(self.meta_path):
+			raise ValueError("Invalid data file path {}".format(os.path.abspath(self.meta_path)))
 
 	def start_yolo(self):
 		if self.netMain is None:
 			self.netMain = darknet.load_net_custom(self.cnf_path.encode("ascii"), self.weight_path.encode("ascii"), 0, 1)  # batch size = 1
 
 		if self.metaMain is None:
-			self.metaMain = darknet.load_meta(self.metaPath.encode("ascii"))
+			self.metaMain = darknet.load_meta(self.meta_path.encode("ascii"))
 
 		if self.altNames is None:
 			try:
-				with open(self.self.meta_path) as metaFH:
+				with open(self.meta_path) as metaFH:
 					metaContents = metaFH.read()
 					import re
 					match = re.search("names *= *(.*)$", metaContents, re.IGNORECASE | re.MULTILINE)
@@ -88,11 +88,10 @@ class YOLO():
 	def run_yolo(self, frame_read):		
 		frame_rgb = cv2.cvtColor(frame_read, cv2.COLOR_BGR2RGB)
 		frame_resized = cv2.resize(frame_rgb,
-									darknet.network_width(self.netMain),
-									darknet.network_height(self.netMain),
-									interpolation=cv2.INTER_LINEAR)
+									(darknet.network_width(self.netMain),
+									darknet.network_height(self.netMain)))
 
-		darknet.copy_image_from_bytes(darknet_image, frame_resized.tobytes())
+		darknet.copy_image_from_bytes(self.darknet_image, frame_resized.tobytes())
 		detections = darknet.detect_image(self.netMain, self.metaMain, self.darknet_image, thresh=0.25)
 
-		return detections
+		return detections, frame_resized
