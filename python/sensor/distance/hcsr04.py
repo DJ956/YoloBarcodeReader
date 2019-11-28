@@ -36,5 +36,5 @@ def reading(sensor):
 
 
 while True:
-	print("{}%".format(reading(0)))
+	print("{}%".format(reading(0)) + 'timepassed = ' + timepassed)
 
