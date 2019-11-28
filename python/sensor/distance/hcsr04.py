@@ -16,7 +16,7 @@ class sensor:
         GPIO.setup(self.ECHO, GPIO.IN)
         GPIO.output(self.TRIG, GPIO.LOW)
 
-        time.sleep(0.1)
+        time.sleep(0.15)
 
         GPIO.output(self.TRIG, True)
         time.sleep(0.00001)
