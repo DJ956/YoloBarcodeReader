@@ -14,18 +14,18 @@ def convertBack(x, y, w, h):
     ymax = int(round(y + (h / 2)))
     return xmin, ymin, xmax, ymax
 
-def convertBack(detections):
+def convert(detections):
 	points = []
 	for detection in detections:
-		x, y, w, h = detections[2][0],
-					detections[2][1],
-					detections[2][2],
-					detections[2][3]
+		x, y, w, h = detection[2][0],\
+					detection[2][1],\
+					detection[2][2],\
+					detection[2][3]
 		xmin, ymin,xmax, ymax = convertBack(
 			float(x), float(y), float(w), float(h))
 
 		point = [xmin, ymin, xmax, ymax]
-		points.appned(point)
+		points.append(point)
 		
 	return points
 

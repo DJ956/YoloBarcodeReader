@@ -61,7 +61,6 @@ class Server:
 		return int(msg)
 
 	def read_img(self, con, address, size):		
-		
 		data = b''
 		while len(data) < size:
 			try:
@@ -84,6 +83,7 @@ class Server:
 		return data[0][0].decode("utf-8", "ignore")
 
 	def handler(self, con, address):
+		index = 0
 		while True:		
 			size = self.read_msg(con, address)
 			img = self.read_img(con, address, size)
@@ -93,15 +93,25 @@ class Server:
 			#print("FPS:{}".format(1/(time.time() - prev_time)))
 
 			if len(detections) > 0:
-				points = darknet_video.convertBack(detections)
-				for point in points:
-					cut_img = resize_img[point[0], point[1], point[2], point[3]]
-					cv2.imshow("demo", cut_img)					
+				points = darknet_video.convert(detections)
+				for point in points:				
+					x = point[0]
+					y = point[1]
+					w = point[2]
+					h = point[3]	
+					cut_img = resize_img[y:y+ h, x:x + w]
+					try:
+						data = self.read_barcode(cut_img)
+						if not data is None:
+							with open("barcode.txt", "a") as f:
+								f.write(data)
+								f.write("\n")
+								f.flush()
+					except Exception:
+						print("read error")
 
-			#resize_img = darknet_video.cvDrawBoxes(detections, resize_img)
-			data = self.read_barcode(resize_img)
-			if not data is None:
-				print("Code:{}".format(data))
+					cv2.imwrite("./img/{}.png".format(index), cut_img)				
+					index = index + 1
 
 			now = datetime.datetime.now()
 			sys.stdout.write("\r[{}]From:{} - {}".format(now, address, size))
