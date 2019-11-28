@@ -49,6 +49,7 @@ class Server:
 			handle_thread = threading.Thread(target=self.handler,
 											args=(con, address),
 											daemon=True)
+
 			handle_thread.start()
 
 	def read_msg(self, con, address):
@@ -88,9 +89,7 @@ class Server:
 			size = self.read_msg(con, address)
 			img = self.read_img(con, address, size)
 
-			prev_time = time.time()
 			detections, resize_img = self.Yolo.run_yolo(img)
-			#print("FPS:{}".format(1/(time.time() - prev_time)))
 
 			if len(detections) > 0:
 				points = darknet_video.convert(detections)
@@ -99,23 +98,29 @@ class Server:
 					y = point[1]
 					w = point[2]
 					h = point[3]	
-					cut_img = resize_img[y:y+ h, x:x + w]
+					cut_img = resize_img[y:h, x:w]
+
 					try:
+						cv2.imshow("cut", cut_img)
+						cv2.imwrite("./img/{}.png".format(index), cut_img)
+						index = index + 1
+						
 						data = self.read_barcode(cut_img)
 						if not data is None:
 							with open("barcode.txt", "a") as f:
 								f.write(data)
 								f.write("\n")
 								f.flush()
+								print("detect:{}".format(data))
 					except Exception:
-						print("read error")
-
-					cv2.imwrite("./img/{}.png".format(index), cut_img)				
-					index = index + 1
+						print("error")
 
 			now = datetime.datetime.now()
 			sys.stdout.write("\r[{}]From:{} - {}".format(now, address, size))
 			sys.stdout.flush()
+
+			resize_img = darknet_video.cvDrawBoxes(detections, resize_img)
+			cv2.imshow("demo", resize_img)
 
 			#self.out.write(resize_img)
 			if cv2.waitKey(1) == 27:
