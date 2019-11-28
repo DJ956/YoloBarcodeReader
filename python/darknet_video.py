@@ -14,6 +14,21 @@ def convertBack(x, y, w, h):
     ymax = int(round(y + (h / 2)))
     return xmin, ymin, xmax, ymax
 
+def convertBack(detections):
+	points = []
+	for detection in detections:
+		x, y, w, h = detections[2][0],
+					detections[2][1],
+					detections[2][2],
+					detections[2][3]
+		xmin, ymin,xmax, ymax = convertBack(
+			float(x), float(y), float(w), float(h))
+
+		point = [xmin, ymin, xmax, ymax]
+		points.appned(point)
+		
+	return points
+
 
 def cvDrawBoxes(detections, img):
     for detection in detections:
