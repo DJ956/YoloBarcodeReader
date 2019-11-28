@@ -92,13 +92,16 @@ class Server:
 			detections, resize_img = self.Yolo.run_yolo(img)
 			#print("FPS:{}".format(1/(time.time() - prev_time)))
 
-			print(detections)
-			resize_img = darknet_video.cvDrawBoxes(detections, resize_img)
+			if len(detections) > 0:
+				points = darknet_video.convertBack(detections)
+				for point in points:
+					cut_img = resize_img[point[0], point[1], point[2], point[3]]
+					cv2.imshow("demo", cut_img)					
+
+			#resize_img = darknet_video.cvDrawBoxes(detections, resize_img)
 			data = self.read_barcode(resize_img)
 			if not data is None:
 				print("Code:{}".format(data))
-
-			cv2.imshow("demo", resize_img)
 
 			now = datetime.datetime.now()
 			sys.stdout.write("\r[{}]From:{} - {}".format(now, address, size))
