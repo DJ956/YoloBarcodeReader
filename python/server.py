@@ -7,6 +7,7 @@ import cv2
 import time
 from pyzbar.pyzbar import decode
 import darknet_video
+import reader
 
 BUFFER_IMG = 4096
 BUFFER_MSG = 6
@@ -75,13 +76,6 @@ class Server:
 		img = np.reshape(img_raw, (480, 640, 3))
 				
 		return img
-			
-
-	def read_barcode(self, img):
-		data = decode(img)
-		if not data:
-			return None
-		return data[0][0].decode("utf-8", "ignore")
 
 	def handler(self, con, address):
 		index = 0
@@ -99,13 +93,14 @@ class Server:
 					w = point[2]
 					h = point[3]	
 					cut_img = resize_img[y:h, x:w]
+					cut_img = reader.convert(cut_img)
 
 					try:
 						cv2.imshow("cut", cut_img)
 						cv2.imwrite("./img/{}.png".format(index), cut_img)
 						index = index + 1
-						
-						data = self.read_barcode(cut_img)
+
+						data = reader.read_barcode(cut_img)
 						if not data is None:
 							with open("barcode.txt", "a") as f:
 								f.write(data)
