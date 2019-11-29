@@ -35,6 +35,7 @@ class sensor:
         return timepassed * 17000
 
 
+
 """
 def reading(sensor):
     import time
@@ -74,9 +75,31 @@ def reading(sensor):
 
 def main():
     s = sensor()
+    sum = 0
+    avg = 0
+    cnt = 0
+    flag = 0
+
     while True:
         s.setup()
-        print(s.exe())
+        dis = s.exe()
+        if cnt < 15:
+            sum = sum + dis
+        elif cnt == 15:
+            avg = float(sum / 15)
+        cnt = cnt + 1
+
+        print("avg:{}".format(avg))
+        print(dis)
+
+
+        if dis < float(avg - 2):
+            flag = 1
+        else:
+            flag = 0
+
+        print("flag:{}".format(flag))
+
 
 if __name__ == '__main__':
     main()
