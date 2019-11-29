@@ -93,7 +93,7 @@ class Server:
 					w = point[2]
 					h = point[3]	
 					cut_img = resize_img[y:h, x:w]
-					cut_img = reader.convert(cut_img)
+					ret, cut_img = reader.convert(cut_img)
 
 					try:
 						cv2.imshow("cut", cut_img)
