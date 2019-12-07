@@ -9,6 +9,13 @@ def convert(img):
 
 	return ret, pic
 
+def binary(img):
+	gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+	binary = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+		cv2.THRESH_BINARY, 11, 2)
+
+	return binary
+
 def read_barcode(img):
 	data = decode(img)
 	if not data:
