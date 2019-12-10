@@ -65,6 +65,22 @@ while True:
         # Prints the weight. Comment if you're debbuging the MSB and LSB issue.
         val = hx.get_weight(5)
         print("{}g".format(-val))
+
+        inc_flag = 0
+        RANGE = 3
+        g_weight = 0
+
+        if -val < float(RANGE):
+            inc_flag = True
+            time.sleep(5)
+            g_weight = -val
+            inc_flag = 0
+
+        elif -val < float(g_weight + RANGE):
+            inc_flag = False
+            g_weight = -val
+            #69-81まで再チェック要
+
         """
         with open("log.txt", "a") as f:
         	f.write("{}\n".format(val))
