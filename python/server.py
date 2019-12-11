@@ -19,6 +19,12 @@ CFG = "./cfg/yolov3_bb.cfg"
 WEIGHT = "./backup/bb/yolov3_bb_last.weights"
 META = "./cfg/bb.data"
 
+#db
+HOST = "localhost"
+USER = "rabit"
+PW = "pass"
+DB = "rapid_cart"
+
 WIDTH = 640
 HEIGHT = 480
 
@@ -32,6 +38,7 @@ class Server:
 			(WIDTH, HEIGHT))
 		self.Yolo = darknet_video.YOLO(CFG, WEIGHT, META)
 		self.Yolo.start_yolo()
+		self.db = itemdb.itemdb(HOST, user=USER, pw=PW, db=DB)
 
 	def remove_connection(self, con, address):
 		con.close()
@@ -94,7 +101,7 @@ class Server:
 					w = point[2]
 					h = point[3]	
 					cut_img = resize_img[y:h, x:w]
-					ret, cut_img = reader.convert(cut_img)
+					cut_img = reader.binary(cut_img)
 
 					try:
 						cv2.imshow("cut", cut_img)
@@ -102,12 +109,9 @@ class Server:
 						index = index + 1
 
 						data = reader.read_barcode(cut_img)
-						if not data is None:
-							with open("barcode.txt", "a") as f:
-								f.write(data)
-								f.write("\n")
-								f.flush()
-								print("detect:{}".format(data))
+						if not data is None:							
+							self.db.insert(code=data, cart_id=1)
+							print("detect:{}".format(data))
 					except Exception:
 						print("error")
 
