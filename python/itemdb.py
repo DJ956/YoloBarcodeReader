@@ -21,8 +21,7 @@ class itemdb:
 	itemテーブルにそのJANコードの商品が存在するか確かめる
 	"""
 	def exists(self,  code):
-		sql = "SELECT * FROM item WHERE jan IN ({})".format(code)
-		print("sql:{}".format(sql))
+		sql = "SELECT * FROM item WHERE jan IN ({})".format(code)		
 		try:
 			self.connect()
 			self.cursor.execute(sql)
@@ -44,8 +43,7 @@ class itemdb:
 		if not self.exists(code):
 			return False
 
-		sql = "INSERT INTO cart(jan, cart_id) VALUES({}, {})".format(code, cart_id)
-		print("sql:{}".format(sql))
+		sql = "INSERT INTO cart(jan, cart_id) VALUES({}, {})".format(code, cart_id)		
 		try:
 			self.connect()
 			self.cursor.execute(sql)
@@ -61,8 +59,7 @@ class itemdb:
 	cartテーブルから指定されたカートidかつjanを削除する
 	"""
 	def delete(self, code, cart_id):
-		sql = "DELETE FROM cart WHERE jan = {} AND cart_id = {}".format(code, cart_id)
-		print("sql:{}".format(sql))
+		sql = "DELETE FROM cart WHERE jan = {} AND cart_id = {}".format(code, cart_id)		
 		try:
 			self.connect()
 			self.cursor.execute(sql)
@@ -81,7 +78,6 @@ class itemdb:
 	def get_items_info(self, cart_id):
 		jans_sql = "SELECT jan FROM cart WHERE cart_id = {}".format(cart_id)
 
-		print("sql:{}".format(jans_sql))
 		try:
 			self.connect()
 			self.cursor.execute(jans_sql)
@@ -101,29 +97,3 @@ class itemdb:
 		finally:
 			self.cursor.close()
 			self.con.close()
-
-def main():
-	db = itemdb(host = "localhost", user="rabit", pw = "pass", db="rapid_cart")
-	db.connect()
-
-	cart_id = 1
-
-	item1 = 4902011731118 
-	item2 = 4903333066254
-	item3 = 9784844333937
-	item3_2 = 9784844333937
-
-	"""
-	db.insert(item1, cart_id)
-	db.insert(item2, cart_id)
-	db.insert(item3, cart_id)
-	db.insert(item3_2, cart_id)
-	"""
-
-	result = db.get_items_info(cart_id)
-	for item in result:
-		print(item)
-		print("-"*100)
-
-if __name__ == "__main__":
-	main()

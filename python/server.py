@@ -29,16 +29,16 @@ WIDTH = 640
 HEIGHT = 480
 
 class Server:
-	def __init__(self, own_address, port, out_path):
+	def __init__(self, own_address, port):
 		self.address = own_address
 		self.port = port
 		self.clients = []
-		self.out = cv2.VideoWriter(
-			out_path, cv2.VideoWriter_fourcc(*"MJPG"), 10.0,
-			(WIDTH, HEIGHT))
+		#self.out = cv2.VideoWriter(
+		#	out_path, cv2.VideoWriter_fourcc(*"MJPG"), 10.0,
+		#	(WIDTH, HEIGHT))
 		self.Yolo = darknet_video.YOLO(CFG, WEIGHT, META)
 		self.Yolo.start_yolo()
-		self.db = itemdb.itemdb(HOST, user=USER, pw=PW, db=DB)
+		self.db = itemdb.itemdb(host=HOST, user=USER, pw=PW, db=DB)
 
 	def remove_connection(self, con, address):
 		con.close()
@@ -100,20 +100,24 @@ class Server:
 					y = point[1]
 					w = point[2]
 					h = point[3]	
-					cut_img = resize_img[y:h, x:w]
-					cut_img = reader.binary(cut_img)
-
 					try:
-						cv2.imshow("cut", cut_img)
-						cv2.imwrite("./img/{}.png".format(index), cut_img)
+						cut_img = resize_img[y:h, x:w]
+						#拡大
+						#cut_img = cv2.resize(cut_img, None, fx=1.5, fy=1.5, interpolation=cv2.INTER_CUBIC)
+						cut_img = cv2.cvtColor(cut_img, cv2.COLOR_BGR2GRAY)
+						#cut_img = reader.binary(cut_img)
+
+						cv2.imshow("cut:{}".format(index), cut_img)
+						#cv2.imwrite("./img/{}.png".format(index), cut_img)
 						index = index + 1
 
 						data = reader.read_barcode(cut_img)
 						if not data is None:							
 							self.db.insert(code=data, cart_id=1)
 							print("detect:{}".format(data))
-					except Exception:
-						print("error")
+					except Exception as e:
+						print(e)
+
 
 			now = datetime.datetime.now()
 			sys.stdout.write("\r[{}]From:{} - {}".format(now, address, size))
@@ -134,14 +138,13 @@ class Server:
 def main():
 	argv = sys.argv
 	argc = len(argv)
-	if argc != 4:
-		print("Usage: python {} own_address port out(*.avi)".format(argv[0]))
+	if argc != 3:
+		print("Usage: python {} own_address port".format(argv[0]))
 		quit(-1)
 
 	own_address = argv[1]
-	port = int(argv[2])
-	out_path = argv[3]
-	server = Server(own_address, port, out_path)
+	port = int(argv[2])	
+	server = Server(own_address, port)
 	server.start()
 
 if __name__ == '__main__':
