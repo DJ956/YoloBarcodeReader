@@ -8,6 +8,7 @@ import time
 from pyzbar.pyzbar import decode
 import darknet_video
 import reader
+import itemdb
 
 BUFFER_IMG = 4096
 BUFFER_MSG = 6
