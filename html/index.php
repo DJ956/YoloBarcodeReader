@@ -1,19 +1,24 @@
 <html>
   <head>
+  	<meta charset="utf-8">
     <title>rabit</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
   </head>
   <body>
-    <p>hello</p>
-    <?php
-      require("db.php");
 
-      $db = new db("localhost", "rapid", "pass", "rapid_cart");
-      $result = $db->get_items_info(1);
+    <table align="center">
+      <tr>
+        <th>カート名</th> <th>カートID</th>
+      </tr>
+      <tr>
+        <td><a href="cart.php?cart_id=1" class="btn btn-primary">カート1</a></td>
+        <td>1</td>
+      </tr>
+    </table>
+    <hr>
+    <a href="bank.php" class="btn btn-primary">キャッシュチャージ</a>
 
-      foreach($result as $row){
-        print($row);
-        print("<br>");
-      }
-    ?>
+    <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+  	<script type="text/javascript" src="js/bootstrap.bundle.js"></script>
   </body>
 </html>
