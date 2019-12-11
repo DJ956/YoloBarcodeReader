@@ -52,6 +52,10 @@ print("Tare done! Add weight now...")
 #hx.tare_A()
 #hx.tare_B()
 
+inc_flag = -1
+RANGE = 3
+g_weight = 0
+
 while True:
     try:
         # These three lines are usefull to debug wether to use MSB or LSB in the reading formats
@@ -66,20 +70,31 @@ while True:
         val = hx.get_weight(5)
         print("{}g".format(-val))
 
-        inc_flag = 0
-        RANGE = 3
-        g_weight = 0
 
-        if -val < float(RANGE):
+#        if g_weight < float(RANGE):
+#            inc_flag = -1
+#            print("Flag:{} g_weight:{}".format(inc_flag, g_weight))
+
+        if float(-val) < float(RANGE):
+            print("Flag:{} g_weight:{}".format(inc_flag, g_weight))
+            g_weight = -val
+
+        elif float(g_weight + RANGE) < float(-val):
             inc_flag = True
-            time.sleep(5)
-            g_weight = -val
-            inc_flag = 0
+            print("Flag:{} g_weight:{}".format(inc_flag, g_weight))
 
-        elif -val < float(g_weight + RANGE):
-            inc_flag = False
+            time.sleep(3) #信号受けとってから
+            
             g_weight = -val
-            #69-81まで再チェック要
+            inc_flag = -1
+
+
+#        elif float(g_weight + RANGE) > float(-val):
+#            inc_flag = False
+#            print("Flag:{} g_weight:{}".format(inc_flag, g_weight))
+
+#            time.sleep(3) #信号受けとってから
+#            g_weight = -val
 
         """
         with open("log.txt", "a") as f:
