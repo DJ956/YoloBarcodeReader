@@ -11,15 +11,14 @@ META = "./cfg/bb.data"
 def main():
 
 	argv = sys.argv
-	if len(argv) != 4:
-		print("Usage: python {} video_path out_folder ext(*.bmp|*.png)".format(argv[0]))
+	if len(argv) != 3:
+		print("Usage: python {} out_folder ext(*.bmp|*.png)".format(argv[0]))
 		quit(-1)
 
-	src = argv[1]
-	out_folder = argv[2]
-	ext = argv[3]
+	out_folder = argv[1]
+	ext = argv[2]
 
-	cap = cv2.VideoCapture(src)
+	cap = cv2.VideoCapture(0)
 	yolo = darknet_video.YOLO(CFG, WEIGHT, META)
 	yolo.start_yolo()
 
