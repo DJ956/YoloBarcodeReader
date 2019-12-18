@@ -11,7 +11,8 @@ import reader
 import itemdb
 
 BUFFER_IMG = 4096
-BUFFER_MSG = 6
+BUFFER_SIZE = 6
+BUFFER_FLAG = 1
 
 MAX_ACCEPT = 10
 
@@ -28,14 +29,13 @@ DB = "rapid_cart"
 WIDTH = 640
 HEIGHT = 480
 
+IMG_STACK_SIZE = 6
+
 class Server:
 	def __init__(self, own_address, port):
 		self.address = own_address
 		self.port = port
 		self.clients = []
-		#self.out = cv2.VideoWriter(
-		#	out_path, cv2.VideoWriter_fourcc(*"MJPG"), 10.0,
-		#	(WIDTH, HEIGHT))
 		self.Yolo = darknet_video.YOLO(CFG, WEIGHT, META)
 		self.Yolo.start_yolo()
 		self.db = itemdb.itemdb(host=HOST, user=USER, pw=PW, db=DB)
@@ -61,9 +61,9 @@ class Server:
 
 			handle_thread.start()
 
-	def read_msg(self, con, address):
+	def read_msg(self, con, address, buffer):
 		try:
-			data = con.recv(BUFFER_MSG)
+			data = con.recv(buffer)
 		except ConnectionResetError:
 			self.remove_connection(con, address)
 
@@ -85,39 +85,33 @@ class Server:
 				
 		return img
 
+	def read_data(self, con, address):
+		data = []
+		for i in range(IMG_STACK_SIZE):
+			size = self.read_msg(con, address, BUFFER_SIZE)
+			img = self.read_img(con, address, size)
+			data.append(img)
+
+		flag = self.read_msg(con, address, BUFFER_FLAG)
+		data.append(flag)
+		return data
+
+
 	def handler(self, con, address):
 		index = 0
-		while True:		
-			size = self.read_msg(con, address)
-			img = self.read_img(con, address, size)
+		while True:
+			data = self.read_data(con, address)
 
-			detections, resize_img = self.Yolo.run_yolo(img)
+			for i in range(IMG_STACK_SIZE):
+				detections, resize_img = self.Yolo.run_yolo(img)
+				if len(detections) > 0:
+					barcode = reader.read_barcode(resize_img, detections)
+					if barcode not None:
+						self.db.insert(code=barcode, cart_id=1)
+						print("detect:{}".format(barcode))
+						break
 
-			if len(detections) > 0:
-				points = darknet_video.convert(detections)
-				for point in points:				
-					x = point[0]
-					y = point[1]
-					w = point[2]
-					h = point[3]	
-					try:
-						cut_img = resize_img[y:h, x:w]
-						#拡大
-						#cut_img = cv2.resize(cut_img, None, fx=1.5, fy=1.5, interpolation=cv2.INTER_CUBIC)
-						cut_img = cv2.cvtColor(cut_img, cv2.COLOR_BGR2GRAY)
-						#cut_img = reader.binary(cut_img)
-
-						cv2.imshow("cut:{}".format(index), cut_img)
-						#cv2.imwrite("./img/{}.png".format(index), cut_img)
-						index = index + 1
-
-						data = reader.read_barcode(cut_img)
-						if not data is None:							
-							self.db.insert(code=data, cart_id=1)
-							print("detect:{}".format(data))
-					except Exception as e:
-						print(e)
-
+			print("Flag:{}".format(data[IMG_STACK_SIZE]))
 
 			now = datetime.datetime.now()
 			sys.stdout.write("\r[{}]From:{} - {}".format(now, address, size))
@@ -126,14 +120,11 @@ class Server:
 			resize_img = darknet_video.cvDrawBoxes(detections, resize_img)
 			cv2.imshow("demo", resize_img)
 
-			#self.out.write(resize_img)
 			if cv2.waitKey(1) == 27:
 				break
 
-		#self.out.release()
 		cv2.destroyAllWindows()
 		self.remove_connection(con, address)
-
 
 def main():
 	argv = sys.argv

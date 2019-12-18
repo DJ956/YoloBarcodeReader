@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from pyzbar.pyzbar import decode
+import darknet_video
 
 def convert(img):
 	gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
@@ -16,8 +17,19 @@ def binary(img):
 
 	return binary
 
-def read_barcode(img):
-	data = decode(img)
-	if not data:
-		return None
-	return data[0][0].decode("utf-8", "ignore")
+def read_barcode(img, detections):
+	points = darknet_video.convert(detections)
+		for point in points:				
+			x = point[0]
+			y = point[1]
+			w = point[2]
+			h = point[3]	
+			try:
+				cut_img = img[y:h, x:w]
+				cut_img = cv2.cvtColor(cut_img, cv2.COLOR_BGR2GRAY)
+				data = decode(img)
+
+				return data[0][0].decode("utf-8", "ignore")
+			except Exception as e:
+				return None
+				print(e)
