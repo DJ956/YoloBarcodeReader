@@ -75,10 +75,10 @@ class Client:
 
 		data = []
 		while True:
-			print("Flag:{} Dis:{}".format(self.flag, self.sensor.dis))
+			#print("Flag:{} Dis:{}".format(self.flag, self.sensor.dis))
 			#距離センサーに引っかかる
 			if self.flag == 1:
-
+				print("Flag:{} Dis:{}".format(self.flag, self.sensor.dis))
 				for i in range(IMG_STACK_SIZE):
 					ret, frame = capture.read()
 					if ret == None:
