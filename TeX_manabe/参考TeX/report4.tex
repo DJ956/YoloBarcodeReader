@@ -1,0 +1,1602 @@
+%%
+%  情報工学実験 III
+%    レポート作成用サンプルファイル
+%
+%  何か問題があるときは 4号館 405号室または kinoshita@cs.ehime-u.ac.jp まで
+%
+%  うまくコンパイルできないときは TeXソースファイルおよび
+% スタイルファイルを
+%
+%    csc01% nkf -e report_sample.tex > report_sample_euc.tex
+%    csc01% mv report_sample_euc.tex report_sample.tex
+%    csc01% nkf -e exp3.sty > exp3_euc.sty
+%    csc01% mv exp3_euc.sty exp3.sty
+%
+% で漢字コードを変換してみること
+%%
+\documentclass[a4j]{jsarticle}  % jsarticle が使えないときは jarticle に変更
+
+\usepackage[dvips]{graphicx}    % dvipdfmx を使って PDF ファイルを
+                                % 作成するときは dvips を dvipdfm に変更
+
+\usepackage{subfigure}          % 複数の図を並べるときに使用
+
+\usepackage{amsmath}            % 複雑な数式が利用可能
+
+\usepackage{ascmac, fancybox}   % 枠囲みが利用可能（プログラム等の表示に便利）
+
+\usepackage{psfrag}             % 図に数式などを入れる際に使う
+
+\usepackage{./exp3}             % 実験III用スタイルファイル（相対パスで指定可）
+\usepackage{url}
+
+
+\メインテーマ{コンパイラの基本原理}
+\入学年度{平成 26 年度}
+\アカウント名{b535072a}
+\名前{真鍋 樹}
+\実験日１{12月 20日（木）}      %各テーマの実験日を書く
+\実験日２{1月 10日（木）}  
+\実験日３{1月 17日（木）}  
+\提出日{2月 5日（火）}
+\再提出日{2月 5日（火）}   %初回提出のときはコメントアウト，
+                              %再提出のときはコメントを外す
+
+
+\begin{document} 
+
+%%
+%  表紙の作成
+%%
+\thispagestyle{empty}
+\setcounter{page}{0}
+
+%表紙
+%markright{{\small \defaccount \quad \defmainthema}}
+
+%% 再提出の場合は上２行をコメントアウトし下２行のコメントを外す．
+
+ \再提出表紙
+\markright{{\small \defaccount \quad {\bf （再提出）} \defmainthema}}
+
+\newpage
+%%
+%  ここから本文
+%% 
+
+% [注意事項]
+%  ・本文の形式は自由ですが，必要な項目・情報は必ず記述すること．
+%  ・レポート提出時（初回提出，再提出）には下記に示すチェックリストを
+%   添付すること．
+%  ・再提出時には初回提出レポートからの変更点を「どの箇所を，どのような
+%   指示に従って，どのように変更したのか」が分かるように記述すること．
+%  ・レポートの内容はもちろんのこと，体裁や美しさも採点の対象となる．
+%    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+\begin{center}
+ {\Large \bf I flexを用いた字句解析ルーチンの作成}
+\end{center}
+
+
+\section{目的}
+コンピュータが動作するには，プログラムの実行コードが必要である．実行コードは，コンピュータ用の言葉であ
+る機械語（低級言語）によって書かれており，人間にとって理解し難い．そこで，人間が理解し易いプログラミング
+言語（高級言語）から，機械語へ翻訳することでこの問題を解決する．この翻訳を行うのがコンパイラである．これ
+からの3回の実験を通して，簡単な仮想マシン用の機械語を出力するコンパイラを作成し，その原理を理解する．
+
+
+\section{原理}
+コンパイラには様々な構成があるが，本実験では，高級言語で書かれたプログラムを，アセンブリ言語
+\footnote{機械語と1対1に対応する人間が判読可能な低級言語}を経由し
+て機械語に翻訳する構成を採用する．こうすることで，仮想マシンのアーキテクチャが理解しやすくなる．
+図1に示すように，今回作成するコンパイラは，字句解析・構文解析・アセンブラ（実行コード生成）の
+3段構成とする．
+
+\begin{figure}[htbp]
+\centering\includegraphics[width=10cm]{image/4-1/zu1.eps}
+\caption{コンパイラの構成}
+\end{figure}
+
+\subsection{正規表現}
+形式言語の一種である正規言語は，有限オートマトンによって受理される語の集合であり，プログラムにおける字
+句の定義にも使われる．正規言語は，以下で定義する正規表現により簡潔に表現できる．
+
+\begin{enumerate}
+\item r(ε)は，空語による集合{ε}を表す正規表現である．
+\item r(a)は，アルファベットの各元a∈Σで構成される集合{a}を表す正規表現である．
+\item r(A)，r(B)が正規表現ならば，r(AB)は集合\{$xy|x \in A,y \in B$\}は集合\{$x|x \in A \cup B$\}を，r(A*)は集合\{$x|x \in \{ λ \} \cup A \cup A^2 \cup A^3 \cup...$\}を表す正規表現である．
+\end{enumerate}
+ただし，アルファベットとは，その言語を構成する記号の有限集合である．空語εとは，あらゆる語$w$に対して$wε=εw=ω$となる架空の語である．
+
+アルファベットが$\Sigma=\{0,1\}$のときの正規表現の例を表1に示す．
+
+\begin{table}[htb]
+  \begin{center}
+    \caption{正規表現の例}
+    \begin{tabular}{l|l|l}\hline
+      正規表現 & 対応する集合 & 受理される語 \\ \hline
+      $r(1)$ & \{1\} & 1 \\
+      $r(10)$ & \{10\} & 10 \\
+      $r(1|0)$ & \{1,0\} & 1,0 \\
+      $r(1(0|1))$ & \{10,11\} & 10,11 \\
+      $r(101*)$ & \{10,101,1011,...\} & 10,101,1011,... \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+注意すべき点は， * の結合の優先順位である．$\Sigma$をアルファベットとするとき$a,b\in\Sigma$に対して$r(ab*)$の * は$ab$の結合より優先順位が高く$r(a(b*))$のことであり，\{$a, ab, abb, abbb,...$\}のことを表す．一方，$r((ab)*)$は\{$λ, ab, abab, ababab,...$\}のことを表す．
+
+
+\subsection{flexによる字句解析}
+ 字句（トークン）とは，プログラムの予約語，識別子（変数名や関数名），文字列，数値，演算子などの単語単位で
+ある．字句解析とは，プログラムを字句に分割して切り出す処理である．
+
+例として，次のC言語のソースコードを字句に分解する．
+\begin{shadebox}
+\begin{verbatim}
+int main()
+{
+    printf("Hello world!\n");
+    return 0;
+}
+\end{verbatim}
+\end{shadebox}
+
+分解した結果以下のような14個の字句に分割される．
+\begin{screen}
+\begin{enumerate}
+\item int
+\item main
+\item (
+\item )
+\item {
+\item printf
+\item (
+\item "Hello world!\verb|\|n"
+\item )
+\item ;
+\item return
+\item 0
+\item ;
+\item }
+\end{enumerate}
+\end{screen}
+
+プログラム中の字句を正規表現で定義すると，その定義を遷移図や有限オートマトンに変換できる．そして，C言語などのプログラミング言語で字句解析器が作成できる．正規表現から有限オートマトンへの変換は自動的に行えるため，字句解析器を生成するツールが存在する．本実験では，字句解析用のCプログラムを生成できるツールflexを用いる．
+
+flexのソースプログラムの基本的な構成は，次のようになっている．
+
+\begin{shadebox}
+$\%\{$
+ 
+\ \ C言語で記述したヘッダファイルやマクロの定義 ......【 1 】
+
+$\%\}$
+
+\ \ 正規表現のマクロ宣言 ......【 2 】
+
+$\%\%$
+
+\ \ 字句解析器の定義 ......【 3 】
+
+$\%\%$
+
+\ \ C言語のコード ......【 4 】
+\end{shadebox}
+
+【1】では，【3】や【4】で用いるC言語のコードが利用するヘッダファイルやマクロ定義などを記述する．
+【2】では，頻繁に利用する正規表現を「マクロ名 正規表現」という形式で定義する．
+【3】では，入力が正規表現にマッチしたときのアクションを「正規表現 アクション」
+という形式で記述する．「正規表現」には，上で定義した「マクロ名」を用いることもできる．また，「アクション」には，C言語のステートメントを記述する．アクションが複数のステートメントで構成されるときは，
+"{ }"で括らなければならない．【4】では，プログラム中で使用する関数など，
+C言語のコードを記述する．なお，【1】と【4】は，flexが生成するCコードにそのままコピーされる．
+
+flexで正規表現を記述するための記号を下表に示す．
+
+\begin{table}[htb]
+  \begin{center}
+    \caption{正規表現を記述するための記号}
+    \begin{tabular}{l|l|l}\hline
+      記号 & flexでの記号の解釈 & 具体例とその意味 \\ \hline
+      \$ & 行末を意味する & end\$は「文字列endの直後が行末」 \\
+      .（ピリオド） & 改行意外の任意の一文字 & a.*bは「a*b」の意味 \\
+      * & 直前の正規表現の0回以上の繰り返し & a*は「aの繰り返し（0文字以上）」 \\
+      + & 直前の正規表現の1回以上の繰り返し & a+は「aの繰り返し（1文字以上）」 \\ \relax
+      [] & [と]で囲まれた文字の中野どれか一文字 & [abc]は「aかbかcのうちのひとつ」 \\
+      "" & 括られた文字列そのものを表す & "abc"は「文字列abc」\\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+なお，flexで作成した字句解析器は，入力にマッチする正規表現があると，対応するアクションを実行する．複数の正規表現にマッチするときは，
+
+\begin{enumerate}
+\item 最長の入力にマッチする正規表現を選択する
+\item マッチするものが全て同じ長さの場合，最初に記述された定義を選択する
+\end{enumerate}
+
+というルールで，どれを受け入れるかを決定する．正規表現にマッチした文字列は配列"yytext"に格納され，その長さが変数"yyleng"に保存される．解析プログラムは関数"yylex"
+に作成され，「アクション」でreturn文を実行するか入力ファイルが終わるまで実行を続ける．
+
+ここで，今実験で使用したサンプルプログラムであるsample.lの動作を説明する．
+
+sample.lは字句解析を行ったときにyylex()で返される語の種類（ここではtagとする）を定義し,
+そのあと分類される語の正規表現を定義する.
+字句解析のルールを決める部分で,
+定数の場合は整数のtag，演算子なら演算子のtagを返すというルールを決める．
+字句解析のメインルーチンでは，yylex()により読み込んだ文字列から語を正規表現にそって切り出す．
+切り出された語はyytextに格納される．
+語の種類によってそれぞれ操作を行い，先頭から数えた語の順番，語の種類，
+yytextに格納された語を表示する．
+例えば，2が切り出され読み込まれたときは，2の先頭からの順番，語の種類として整数を表す1，
+yytextに格納された2を表示する．
+実際に実行した結果が以下の通りである． 
+
+\begin{screen}
+\begin{verbatim}
+[e1472mana@vcex26 4-1]$ flex sample.l
+[e1472mana@vcex26 4-1]$ gcc lex.yy.c -ll
+[e1472mana@vcex26 4-1]$ echo "2+3*10" | ./a.out
+[ 1] tag =  1, text = 2
+[ 2] tag =  2, text = +
+[ 3] tag =  1, text = 3
+[ 4] tag =  2, text = *
+[ 5] tag =  1, text = 10
+\end{verbatim}
+\end{screen}
+
+[tag]の1は整数を，2は演算子を示す．
+「2+3*10」が読み込まれ，整数と演算子に分類される．
+
+
+\section{実験}
+\begin{enumerate}
+\item 符号なし整数の四則演算の数式から，数値，演算子および括弧を切り出す字句解析器を作成し，実行結果を記録，検証する．なお，字句解析器は，以下の手順で作成する．
+  \begin{screen}
+\begin{verbatim}
+%flex sample.l
+%gcc lex.yy.c -ll
+\end{verbatim}
+  \end{screen}
+例えば，2+3*10を字句解析するには，
+  \begin{screen}
+\begin{verbatim}
+%echo "2+3*10" | ./a.out
+\end{verbatim}
+  \end{screen}
+とする．
+
+\item 実数や変数，数学関数名を表す正規表現を追加し，それらを切り出せる字句解析器を作成する．そして，実行結果を記録し検証する．
+
+今回の実験で各種トークンをいかに定義し，flexにおける正規表現でいかに示したかを下表に示す．
+
+\begin{table}[htb]
+  \begin{center}
+    \caption{各種トークン}
+    \begin{tabular}{l|l|l|l}\hline
+      & 定義 & 正規表現 & 例 \\ \hline
+      数値 & 0もしくは，1~9で始まり & 0｜[1-9][1-9]* & 0,109など\\
+      （符号なし整数） & 0~9が0個以上続く & & \\
+      変数 & 英字で始まり英数字が0個以上続く & [a-zA-Z\_][a-zA-Z01\_]* & a,a1,\_tmpなど \\
+      演算子 & "+","-","*","/"の演算子 & +|-|*|/ & +,-,*,/ \\
+      括弧 & "("または")" &  (|) & (または)\\
+      関数 & "sin","cos","tan"の関数 & "sin"|"cos"|"tan" & sin,cos,tan\\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+\end{enumerate}
+
+
+
+\section{結果}
+\begin{enumerate}
+\item 実験結果は下記の通りとなる．
+  \begin{screen}
+\begin{verbatim}
+[e1472mana@vcex26 4-1]$ flex sample.l
+[e1472mana@vcex26 4-1]$ gcc lex.yy.c -ll
+[e1472mana@vcex26 4-1]$ echo "2+3*10" | ./a.out
+[ 1] tag =  1, text = 2
+[ 2] tag =  2, text = +
+[ 3] tag =  1, text = 3
+[ 4] tag =  2, text = *
+[ 5] tag =  1, text = 10
+[e1472mana@vcex26 4-1]$ echo "2+3a10" | ./a.out
+[ 1] tag =  1, text = 2
+[ 2] tag =  2, text = +
+[ 3] tag =  1, text = 3
+Error: 'a'
+\end{verbatim}
+  \end{screen}
+
+\item 実験結果は下記の通りとなる．
+\begin{screen}
+\begin{verbatim}
+[e1472mana@vcex26 4-1]$ flex sample.l
+[e1472mana@vcex26 4-1]$ gcc lex.yy.c -ll
+[e1472mana@vcex26 4-1]$ echo "2+3*10-sin(7)+cos(2*3.0)" | ./a.out
+[ 1] tag =  1, text = 2
+[ 2] tag =  2, text = +
+[ 3] tag =  1, text = 3
+[ 4] tag =  2, text = *
+[ 5] tag =  1, text = 10
+[ 6] tag =  2, text = -
+[ 7] tag =  6, text = sin
+[ 8] tag =  3, text = (
+[ 9] tag =  1, text = 7
+[10] tag =  3, text = )
+[11] tag =  2, text = +
+[12] tag =  6, text = cos
+[13] tag =  3, text = (
+[14] tag =  1, text = 2
+[15] tag =  2, text = *
+[16] tag =  4, text = 3.0
+[17] tag =  3, text = )
+\end{verbatim}
+\end{screen}
+\end{enumerate}
+
+
+\section{考察}
+\begin{enumerate}
+\item "2+3*10"について実行したところ，整数を表すtagであるtag=1となっているものは「2,3,10」，演算子を表すtagであるtag=2となっているものは「+,*」となっていることが分るため正しく表示されている．
+
+また，"2+3a10"については「a」が定義されていないためErrorとして表示されている．
+
+\item 結果より，実数の場合はtag=4，変数の場合はtag=5，関数(sin,cos,tan)の場合はtag=6が表示できている．よって実数,変数,関数(sin,cos,tan)を正しく字句解析できている．
+しかし，ここで関数名”sin”などは変数の定義にも合致するという不都合がある．
+flexでは定義の順により優先順位をつけることができる．
+数学関数名を関数名より先に定義することでこの問題を解決することができる．
+また変数名”a1”などは，”a”と”1”に分割されそれぞれが変数名と数値にも合致するが，一つの関数名となる．
+flexでは最長の長さに合致する定義を選択するため”a1”として変数と解析される.
+”sin1”の場合も同様に，最長の長さに合致する定義を選択するため変数として解析される． 
+\end{enumerate}
+
+
+
+
+
+
+
+\newpage
+\begin{center}
+ {\Large \bf II bisonを用いた構文解析ルーチンの作成}
+\end{center}
+
+
+\section{目的}
+実験Iでは，flexを用いて字句解析器を作成し，プログラムを字句に分解した．その後，分割された字句
+が，プログラミング言語の文法に正しく対応しているか検査する構文解析に移行する．今回の実験では，
+bisonを用いて構文解析器を作成し，解構文解析の概念と仮想マシンのアーキテクチャおよびそのアセンブリ言語について理解する．
+
+
+\section{原理}
+\subsection{形式文法}
+$形式言語理論における文法とは，非終端記号の集合V_N，終端記号の集合V_T，生成規則の集合P，開始記号Sの4つ要素によって構成される4つ組G=(V_N,V_T,P,S)である．$
+
+\begin{quote}
+{\bf 非終端記号} 非終端記号とは生成規則を記述するために用いられる変数のことで，生成規則の左辺に現れる記号のことである．
+\end{quote}
+
+\begin{quote}
+{\bf 終端記号} 終端記号は正規表現のアルファベットの要素からなる記号列の集合で，生成規則の右辺にのみ現れる．
+\end{quote}
+
+\begin{quote}
+{\bf 生成規則} 生成規則とは，非終端記号と終端記号を用いて表された書き換え規則のことである．例えば，加算と乗算からのみなる数式を生成できる生成規則$P$は
+
+\begin{eqnarray*}
+P=\{E&→&T|E+T,\\
+T&→&F|T*F,\\
+F&→&NUM|(E)\}
+\end{eqnarray*}
+のようになる．ここで，$V_N=\{E,T,F\}は非終端記号，V_T=\{+,*,(,),NUM\}は終端記号である．ただし，NUMはr([1−9][0−9]*)のような正規表現で表される数に対応しているものとし，|は「または」を意味する．$
+\end{quote}
+
+\begin{quote}
+{\bf 開始記号} 開始記号は，文の生成をどの生成規則から始めるかを指定する．上記，加算と乗算のみからなる数式の場合，$E$が開始記号である．開始記号から始めて，次々に生成規則を適用していけば，その文法に属する様々な文が生成できる．
+\end{quote}
+
+ここで，正規文法および文脈自由文法について，ならびにオートマトンならびにコンパイラとの関連について説明する． 
+ 正規表現は言語の構造を表す文法の一つである．正規文法とオートマトンの関係性は，正規文法から有限オートマトンへの変換がされることである．正規文法とコンパイラとの関係は，正規文法が字句解析に用いられるということである．
+ 文脈自由文法はyaccの記述を元に，プログラミング言語の文法として使用される文法である．文脈自由文法とオートマトンの関係性は，文脈自由文法により定義された構文はプッシュダウン・オートマトンにより認識できることである．文脈自由文法とコンパイラとの関係は，文脈自由文法は構文解析に使用されているということである．
+
+
+\subsection{構文解析}
+構文解析とは，字句解析で切り出されたトークンが，どのような文法からから生成されるのかを解析すること
+である．構文解析を行うプログラムを構文解析器と呼ぶ．そして，その解析過程を利用して簡単な数式を仮想マ
+シンのアセンブリ言語に変換する．
+
+\subsubsection{構文解析器作成ツール Bison}
+本実験では，文法定義から構文解析器を生成するツール
+Bison（yacc互換）を用いる．Bisonの記述形式について簡単に解説する．
+\begin{shadebox}
+$\%\{$
+ 
+\ \ C言語で記述したヘッダファイルやマクロの定義 ......【 1 】
+
+$\%\}$
+
+\ \ 非終端記号や演算子の優先順位などの宣言 ......【 2 】
+
+$\%\%$
+
+\ \ 文法の定義 ......【 3 】
+
+$\%\%$
+
+\ \ C言語のコード ......【 4 】
+\end{shadebox}
+
+【1】では，【3】や【4】に現れるC言語のコードが用いるヘッダファイルの参照やマクロの定義などを記
+述する．【2】では，終端記号や非終端記号の宣言および対応する値のデータ型，演算子の優先順位などを宣言す
+る．【3】では，生成規則を記述し規則を認識したときの処理（意味処理）を設計する．【4】では，プログラム中で使用する関数など，C言語のコードを記述する．
+
+\begin{quote}
+{\bf 宣言の記述} 【2】のブロックでは，生成規則の記述に使用する
+\begin{itemize}
+\item 終端記号
+\item 属性値の型
+\item 開始記号
+\end{itemize}
+などを宣言する．
+
+終端記号は，「\%token 終端記号列」なる書式で宣言する．例えば，符号なし整数（名前をNUM
+とする）を宣言するなら「\%token NUM」と記述する．終端記号として宣言された「名前」は，
+bisonにより生成されるC言語のプログラムの中でマクロとして定義され，一意な値が与えられる．このマクロは，字句解析器とのインターフェイスでトークンの種別の値として用いられる．なお，
+1文字の終端記号であれば宣言する必要はなく，後に説明する「生成規則の記述」で，
+「'+'」のような文字定数の形式で記述できる．このときの種別の値は，その文字の
+ASCIIコードが用いられる．
+
+属性値の型は，
+\begin{quote}
+\%union\{
+
+\ \ \ \ 型 フィールド名;
+
+\ \ \ \ ．．．．．．
+
+\}
+\end{quote}
+なる書式で宣言する．そして，属性値を参照される各記号に対してもその型を指定する必要がある．非終端記号
+の場合は「\%type ＜フィールド名＞ 記号列」で，終端記号を\%tokenで宣言する場合は「\%token ＜フィールド名＞ 終端記号列」で属性値を宣言できる．
+開始記号は，「\%start 非終端記号」で宣言する．
+\end{quote}
+
+\begin{quote}
+{\bf 生成規則の記述} 【3】のブロックには，生成規則の左辺の非終端記号，記号":"，右辺の非終端記号および終端記号からなる記号列の順に記述する．そして，C言語で記述した意味処理を，中括弧"\{  \}"で囲む．左辺の非終端記号が同一の生成規則が複数存在するときは，"|"で区切って書くこともできる．
+
+例えば，生成規則が
+\begin{eqnarray*}
+E→T|E+T
+\end{eqnarray*}
+で，意味処理として対応する演算を行う場合，
+\begin{verbatim}
+E : T           { $$ = $1; }
+  | E ’+’ T     { $$ = $1 + $3; }     <----- (*)
+  ;
+\end{verbatim}
+と書く．各記号と意味処理には，属性と呼ばれる値が対応している．意味処理における"\$\$"は，「生成規則の左辺の非終端記号の属性（値）」を，"\$n"は，「生成規則の右辺のn番目の記号の属性（値）」を意味する．なお，終端記号もひとつの記号である．したがって，(*)の意味処理は，「右辺のEの属性値（\$1）とTの属性値（\$3）の和を，左辺のEの属性値とする」ことを表す．
+\end{quote}
+
+ここで，加算と乗算からのみなる数式を生成できる生成規則Pとして
+\begin{eqnarray*}
+P=\{E→E+E|E*E|(E)|NUM\}
+\end{eqnarray*}
+を用いたときの問題点と，その問題をBisonではいかに回避しているかを説明する．
+
+例として，数式"1+2+3"を生成する．その際，下図のような2つの導出木ができる．
+
+\begin{figure}[htbp]
+\centering\includegraphics[width=8cm]{image/zu2-1.eps}
+\caption{:導出木}
+\end{figure}
+
+このように二つ以上の導出木ができるとき，その文法を曖昧な文法と呼ぶ．
+今回の生成規則は曖昧な文法であるといえる．
+
+この問題を回避する方法としてBisonでは演算子の優先順位と結合規則を用いている．今回の例においては，
+演算子は「+」のみであるため演算子の優先順位は用いていないが"*>+"のように優先順位をつけることで，曖昧性を消去する方法である．一方の結合規則については，今回のような演算子の優先順位が同じである場合に左から順に結合(処理)していく，というような規則を定める方法である．今回の例においては，左結合規則を用いれば図2の左の導出木のみが得られ，曖昧な文法でなくなり，問題が解決する．
+
+\subsubsection{還元による構文解析}
+生成規則の矢印（→）を逆にたどることを還元と呼ぶ．開始記号から出発して，生成規則をくり返し適用して
+生成された文であれば，還元を繰り返すことで，いずれは開始記号にたどり着くはずである．この場合，その文
+はその文法から生成される，あるいは受理されると言う．この還元の過程を利用して構文解析木などを作る構文
+解析法があり，Bisonではこの方法を用いている．
+
+例えば，1*2+3の1*2の部分は
+\begin{eqnarray*}
+T→F→1(NUM)\\
+F→2(NUM)
+\end{eqnarray*}
+により，1,2がそれぞれ$T,F$に還元され$T*F+3$となる．すると，$T*F$が生成規則
+$T→T*Fの右辺とマッチするので，T+3$に還元される．次に，
+\begin{eqnarray*}
+E→T \\
+T→F→3(NUM)
+\end{eqnarray*}
+により，$T,3がそれぞれE,Tに還元され，T+3はE+Tとなる．すると，E→E+Tの右辺とマッチするので，Eに還元される．$これは開始記号であり，この文法で1*2+3が生成でき受理できることを意味する．以上の還元の過程を表4に示す．
+
+\begin{table}[htb]
+  \begin{center}
+    \caption{還元の過程}
+\begin{tabular}{ll} \hline
+ 文 & 適用する規則 \\ \hline
+1*2+3 & F→1(NUM) \\
+F*2+3 & T→F \\
+T*2+3 & F→2(NUM) \\
+T*F+3 & T→T*F \\
+T+3 & E→T \\
+E+3 & F→3(NUM)\\
+E+F & T→F \\
+E+T & E→E+T \\
+E &  \\ \hline
+\end{tabular} 
+\end{center}
+\end{table}
+
+\subsection{アセンブリ言語}
+コンピュータが直接実行できるコードのことを機械語と言う．これは，通常バイナリコードであるため，テキス
+トとして読むことはできない．これを，言語の論理的な構造を保存したまま，その表現形式をテキストとして判
+読できるようにしたものがアセンブリ言語である．アセンブリ言語は，ニーモニックと呼ばれる単純な命令群に
+よって記述される．これらは通常，その環境の最小命令単位と対応している．
+
+加算と乗算からなる数式を，以下の仮定のもと，表5に示すアセンブリ言語を用いて翻訳する．
+\begin{itemize}
+\item 汎用レジスタが少なくとも10個ある．各レジスタはR0,R1,...のように表記する．
+\item 各汎用レジスタは，加算・乗算に用いることができる．
+\item 汎用レジスタには，数$n$を代入することができる．
+\item PRINT命令で指定したレジスタの内容を表示することができる．
+\end{itemize}
+
+\begin{table}[htb]
+  \begin{center}
+    \caption{各種ニーモニック}
+\begin{tabular}{l|l|l|l} \hline
+処理内容 & ニーモニック & 数式 & 備考 \\ \hline
+加算 & ADD $R_x$,$R_y$ & $R_x$←$R_x$+$R_y$ & 計算結果は$R_x$に代入 \\
+乗算 & MUL $R_x$,$R_y$ & $R_x$←$R_x$×$R_y$ & 計算結果は$R_x$に代入 \\
+レジスタへの値設定 & SET $R_x$,$n$ & $R_x$←n & \\
+レジスタへの内容表示 & PRINT $R_x$ & & \\ \hline
+\end{tabular} 
+\end{center}
+\end{table}
+以上の取り決めのもと，"1*2+3"を計算するためのアセンブリ言語は以下のようになる．
+
+\begin{table}[htb]
+\begin{tabular}{lll}
+SET & R0, & 1 \\
+SET & R1, & 2 \\
+MUL & R0, & R1 \\
+SET & R1, & 3 \\
+ADD & R0, & R1 \\
+PRINT & R0 & \\
+\end{tabular}
+\end{table}
+
+\section{実験}
+\begin{enumerate}
+\item Bisonを用いて，整数の加算と乗算のみからなる数式をアセンブリ言語に翻訳するコンパイラ
+eucomを以下の手順で生成する．
+\begin{screen}
+\begin{verbatim}
+%flex eucom.l
+%bison eucom.y
+%gcc eucom.tab.c -ll -o eucom
+\end{verbatim}
+\end{screen}
+次のように数式を入力しその結果を記録する．また，正しい計算をするアセンブリ言語が出力されているか
+検証する．
+\begin{screen}
+\begin{verbatim}
+%echo "1*2+3" | ./eucom
+%echo "1+2+3" | ./eucom
+\end{verbatim}
+\end{screen}
+\item 実数の四則演算をアセンブリコードに翻訳できるコンパイラを生成し，いくつか簡単な数式を入力し，生成されるアセンブリ言語を記録する．また，それが正しいか検証する．
+
+今回の実験では，非終端記号$V_N=\{E,T,F\}$,終端記号$V_T=\{+,-,*,/,(,),NUM\}$開始記号をS=Eとした．
+ここでNUMは整数又は実数である．生成規則Pは下記の通りとなる．
+
+\begin{eqnarray*}
+P=\{E&→&T|E+T|E-T, \\
+T&→&F|T*F|T/F,\\
+F&→&NUM|(E)\} 
+\end{eqnarray*}
+ここで，演算子の優先順位が異なる演算子同士は同じ左辺を持たないようにし，+，-よりも優先順位の高い*，/を下に記述することで*，/の優先順位を高くすることができるため，計算が左結合となる．
+
+今回の実験で追加した減算と除算のニーモニックと生成規則の定義を表6に示す．
+
+\begin{table}[htb]
+  \begin{center}
+    \caption{各種ニーモニックと追加したニーモック}
+\begin{tabular}{l|l|l|l} \hline
+処理内容 & ニーモニック & 数式 & 備考 \\ \hline
+加算 & ADD $R_x$,$R_y$ & $R_x$←$R_x$+$R_y$ & 計算結果は$R_x$に代入 \\
+乗算 & MUL $R_x$,$R_y$ & $R_x$←$R_x$×$R_y$ & 計算結果は$R_x$に代入 \\
+減算 & SUM $R_x$,$R_y$ & $R_x$←$R_x$-$R_y$ & 計算結果は$R_x$に代入 \\
+除算 & DIV $R_x$,$R_y$ & $R_x$←$R_x$/$R_y$ & 計算結果は$R_x$に代入 \\
+レジスタへの値設定 & SET $R_x$,$n$ & $R_x$←n & \\
+レジスタへの内容表示 & PRINT $R_x$ & & \\ \hline
+\end{tabular} 
+\end{center}
+\end{table}
+
+\end{enumerate}
+
+\section{結果}
+\begin{enumerate}
+\item 整数の加算と乗算のみからなる数式をアセンブリ言語に翻訳するコンパイラeucomを生成し数式を入力した結果が下記の通りである．
+\begin{screen}
+\begin{verbatim}
+[e1472mana@vcex26 4-2]$ flex eucom.l
+[e1472mana@vcex26 4-2]$ bison eucom.y
+[e1472mana@vcex26 4-2]$ gcc eucom.tab.c -ll -o eucom
+[e1472mana@vcex26 4-2]$ echo "1*2+3" | ./eucom
+SET R0,1
+SET R1,2
+MUL R0,R1
+SET R1,3
+ADD R0,R1
+PRINT R0
+[e1472mana@vcex26 4-2]$ echo "1+2+3" | ./eucom
+SET R0,1
+SET R1,2
+ADD R0,R1
+SET R1,3
+ADD R0,R1
+PRINT R0
+\end{verbatim}
+\end{screen}
+
+\item 実験の結果を下記に示す．
+\begin{screen}
+\begin{verbatim}
+[e1472mana@vcex26 4-2]$ flex eucom.l
+[e1472mana@vcex26 4-2]$ bison eucom.y
+[e1472mana@vcex26 4-2]$ gcc eucom.tab.c -ll -o eucom
+[e1472mana@vcex26 4-2]$ echo "8/4-3" | ./eucom
+SET R0,8
+SET R1,4
+DIV R0,R1
+SET R1,3
+SUB R0,R1
+PRINT R0
+\end{verbatim}
+\end{screen}
+\end{enumerate}
+
+\section{考察}
+\begin{enumerate}
+\item 結果より，正しい計算をするアセンブリ言語が出力されているか検証する．
+
+まず"1*2+3"における解析木を図3に示す．この解析木を左順序で見ることにより計算を行う．
+
+\begin{figure}[htbp]
+\centering\includegraphics[width=5cm]{image/zu2-2.eps}
+\caption{:"1*2+3"における解析木}
+\end{figure}
+
+また，実行結果に，順を追って説明の追記を加えたものを下記に示す．
+\begin{verbatim}
+SET   R0,1   ←R0に1を代入
+SET   R1,2   ←R1に2を代入
+MUL   R0,R1  ←R0にR0*R1を代入
+SET   R1,3   ←R1に3を代入
+ADD   R0,R1  ←R0にR0+R1を代入
+PRINT R0
+\end{verbatim}
+
+次に"1+2+3"における解析木を図4に示す．この解析木を左順序で見ることにより計算を行う．
+
+\begin{figure}[htbp]
+\centering\includegraphics[width=5cm]{image/zu2-3.eps}
+\caption{:"1+2+3"における解析木}
+\end{figure}
+
+また，実行結果に，順を追って説明の追記を加えたものを下記に示す．
+
+\begin{verbatim}
+SET   R0,1   ←R0に1を代入
+SET   R1,2   ←R1に2を代入
+ADD   R0,R1  ←R0にR0+R1を代入
+SET   R1,3   ←R1に3を代入
+ADD   R0,R1  ←R0にR0+R1を代入
+PRINT R0
+\end{verbatim}
+
+以上から正しい計算をするアセンブリ言語が出力されている．
+
+\item 実験により生成されたアセンブリ言語が正しいか検証する．
+
+まず，"8/4-3"における解析木を図5に示す．この解析木を左順序で見ることにより計算を行う．
+
+\begin{figure}[htbp]
+\centering\includegraphics[width=5cm]{image/zu2-4.eps}
+\caption{:"8/4-3"における解析木}
+\end{figure}
+
+また，実行結果に，順を追って説明の追記を加えたものを下記に示す．
+
+\begin{verbatim}
+SET   R0,8   ←R0に8を代入
+SET   R1,4   ←R1に4を代入
+DIV   R0,R1  ←R0にR0/R1を代入
+SET   R1,3   ←R1に3を代入
+SUB   R0,R1  ←R0にR0-R1を代入
+PRINT R0
+\end{verbatim}
+
+以上より，正しい計算をするアセンブリ言語が出力されている．
+
+\end{enumerate}
+
+% サブテーマが変われば \newpage でページを変更する
+\newpage
+\begin{center}
+ {\Large \bf III C言語による仮想マシンの構築}
+\end{center}
+
+\section{目的}
+コンピュータは，人間と違い文字を読んでプログラムを理解するわけではなく，最もコンピュータよりの処理を
+記述する言葉は番号（数字）を用いて記述される．これが機械語である．本実験では，仮想的なコンピュータを
+自ら設計し，そのコンピュータが理解できる機械語をデザインする．そして，アセンブリ言語をその機械語に翻
+訳するアセンブラを作成し，コンパイラの実験を通して作成した字句解析ルーチンおよび構文解析ルーチンと合
+わせて，数式を機械語に変換し計算を実行することで仮想マシンの概念について理解する．
+
+
+\section{原理}
+\subsection{仮想マシン}
+仮想マシンは，近年では，Java言語の実行環境などとして有名である．古くは，
+PASCALやLISPなどの言語で記述されたプログラムを，特定のCPUや環境に依存せずに実行するために用いられた．このような実際のコンピュータ上に作られた架空のアーキテクチャのコンピュータを仮想マシン
+(Virtual Machine)と呼ぶ．
+
+仮想マシンを用いれば，実際に用いるコンピュータのアーキテクチャが様々でも，同じ実行コードを用いるこ
+とができ，各アーキテクチャ毎にコンパイラを作らなくてもよい．
+
+\subsection{仮想マシンの命令セット}
+多くのコンピュータは，機械語を記述する数字の区切りとしてbyte（バイト）を用いる．
+1byteは8bitなので$2^8$=256通り，例えば，\{0,1,...,255\}の数字が扱える．本実験で用いる仮想マシンの数字の区切りもbyteを採用することにする．
+
+実験IIで，PRINT，SET，ADD，MULなどのニーモニックを扱った．それ以外にも，R0,R1,R2,...などのレジスタもあった．これらを番号で表さなければならない．また，レジスタに代入される数値それ自身も番号として表さなければならない．そこで機械語が，表7のようないくつかのパターンで表されると仮定する．
+
+\begin{table}[htb]
+  \begin{center}
+    \caption{機械語のコード形式}
+\begin{tabular}{l|l} \hline
+コード形式 & 対応する機械語の系列パターン \\ \hline
+単項演算型 & (オペコード，レジスタ番号) \\
+2項演算型 & (オペコード，レジスタ番号1，レジスタ番号2) \\
+単項演算型 & (オペコード，レジスタ番号，$a_{k-1},a_{k-2},...,a_1,a_0$) \\ \hline
+\end{tabular} 
+\end{center}
+\end{table}
+
+ここで，オペコードとはニーモニックの番号のことである．また，代入型の$a_0,a_1,...,a_{k−1}は，符号無し整数nを$
+
+\begin{eqnarray*}
+n=a_{k-1}×256^{k-1}+a_{k-2}×256^{k-2}+・・・+a_1×256+a_0
+\end{eqnarray*}
+と表した場合の係数である．なお，この例のように，$a_{k−1},a_{k−2},...,a_1,a_0と上の桁が前にくるように並べる形$式をbig-endian，同じ数値を$a_0,a_1,...,a_{k−1},a_k$のように下の桁が前にくるように並べる形式をlittle-endianと呼ぶ．
+
+例えば表8のように，PRINTのオペコードが10であり，R0のレジスタ番号が0であるとするなら
+PRINTR0は単項演算型を用いて(10,0)と表される．また，ADDのオペコードを
+20，R1,R2のレジスタ番号をそれぞれ1,2とするなら，ADD R1,R2は2項演算型を用いて
+(20,1,2)と表すことができる．さらに，SETのオペコードが30であり，この仮想マシンが扱える符号無し整数が
+0から$2^{15}$−1=32767であるとすると，この整数は16bit=2byte
+で表すことがき，SET R0,123は代入型を用いて
+(30,0,0,123)と表すことができる．また，SET R0,256は同様に
+(30,0,1,0)と表すことができる．
+
+\begin{table}[htb]
+  \begin{center}
+    \caption{アセンブリ言語と機械語の対応例}
+\begin{tabular}{l|ll} \hline
+アセンブリ言語 & 機械語の型 & 機械語 \\ \hline
+PRINT R0 & 単項演算型 & (10,0) \\
+ADD R1,R2 & 2項演算型 & (20,1,2) \\
+SET R0,123 & 代入型 & (30,0,0,123) \\
+SET R0,256 & 代入型 & (30,0,1,0) \\ \hline
+\end{tabular} 
+\end{center}
+\end{table}
+
+上記のような取り決めを，全てのニーモニック，レジスタ，数値に対して決定することで，仮想マシンの命令
+セットがデザインできる．
+
+\subsection{仮想マシンの実装}
+ここでは，整数の加算と符号反転および表示をサポートした仮想マシンを実際に
+C言語を用いて実装する．取り扱う数値は，0から$2^{15}$−1の範囲の整数で，
+big-endianを用いることとし，命令セットを表9および表10で与える．
+
+\begin{table}[htb]
+  \begin{center}
+    \caption{オペコード表}
+\begin{tabular}{l|ll} \hline
+ニーモニック & オペコード & コード形式 \\ \hline
+PRINT & 10 & 単項演算型  \\
+NEG & 11 & 単項演算型  \\
+ADD & 20 & 2項演算型  \\
+SET & 30 & 代入型  \\\hline
+\end{tabular} 
+\end{center}
+\end{table}
+
+\begin{table}[htb]
+  \begin{center}
+    \caption{レジスタ番号表}
+\begin{tabular}{l|l||l|l} \hline
+レジスタ & 番号 & レジスタ & 番号 \\ \hline
+R0 & 0 & R5 & 5 \\
+R1 & 1 & R6 & 6 \\
+R2 & 2 & R7 & 7 \\
+R3 & 3 & R8 & 8 \\
+R4 & 4 & R9 & 9  \\ \hline
+\end{tabular} 
+\end{center}
+\end{table}
+
+標準入力から機械語を読み込んで実行する仮想マシンの，
+C言語による実装は以下のようになる．
+
+\begin{shadebox}[l]
+\begin{verbatim}
+#include <stdio.h>
+#include <stdlib.h>
+
+/***各機械語のオペコード***/
+#define op_PRINT 10
+#define op_NEG   11
+#define op_ADD   20
+#define op_SET   30
+int main()
+{
+  int op;    /*オペコード用変数*/
+  int x, y;  /*レジスタ番号用変数*/
+  int n;     /*数値用作業変数*/
+  int R[10]; /*レジスタ用配列*/
+
+  while (op = getchar(), op != EOF) {
+       switch (op) {
+       case op_PRINT: /*レジスタの表示*/
+          x = getchar(); /*レジスタ番号の読み込み*/
+          printf("%d\n", R[x]);
+          break; 
+       case op_NEG: /*符号反転*/
+          x = getchar(); /*レジスタ番号の読み込み*/
+          R[x] = -R[x];
+          break;
+       case op_ADD: /*加算*/
+          x = getchar(); /* xのレジスタ番号の読み込み*/
+          y = getchar(); /* yのレジスタ番号の読み込み*/
+          R[x] = R[x] + R[y];
+          break;
+       case op_SET: /*レジスタへの整数代入*/
+          x = getchar();           /*レジスタ番号の読み込み*/
+          n = getchar();           /*整数の上の桁読み込み*/
+          n = n * 256 + getchar(); /*整数の下の桁読み込み*/
+         R[x] = n;
+         break;
+       default: /*予定外のコードを読み込んだらエラー終了*/
+         fprintf(stderr, "error: bad op-code\n");
+         exit(1);
+      }
+   }
+   return 0;
+}
+\end{verbatim}
+\end{shadebox}
+
+上記のプログラムは表9のオペコードを元に処理を行っている．受け取ったオペコードに対する動作は以下の通りである．
+
+\begin{itemize}
+\item 10  レジスタの中身を表示する
+\item 11  レジスタの中身の符号を反転させる
+\item 20  XとYの中身を加算し，レジスタXに代入する
+\item 30  レジスタへ数値の代入を行う
+\end{itemize}
+
+\subsection{実数（倍精度浮動小数点数）の表現}
+上記の仮想マシンでは，数値として2byteの符号無し整数を取り扱っているため，実数（倍精度浮動小数点数）
+を取り扱えない．実数の表現には，整数とは異る込み入った問題が存在するため，本実験では，
+fread,fwriteを用いて，C言語における内部形式（IEEE 754）を利用する．このため，本実験の仮想マシンの倍精度浮動小数点数の扱いは，内部形式に依存することになり，全ての環境で同じ実行結果を得ることはできない．
+
+ここでIEEE754の規格を説明する．
+数値形式は以下の通りである[1].
+\begin{itemize}
+\item 有限数
+
+2または10を基数とする，任意の有限数を扱うことができる．
+\item 0
+
+m=e=0の場合が0だが，この場合でもsが有効なため，0には+0と−0が存在する．
+\item ∞
+
+eが全ビット1で，m=0の時，∞である．この場合でもsが有効なため，∞には+∞と−∞が存在する．
+\item 非数(NaN)
+
+eが全ビット1で, mの最上位ビットを除いた値が1以上の時, NaNである. この場合でもsが有効なため, NaNには+NaNと−NaNが存在する. 
+\item 不定値(Indeterminate)
+
+eが全ビット1で, mの最上位ビットのみが1の時, 不定値である. この場合でもsが有効なため, ∞には+不定と−不定が存在する. 
+\end{itemize}
+16ビット長，32ビット長，64ビット長，128ビット長での表現方法が規定されている．また2ビット表現の際，16ビット長，32ビット長，64ビット長，128ビット長，いずれの交換形式においても
+，一般的には最上位ビット(MSB)に符号(s)を置き，次に指数e，下位に仮数mを置く．
+
+
+\section{実験}
+実数の四則演算が可能な仮想マシンを以下の手順でC言語により実装する．
+\begin{enumerate}
+\item 実数の四則演算が可能な仮想マシンの命令セットをデザインする．デザインした仮想マシンのオペコード表，レジスタ番号を表11，12に示す．
+\begin{table}[htb]
+  \begin{center}
+    \caption{実験に用いたオペコード表}
+\begin{tabular}{l|ll} \hline
+ニーモニック & オペコード & コード形式 \\ \hline
+PRINT & 10 & 単項演算型  \\
+NEG & 11 & 単項演算型  \\
+ADD & 20 & 2項演算型  \\
+SET & 30 & 代入型  \\
+SUB & 40 & 2項演算型  \\
+MUL & 50 & 2項演算型  \\
+DIV & 60 & 2項演算型  \\\hline
+\end{tabular} 
+\end{center}
+\end{table}
+
+\begin{table}[htb]
+  \begin{center}
+    \caption{実験に用いたレジスタ番号表}
+\begin{tabular}{l|l||l|l} \hline
+レジスタ & 番号 & レジスタ & 番号 \\ \hline
+R0 & 0 & R5 & 5 \\
+R1 & 1 & R6 & 6 \\
+R2 & 2 & R7 & 7 \\
+R3 & 3 & R8 & 8 \\
+R4 & 4 & R9 & 9  \\ \hline
+\end{tabular} 
+\end{center}
+\end{table}
+
+\item 実数の四則演算をアセンブリコードに変換するコンパイラeucomを以下の手順で作成する．eucom.lおよ
+びeucom.yは実験IIで作成したコンパイラを用いる．
+\begin{screen}
+\begin{verbatim}
+%flex eucom.l
+%bison eucom.y
+%gcc eucom.tab.c -ll -o eucom
+\end{verbatim}
+\end{screen}
+\item 実数の四則演算が可能なアセンブリ言語を機械語に変換するアセンブラを以下の手順で作成する．ただし，実数は8byteの系列で表現できると仮定し，その出力にはfwriteを用いる．
+\begin{screen}
+\begin{verbatim}
+%flex euasm.l
+%bison euasm.y
+%gcc euasm.tab.c -ll -o euasm
+\end{verbatim}
+\end{screen}
+\item 実数の四則演算が可能な仮想マシンをC言語により実装せよ．ただし，実数の入力にはfreadを用いる．参考として，加算と符号反転および表示をサポートした実装(euvm.c)を付録に示す．euvm.cをコンパイルすると仮想マシンが作成される．
+\begin{screen}
+\begin{verbatim}
+%gcc euvm.c -o euvm
+\end{verbatim}
+\end{screen}
+\item 作成したコンパイラとアセンブラにより数式を機械語に翻訳し，仮想マシンで実行した結果を記録する．
+\begin{screen}
+\begin{verbatim}
+%echo "1.0 + 0.23" | ./eucom | ./euasm > executable
+%./euvm < executable
+\end{verbatim}
+\end{screen}
+\end{enumerate}
+
+\section{結果}
+実験の結果は下記の通りである．
+\begin{screen}
+\begin{verbatim}
+[e1472mana@vcex26 4-3]$ flex eucom.l
+[e1472mana@vcex26 4-3]$ bison eucom.y
+[e1472mana@vcex26 4-3]$ gcc eucom.tab.c -ll -o eucom
+[e1472mana@vcex26 4-3]$ echo "1.0+0.23" | ./eucom
+SET R0,1.0
+SET R1,0.23
+ADD R0,R1
+PRINT R0
+[e1472mana@vcex26 4-3]$ flex euasm.l
+[e1472mana@vcex26 4-3]$ bison euasm.y
+[e1472mana@vcex26 4-3]$ gcc euasm.tab.c -ll -o euasm
+[e1472mana@vcex26 4-3]$ gcc euvm.c -o euvm
+[e1472mana@vcex26 4-3]$ echo "1.0+0.23" | ./eucom | ./euasm > executable
+[e1472mana@vcex26 4-3]$ ./euvm < executable
+1.230000
+\end{verbatim}
+\end{screen}
+
+\section{考察}
+実際に仮想マシンが計算を行うまでの流れを説明する．
+\begin{enumerate}
+\item 字句解析によりトークンを切り出す．
+\begin{enumerate}
+\item tag=2, text=(
+\item tag=3, text=1.0
+\item tag=2, text=+
+\item tag=3, text=2.0
+\item tag=2, text=)
+\item tag=2, text=/
+\item tag=3, text=3.0
+\end{enumerate}
+\item コンパイラによりアセンブリ言語を生成する．
+\begin{table}[htb]
+  \begin{center}
+\begin{tabular}{ll} \hline
+SET & R0,1.0 \\ \hline
+SET & R1,2.0 \\
+ADD & R0,R1 \\
+SET & R1,3.0 \\
+DIV & R0,R1 \\
+PRINT & R0  \\ \hline
+\end{tabular} 
+\end{center}
+\end{table}
+
+\item アセンブラにより機械語に変換する．機械語のオペコードは以下の通りである．
+\begin{shadebox}
+PRINT 10
+NEG 11
+ADD 20
+SUB 25
+MUL 30
+DIV 35
+SET 40
+\end{shadebox}
+(40,0,0,1.0)
+
+(40,1,0,2.0)
+
+(20,0,1)
+
+(40,1,0,3.0)
+
+(35,0,1)
+
+(10,0)
+
+\end{enumerate}
+
+\section{課題}
+\begin{enumerate}
+\item コンパイラの最適化について調べる．
+
+意味解析まで出来た後，翻訳に入るが，翻訳の結果作成されたコードをそのまま出力するのではなく，出力の前にそのコードにあるむだな部分を省いたり，そのコードの並び方を見てもっと効率が良くなる並び方に変化する場合がある[2]．これを最適化という．簡単なコンパイラではソースプログラムから直接目的プログラムを生成するが，最適化のためにはいったん中間コードに変換し，中間コードの段階で最適化処理を施し，目的コードの生成を行う．プログラムの実行時の効率を上げる為に，より洗練されたコードにすることを最適化という．
+\item コンパイラとインタプリタの違いを調べ，利点欠点についてまとめる．
+
+コンパイラはソースプログラムを受け取り，それを機械語へ変換したものを出力する[2]．同様な処理系として，インタプリタと呼ばれるものがある．コンパイラの場合は，ソースプログラムを実行可能形式に変換してそれを実行するのに対して，インタプリタの場合は，ソースプログラムを変換して機械語を得るという方式の代わりにソースプログラムを解釈しながら実行していく．
+
+コンパイラとインタプリタを定義すると下記の通りである．
+{\bf コンパイラ} プログラミング言語のソースプログラムを受け取り，実行の対象となる機械の機械語プログラムを出力するもの
+{\bf インタプリタ} プログラミング言語のソースプログラムを受け取り，そこに記述している内容をその都度，解釈実行を行うもの
+\end{enumerate}
+
+% ここから参考文献
+\begin{thebibliography}{9}
+\bibitem{book1}
+ ``IEEE 754 ‐ 通信用語の基礎知識'' ，\url{https://www.wdic.org/w/SCI/IEEE%20754}，
+(最終アクセス2019/02/04)
+\bibitem{book2}
+中井央: ``コンパイラ '' コロナ社，(2007/07/06)
+\end{thebibliography}
+
+%%
+%  ここまで本文
+%%
+
+\appendix
+\section{プログラムリスト}
+\subsection{sample.l}
+\begin{verbatim}
+/*********************************************************************
+ *  字句解析時に yylex() で返される語の種類(tag)の定義
+ *********************************************************************/
+
+%{
+
+#define INTEGER      1  /* 整数を示す tag */
+#define OPERATOR     2  /* 演算子を示す tag */
+#define PARENTHESES  3  /* 括弧を示す tag */
+#define REAL 4 /*実数*/
+#define VARIABLE 5 /*変数*/
+#define FUNCTION 6 /*関数*/
+
+%}
+
+/*********************************************************************
+ *  分類される語の正規表現 ( r(X) の X の部分のみ記述 )
+ *********************************************************************/
+
+integer     "0"|[1-9][0-9]*
+operator    "+"|"-"|"*"|"/"
+parentheses "("|")"
+real "0"|[0-9]*"."[0-9]*
+variable [a-zA-Z][a-zA-Z0-9_]*
+function "sin"|"cos"|"tan"
+
+/*** 注1: [0-9] は "0"|"1"|"2"|"3"|...|"8"|"9" の省略表記 ***/
+
+/*********************************************************************
+ *  字句解析ルール
+ *********************************************************************/
+
+%%
+
+{integer}     { return INTEGER; }      /* 整数なら整数の tag を返す */
+{operator}    { return OPERATOR; }     /* 演算子なら演算子の tag を返す */
+{parentheses} { return PARENTHESES; }  /* 括弧なら括弧の tag を返す */
+{real}        { return REAL; }
+{function}    { return FUNCTION; }
+{variable}    { return VARIABLE; }
+"\n"          { return 0; }            /* 改行によって解析終了 */
+[" ""\t"]+                             /* 空白と TAB は読み飛ばす */
+.           { printf("Error: '%c'\n", yytext[0]); exit(1); }
+
+%%
+
+/*** 注2: X+ は XX* の省略表記 ***/
+/*** 注3: . は任意の一文字にマッチする ***/
+
+/*********************************************************************
+ *  字句解析メインルーチン
+ *********************************************************************/
+
+int main()
+{
+        int tag;          /* 語の種類 */
+        int line_num = 0; /* 行番号 */
+
+        while (tag = yylex()) {
+                /*
+                    yylex() は語の種類を戻値とし，yytext に切り出された語を
+                    割り当てる．
+                */
+                printf("[%2d] ", ++line_num);
+                printf("tag = %2d, ", tag);
+                printf("text = %s\n", yytext);
+        }
+        return 0;
+}
+\end{verbatim}
+
+\subsection{eucom.l}
+\begin{verbatim}
+/*****************************************************************************/
+
+%{
+
+#include <string.h>
+/* 
+    strdup を用いるために必要
+
+     strdup の書式は
+       char *strdup(const char *s);
+    で，その動作は，文字列 s の複製である新しい文字列へのポインタを返す．
+    新しい文字列のためのメモリは malloc で得て，free で解放することができる．
+    詳細は man strdup を参照すること．
+*/
+                    
+%}
+
+/*****************************************************************************/
+
+num         "0"|[1-9][0-9]*|[0-9]*"."[0-9]*
+operator    "+"|"-"|"*"|"/"
+parentheses "("|")"
+
+/*****************************************************************************/
+
+%%
+
+{num}         { yylval.str = strdup(yytext); return NUM; }
+              /*** 数を yylval.str に保存し，種別 NUM を返す ***/
+
+{operator}    { return yytext[0]; }
+{parentheses} { return yytext[0]; }
+              /*** 各オペレータまたは括弧自身を種別として使う ***/
+
+"\n"          { return 0; }
+[" ""\t"]+
+.             { printf("error: '%c'\n", yytext[0]); exit(1); }
+
+%%
+
+/*****************************************************************************/
+\end{verbatim}
+
+\subsection{eucom.y}
+\begin{verbatim}
+/*****************************************************************************
+ *  C 言語インターフェイス宣言部
+ *****************************************************************************/
+
+%{
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef enum { R0, R1, R2, R3, R4, R5, R6, R7, R8, R9 } reg_id;
+
+/*** アセンブリコード生成関数のプロトタイプ宣言 ***/
+void   asm_PRINT(reg_id Rx);
+reg_id asm_SET(char *n);
+reg_id asm_ADD(reg_id Rx, reg_id Ry);
+reg_id asm_MUL(reg_id Rx, reg_id Ry);
+reg_id asm_SUB(reg_id Rx, reg_id Ry);
+reg_id asm_DIV(reg_id Rx, reg_id Ry);
+
+/*** [追加ニーモニック] 例えば，このように追加する ***/
+reg_id asm_NEG(reg_id Rx);
+
+%}
+
+/*****************************************************************************
+ *  非終端記号(E,T,F)とその型および終端記号(NUM,'+','*','(',')'),
+ *  開始記号(S)の定義
+ *****************************************************************************/
+
+%union { char *str; reg_id reg; } /* 構文解析の戻り値として文字列型とレジスタID型を扱う */
+%type  <reg> E T F
+%token <str> NUM
+%token       '+' '*' '-' '/''(' ')'
+%start       S
+
+/*****************************************************************************
+ *  生成規則の定義
+ *****************************************************************************/
+
+%%
+
+S: E               { asm_PRINT($1); };
+
+E: T               { $$ = $1; };
+E: E '+' T         { $$ = asm_ADD($1, $3); }; /* '+' は左結合 */
+E: E '-' T         { $$ = asm_SUB($1, $3); };
+
+T: F               { $$ = $1; };
+T: T '*' F         { $$ = asm_MUL($1, $3); }; /* '*' は左結合 */
+E: E '/' T         { $$ = asm_DIV($1, $3); };
+
+F: NUM             { $$ = asm_SET($1); };
+F: '(' E ')'       { $$ = $2; };
+
+%%
+
+/*****************************************************************************
+ *  メインルーチンおよびサブルーチンの実装部分
+ *****************************************************************************/
+
+#include "lex.yy.c"
+
+int yyerror(const char *s) { printf("%s\n", s); exit(1); }
+
+int main() { return yyparse(); }
+
+/*****************************************************************************/
+
+reg_id reg_stack[] = { R0, R1, R2, R3, R4, R5, R6, R7, R8, R9 }; /* レジスタスタック */
+
+int reg_sp = 0; /* レジスタスタックポインタ */
+
+/*** レジスタスタックから利用可能なレジスタを確保する関数 ***/
+reg_id reg_alloc(void)
+{
+        return reg_stack[reg_sp++];
+}
+
+/*** レジスタスタックに使い終わったレジスタを戻す関数 ***/
+void reg_free(reg_id r)
+{
+        reg_stack[--reg_sp] = r;
+}
+
+/*** PRINT ニーモニックを出力する ***/
+void asm_PRINT(reg_id Rx)
+{
+        printf("PRINT R%d\n", Rx);
+        reg_free(Rx);
+}
+
+/*** SET ニーモニックを出力する ***/
+reg_id asm_SET(char *n)
+{
+        reg_id Rx = reg_alloc();
+        printf("SET R%d,%s\n", Rx, n);
+        free(n); /* 字句解析で strdup した領域の解放 */
+        return Rx;
+}
+
+/*** ADD ニーモニックを出力する ***/
+reg_id asm_ADD(reg_id Rx, reg_id Ry)
+{
+        printf("ADD R%d,R%d\n", Rx, Ry);
+        reg_free(Ry);
+        return Rx;
+}
+
+/*** SUB ニーモニックを出力する ***/
+reg_id asm_SUB(reg_id Rx, reg_id Ry)
+{
+        printf("SUB R%d,R%d\n", Rx, Ry);
+        reg_free(Ry);
+        return Rx;
+}
+
+/*** MUL ニーモニックを出力する ***/
+reg_id asm_MUL(reg_id Rx, reg_id Ry)
+{
+        printf("MUL R%d,R%d\n", Rx, Ry);
+        reg_free(Ry);
+        return Rx;
+}
+
+/*** DIV ニーモニックを出力する ***/
+reg_id asm_DIV(reg_id Rx, reg_id Ry)
+{
+        printf("DIV R%d,R%d\n", Rx, Ry);
+        reg_free(Ry);
+        return Rx;
+}
+
+/*** [追加ニーモニック] NEG ニーモニックを出力する ***/
+reg_id asm_NEG(reg_id Rx)
+{
+        printf("NEG R%d\n", Rx);
+        return Rx;
+}
+\end{verbatim}
+
+\subsection{euvm.c}
+\begin{verbatim}
+#include <stdio.h>
+#include <stdlib.h>
+
+/*** 各機械語のオペコード ***/
+#define op_PRINT 10
+#define op_NEG   11
+#define op_ADD   20
+#define op_SET   30
+#define op_SUB   40
+#define op_MUL   50
+#define op_DIV   60
+
+typedef double num_t;
+#define print(reg) printf("%f\n", reg)
+
+int main()
+{
+        int op;
+        int x, y;
+        num_t n;     /* 数値用作業変数 */
+        num_t R[10]; /* レジスタ用配列 */
+
+        while (op = getchar(), op != EOF) {
+                switch (op) {
+                case op_PRINT: /* レジスタの表示 */
+                        x = getchar();
+                        print(R[x]);
+                        break;
+                case op_NEG: /* 符号反転 */
+                        x = getchar();
+                        R[x] = -R[x];
+                        break;
+                case op_ADD: /* 加算 */
+                        x = getchar(); y = getchar();
+                        R[x] = R[x] + R[y];
+                        break;
+                case op_SET: /* レジスタへの数値代入 */
+                        x = getchar();
+                        fread(&n, sizeof(n), 1, stdin);
+                                /* 数値の内部形式入力 */
+                        R[x] = n;
+			break;
+		case op_SUB: /* 減算 */ 
+                        x = getchar(); y = getchar(); 
+                        R[x] = R[x] - R[y];    
+			break; 
+		case op_MUL: /* 乗算 */ 
+		  x = getchar(); y = getchar();                    
+		  R[x] = R[x] * R[y];                       
+		  break;   
+		case op_DIV: /* 割り算 */ 
+		  x = getchar(); y = getchar();        
+		  R[x] = R[x] / R[y];              
+		  break;
+                default: /* 予定外のコードを読み込んだらエラー終了 */
+                        fprintf(stderr, "error: bad op-code(%d)\n", op);
+                        exit(1);
+                }
+        }
+        return 0;
+}
+\end{verbatim}
+
+\subsection{euasm.l}
+\begin{verbatim}
+%{
+#include <stdlib.h>
+#define to_reg(str) ( str[1] - '0' ) /* レジスタ番号への変換 */
+#define to_num(str) ( atof(str) )    /* 倍精度浮動小数点数への変換 */
+%}
+
+register        R[0-9]
+number          "0"|[1-9][0-9]*|[0-9]+"."[0-9]*
+operator        [",""\n"]
+
+print           PRINT
+neg             NEG
+add             ADD
+sub		  SUB
+mul             MUL
+div             DIV
+set             SET
+
+%%
+{register}      { yylval.reg = to_reg(yytext); return REGISTER; }
+{number}        { yylval.val = to_num(yytext); return NUMBER; }
+{operator}      { return yytext[0]; }
+
+{print}         { return PRINT; }
+{neg}           { return NEG; }
+{add}           { return ADD; }
+{sub}           { return SUB; }
+{mul}           { return MUL; }
+{div}           { return DIV; }
+{set}           { return SET; }
+
+[" ""\t"]+      /* skip */
+.               { printf("error: '%c'\n", yytext[0]); exit(1); }
+%%
+\end{verbatim}
+
+\subsection{euasm.y}
+\begin{verbatim}
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef enum { R0, R1, R2, R3, R4, R5, R6, R7, R8, R9 } reg_id;
+typedef double num_t; /* レジスタの値は倍精度浮動小数点数 */
+
+/*** 仮想マシンのコード生成関数 ***/
+void vm_PRINT(reg_id Rx);
+void vm_NEG(reg_id Rx);
+void vm_ADD(reg_id Rx, reg_id Ry);
+void vm_SUB(reg_id Rx, reg_id Ry);
+void vm_MUL(reg_id Rx, reg_id Ry);
+void vm_DIV(reg_id Rx, reg_id Ry);
+void vm_SET(reg_id Rx, num_t n);
+%}
+
+%union { reg_id reg; num_t val; }
+
+%token <reg> REGISTER
+%token <val> NUMBER
+%token       PRINT NEG ADD SUB MUL DIV SET
+
+%start script
+
+%%
+script: line;
+script: script '\n' line;
+
+line: /* empty */;
+line: PRINT REGISTER            { vm_PRINT($2); };
+line: NEG REGISTER              { vm_NEG($2); };
+line: ADD REGISTER ',' REGISTER { vm_ADD($2, $4); };
+line: SUB REGISTER ',' REGISTER { vm_SUB($2, $4); };
+line: MUL REGISTER ',' REGISTER { vm_MUL($2, $4); };
+line: DIV REGISTER ',' REGISTER { vm_DIV($2, $4); };
+line: SET REGISTER ',' NUMBER   { vm_SET($2, $4); };
+%%
+
+#include "lex.yy.c"
+
+int yyerror(const char *s) { printf("%s\n", s); exit(1); }
+
+int main() { return yyparse(); }
+
+/*** 各機械語のオペコード ***/
+#define op_PRINT 10
+#define op_NEG   11
+#define op_ADD   20
+#define op_SET   30
+#define op_SUB   40
+#define op_MUL   50
+#define op_DIV   60
+
+void vm_PRINT(reg_id Rx)
+{
+        putchar(op_PRINT); /* PRINT のオペコード出力 */
+        putchar(Rx);       /* レジスタ番号を出力 */
+}
+
+void vm_NEG(reg_id Rx)
+{
+        putchar(op_NEG); /* NEG のオペコード出力 */
+        putchar(Rx);     /* x のレジスタ番号を出力 */
+}
+
+void vm_ADD(reg_id Rx, reg_id Ry)
+{
+        putchar(op_ADD); /* ADD のオペコード出力 */
+        putchar(Rx);     /* Rx のレジスタ番号を出力 */
+        putchar(Ry);     /* Ry のレジスタ番号を出力 */
+}
+
+void vm_SET(reg_id Rx, num_t n)
+{
+        putchar(op_SET);                  /* SET のオペコードを出力 */
+        putchar(Rx);                      /* レジスタ番号を出力 */
+        fwrite(&n, sizeof(n), 1, stdout); /* 数値の内部形式出力 */
+}
+
+void vm_SUB(reg_id Rx, reg_id Ry)
+{
+        putchar(op_SUB); /*SUB のオペコード出力 */
+        putchar(Rx);     /* Rx のレジスタ番号を出力 */
+        putchar(Ry);     /* Ry のレジスタ番号を出力 */
+}
+
+void vm_MUL(reg_id Rx, reg_id Ry)
+{
+        putchar(op_MUL); /* MUL のオペコード出力 */
+        putchar(Rx);     /* Rx のレジスタ番号を出力 */
+        putchar(Ry);     /* Ry のレジスタ番号を出力 */
+}
+
+void vm_DIV(reg_id Rx, reg_id Ry)
+{
+        putchar(op_DIV); /* DIV のオペコード出力 */
+        putchar(Rx);     /* Rx のレジスタ番号を出力 */
+        putchar(Ry);     /* Ry のレジスタ番号を出力 */
+}
+\end{verbatim}
+
+
+\newpage
+%%
+%  レポート提出時のチェックリスト
+%%
+
+\section*{チェックリスト}
+%チェックをした項目を〇に，該当しない項目は斜線に変更すること．
+
+\begin{tabular}{|l|l|l|} \hline
+ 項目                                       & 初回提出 & 再提出 \\ \hline
+ 表紙に必要な情報は記入されていますか？     & 〇       & 〇     \\ \hline
+ 必要な項目（目的・原理など）がありますか？ & 〇       & 〇     \\ \hline
+ 図や表に必要な情報は記述されていますか？   & 〇       & 〇     \\ \hline
+ 参考文献を正しく参照していますか？         & 〇       & 〇     \\ \hline
+ 正しく数式番号等を参照していますか？       & 〇       & 〇     \\ \hline
+ 誤字・脱字はありませんか？                 & 〇       & 〇     \\ \hline
+ 語尾は統一されていますか？                 & 〇       & 〇     \\ \hline
+ スタイルは崩れていませんか？               & 〇       & 〇     \\ \hline
+ 指示にしたがって正しく訂正されていますか？ & ／       & 〇     \\ \hline
+\end{tabular} 
+
+\newpage
+%%
+%  再提出レポートの変更点
+%    初回提出時はコメントアウトすること
+%%
+
+\section*{再提出レポートの変更点}
+%再提出レポートの訂正場所（何ページ何行目から何行目まで，何ページの図 2 といった
+%具合に）をどのような指示に従って，どのように変更したのかを下の例のように書く．
+\begin{enumerate}
+ \item 表紙，提出日の曜日が誤っていたため，訂正した．
+\item 18ページ目13実験の1行目「実装せよ」と誤って記述していたため，訂正線に従い訂正した．
+ \item 21ページ目参考文献URLが誤っていたためを訂正した．
+% \item 5ページの図2に軸の説明および，キャプションを付加した． 
+\end{enumerate}
+
+\end{document}
+

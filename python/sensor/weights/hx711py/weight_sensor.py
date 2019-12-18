@@ -15,22 +15,23 @@ class sensor_w:
         self.hx.reset()
         self.hx.tare()
 
-        self.inc_flag = False
+        self.inc_flag = 0
         self.g_weight = 0
         self.val = -1
+        print("Tare done! Add weight now...")     
 
-    def exe(self):
-        print("Tare done! Add weight now...")        
-        self.inc_flag = False
+    def exe(self):   
+        self.inc_flag = 0
         try:
             self.val = self.hx.get_weight(5)
 
-            if float(-self.val) < float(RANGE):
-                self.g_weight = -val
-            elif float(self.g_weight + RANGE) < float(-self.val):
-                self.inc_flag = True
+            if float(-self.val) < float(self.g_weight - RANGE):
+                self.inc_flag = -1
                 self.g_weight = -self.val
-                
+            elif float(self.g_weight + RANGE) < float(-self.val):
+                self.inc_flag = 1
+                self.g_weight = -self.val
+
             self.hx.power_down()
             self.hx.power_up()
             time.sleep(0.1)
@@ -45,35 +46,3 @@ class sensor_w:
         GPIO.cleanup()
         print("Bye!")
         sys.exit()
-
-"""
-while True:
-    try:
-        val = hx.get_weight(5)
-        print("{}g".format(-val))
-
-
-#        if g_weight < float(RANGE):
-#            inc_flag = -1
-#            print("Flag:{} g_weight:{}".format(inc_flag, g_weight))
-
-        if float(-val) < float(RANGE):
-            print("Flag:{} g_weight:{}".format(inc_flag, g_weight))
-            g_weight = -val
-
-        elif float(g_weight + RANGE) < float(-val):
-            inc_flag = True
-            print("Flag:{} g_weight:{}".format(inc_flag, g_weight))
-
-            time.sleep(3) #信号受けとってから
-            
-            g_weight = -val
-            inc_flag = -1
-
-        hx.power_down()
-        hx.power_up()
-        time.sleep(0.1)
-
-    except (KeyboardInterrupt, SystemExit):
-        cleanAndExit()
-"""

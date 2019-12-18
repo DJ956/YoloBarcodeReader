@@ -13,6 +13,9 @@ HOLD_TIME = 5
 #連続して短い時間でフラグが立つことがあるため待機する
 WEIGHT_CHECK_SPAN = 2
 
+#画像スタックサイズ
+IMG_STACK_SIZE = 6
+
 class Client:
 	def __init__(self, address, port):
 		self.address = address
@@ -31,6 +34,17 @@ class Client:
 		now = datetime.datetime.now()
 		sys.stdout.write("\r[{}]send msg:{}".format(now, size))
 		sys.stdout.flush()
+
+	def send_flag(self, sock, flag):
+		flag_data = "{}".format(flag).encode('utf-8')
+		sock.send(flag_data)
+
+	def send_data(self, sock, data):
+		for i in range(IMG_STACK_SIZE):
+			send_img(sock, data[i])
+
+		send_flag(sock, data[IMG_STACK_SIZE])
+
 		
 	def handler(self):
 		prev = time.time()
@@ -65,7 +79,7 @@ class Client:
 			#距離センサーに引っかかる
 			if self.flag == 1:
 
-				for i in range(6):
+				for i in range(IMG_STACK_SIZE):
 					ret, frame = capture.read()
 					if ret == None:
 						continue
@@ -83,13 +97,14 @@ class Client:
 					while True:
 						end = time.time()
 						if len(self.stack_flag) != 0:
+							data.append(self.stack_flag.pop())
 							break
 						if end - start > HOLD_TIME:
 							break
 
-				data.append(self.stack_flag.pop())
 				#画像群とフラグのセットを送信
-				#self.send_data(sock, data)
+				self.send_data(sock, data)
+
 
 
 
