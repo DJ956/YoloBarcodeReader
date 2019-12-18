@@ -23,12 +23,14 @@ def exe(folder):
 
 			#gray = cv2.resize(gray, None, fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
 
-			binary = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-				cv2.THRESH_BINARY, 11, 2)
+			gray = cv2.fastNlMeansDenoising(gray, None, h=10, templeteWindowSize=7, searchWindowSize=21)
+
+			#binary = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+			#	cv2.THRESH_BINARY, 11, 2)
 
 			txt = ""
 			try:
-				result = decode(binary)
+				result = decode(gray)
 				txt = "{}:{}".format(os.path.basename(file), result[0][0])
 				f.write(txt)
 				count += 1
