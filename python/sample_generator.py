@@ -23,7 +23,7 @@ def main():
 	yolo.start_yolo()
 
 	idx = 0
-	while(cap.isOpened()):
+	while True:
 		ret, frame = cap.read()
 		if ret == None:
 			continue
