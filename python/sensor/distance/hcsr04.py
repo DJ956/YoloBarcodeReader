@@ -7,15 +7,17 @@ RANGE = 3
 
 class sensor:
     def __init__(self):
-        self.TRIG = 11
-        self.ECHO = 13
+        #self.TRIG = 11
+        self.TRIG = 17
+        #self.ECHO = 13
+        self.ECHO = 27
         self.sum = 0
         self.avg = 0
         self.dis = 0
 
     def setup(self):
         GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
 
         GPIO.setup(self.TRIG, GPIO.OUT)
         GPIO.setup(self.ECHO, GPIO.IN)
@@ -27,6 +29,8 @@ class sensor:
         time.sleep(0.00001)
         GPIO.output(self.TRIG, False)
 
+        #GPIO.cleanup()
+
     def exe(self):
         while GPIO.input(self.ECHO) == 0:
             signaloff = time.time()
@@ -36,7 +40,7 @@ class sensor:
 
         timepassed = signalon - signaloff
         #print("time span:{}".format(timepassed))
-        GPIO.cleanup()
+        #GPIO.cleanup()
         return timepassed * 17000
 
     def get_flag(self):

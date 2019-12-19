@@ -9,7 +9,8 @@ RANGE = 3
 class sensor_w:
 
     def __init__(self):
-        self.hx = HX711(5, 6)
+        self.hx = HX711(6, 13)
+        #self.hx = HX711(29, 33)
         self.hx.set_reading_format("MSB", "MSB")
         self.hx.set_reference_unit(-57)
         self.hx.reset()
@@ -35,6 +36,8 @@ class sensor_w:
             self.hx.power_down()
             self.hx.power_up()
             time.sleep(0.1)
+
+            #GPIO.cleanup()
 
             return self.inc_flag
         except(KeyboardInterrupt, SystemExit):

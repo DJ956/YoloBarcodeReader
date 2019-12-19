@@ -5,6 +5,7 @@ import time
 import datetime
 import threading
 import hcsr04
+import RPi.GPIO as GPIO
 from weight_sensor import sensor_w
 
 #商品を取り出すまでの待機猶予
@@ -41,9 +42,9 @@ class Client:
 
 	def send_data(self, sock, data):
 		for i in range(IMG_STACK_SIZE):
-			send_img(sock, data[i])
+			self.send_img(sock, data[i])
 
-		send_flag(sock, data[IMG_STACK_SIZE])
+		self.send_flag(sock, data[IMG_STACK_SIZE])
 
 		
 	def handler(self):
@@ -51,7 +52,6 @@ class Client:
 		while True:
 			self.flag = self.sensor.get_flag()
 			weight_flag = self.sensor_w.exe()
-
 			#重量センサーのフラグが変化なし
 			if weight_flag == 0:
 				continue
@@ -107,7 +107,7 @@ class Client:
 
 
 
-
+		GPIO.cleanup()
 		capture.release()
 		cv2.destroyAllWindows()
 		sock.close()
