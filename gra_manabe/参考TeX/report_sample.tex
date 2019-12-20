@@ -1,0 +1,323 @@
+%%
+%  情報工学実験 III
+%    レポート作成用サンプルファイル
+%
+%  何か問題があるときは 4号館 405号室または kinoshita@cs.ehime-u.ac.jp まで
+%
+%  うまくコンパイルできないときは TeXソースファイルおよび
+% スタイルファイルを
+%
+%    csc01% nkf -e report_sample.tex > report_sample_euc.tex
+%    csc01% mv report_sample_euc.tex report_sample.tex
+%    csc01% nkf -e exp3.sty > exp3_euc.sty
+%    csc01% mv exp3_euc.sty exp3.sty
+%
+% で漢字コードを変換してみること
+%%
+\documentclass[a4j]{jsarticle}  % jsarticle が使えないときは jarticle に変更
+
+\usepackage[dvips]{graphicx}    % dvipdfmx を使って PDF ファイルを
+                                % 作成するときは dvips を dvipdfm に変更
+
+\usepackage{subfigure}          % 複数の図を並べるときに使用
+
+\usepackage{amsmath}            % 複雑な数式が利用可能
+
+\usepackage{ascmac, fancybox}   % 枠囲みが利用可能（プログラム等の表示に便利）
+
+\usepackage{psfrag}             % 図に数式などを入れる際に使う
+
+\usepackage{./exp3}             % 実験III用スタイルファイル（相対パスで指定可）
+
+
+
+\メインテーマ{画像処理に基づく情報メディアの活用}
+\入学年度{平成 15 年度}
+\アカウント名{e6010001}
+\名前{伊予 愛子}
+\実験日１{11月 2日（木）}      %各テーマの実験日を書く
+\実験日２{11月 9日（木）}  
+\実験日３{11月16日（木）}  
+\提出日{11月 16日（木）}
+%\再提出日{11月 23日（木）}   %初回提出のときはコメントアウト，
+                              %再提出のときはコメントを外す
+
+
+\begin{document} 
+
+%%
+%  表紙の作成
+%%
+\thispagestyle{empty}
+\setcounter{page}{0}
+
+\表紙
+\markright{{\small \defaccount \quad \defmainthema}}
+
+%% 再提出の場合は上２行をコメントアウトし下２行のコメントを外す．
+
+%\再提出表紙
+%\markright{{\small \defaccount \quad {\bf （再提出）} \defmainthema}}
+
+\newpage
+%%
+%  ここから本文
+%% 
+
+% [注意事項]
+%  ・本文の形式は自由ですが，必要な項目・情報は必ず記述すること．
+%  ・レポート提出時（初回提出，再提出）には下記に示すチェックリストを
+%   添付すること．
+%  ・再提出時には初回提出レポートからの変更点を「どの箇所を，どのような
+%   指示に従って，どのように変更したのか」が分かるように記述すること．
+%  ・レポートの内容はもちろんのこと，体裁や美しさも採点の対象となる．
+%    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+\begin{center}
+ {\Large \bf サブテーマ I}
+\end{center}
+
+
+\section{目的}
+実験を行うことによって何を明らかにしたいのか，簡潔に示す．
+
+\begin{itembox}[l]{\textbf{要注意}}
+ 節・小節などのタイトルにはゴシック体を，本文には明朝体を使用するのが一般的であ
+ る．また，節・小節のフォントサイズは，本文のものより少し大きめに設定する．これ
+ らの事項はレポート全体で首尾一貫していなければならない．特に Word でレポートを
+ 作成する際には，これらの事にも気を配ること．
+\end{itembox}
+
+\section{原理}
+実験を行うにあたって必要となる理論など\cite{book1}を記述する．指導書の内容を丸写
+しせず，説明が不足している部分は補充し，不必要な注釈などは省くこと．その際，文章
+の前後のつながりが不明瞭にならないように注意すること．
+
+また，文献を参照した際には引用場所を明示し，文献リストを載せること\cite{book2}．
+ただし，実験指導書や計算機の操作法などを調べるための文献を参考文献として挙げる必
+要はない．thebibliography 環境を用いると自動で文献番号を付けてくれるので便利であ
+る．書き方は，このサンプルのソースを参考にすること．見栄えが悪くなるので，参考文
+献の列挙に itemize 環境を用いないこと．
+
+\TeX を使用する際の注意事項を簡単にまとめておく．
+
+\paragraph{改行}
+改行は空行を挿入することで行う．強制改行である ``\verb+\\+'' は，overfull の 
+warning が出たとき以外は使用しない．
+
+\paragraph{箇条書き}
+番号つきの箇条書は enumerate 環境を使用する．書式は
+\begin{quote}
+\begin{verbatim}
+	\begin{enumerate}
+	 \item ほげ
+	 \item ほげほげ
+	\end{enumerate}
+\end{verbatim}
+\end{quote}
+と書く．すると
+\begin{enumerate}
+ \item ほげ
+ \item ほげほげ
+\end{enumerate}
+となる．
+
+\paragraph{\TeX コマンドの無視}
+\TeX のコマンドと同じ特殊な文字を出力するときは \verb+\verb+ を使用する．例えば，
+\verb+sample_program.c+ と出力したければ \verb|\verb+sample_program.c+| と書く．
+プログラム等，長い文章をそのまま出力したいときは verbatim 環境を用いる．例えば，
+\begin{quote}
+\verb+\begin{verbatim}+ \\
+\verb+  void signal_handler(int sig) { /* do something */ }+ \\
+\verb+\end{verbatim}+
+\end{quote}
+と書くと
+\begin{quote}
+\begin{verbatim}
+	 void signal_handler(int sig) { /* do something */ }
+\end{verbatim}
+\end{quote}
+となる．
+
+文中にプログラムリストやディスプレイに表示された結果などを載せるときは， 
+quote 環境や screen 環境，itembox 環境等を併用するとよい．このとき，『プログラム
+リストなどファイルの内容は shadebox 環境で囲む，ディスプレイに表示されな結果は 
+itembox 環境で囲む』などと統一すれば，読みやすくなる．
+
+\begin{shadebox}
+ \setlength{\baselineskip}{12pt}
+ \begin{verbatim}
+	 #include <stdio.h>
+
+	 int main()
+	 {
+	     printf("Hello world\n");
+
+	     return 0;
+	 } 
+ \end{verbatim}
+\end{shadebox}
+
+\begin{itembox}[l]{``\texttt{hello.c}'' の結果}
+ \% gcc hello.c \keytop{\return} \\
+ \% a.out \keytop{\return} \\
+ Hello world
+\end{itembox}
+
+また，プログラムをファイルごと張り付けたいときには，プリアンブルに 
+\verb+\usepackage{verbatim}+ を挿入し，プログラムを張り付けたいところで 
+\verb+\verbatiminput{./sample.c}+ と書けばよい．
+このとき，\textbf{Tab は空白 1 文字で置き換わるので，プログラムのインデントがず
+れることに注意する．}
+
+\paragraph{図や表を作成するときの注意点}
+図や表には必ず，番号とキャプション（短い説明文）を付けること．通常，表では上部に，
+図では下部に付ける．グラフや図の張り付け方，表の作成法は \TeX の本を参考にするこ
+と．番号の管理が楽になるので，グラフや図を張り付けるときは figure 環境を，表を作
+成するときには table 環境を用いる事をお薦めする．
+
+GNUPLOT を使ってグラフを作成するときは，一度 Tgif に落として編集後，EPSファイル
+で保存して張り付けるとよい．
+
+\begin{itembox}[l]{\textbf{要注意}}
+ Word を使ってレポートを作成する場合，図・表の本体と番号・キャプションが別ページ
+ にならないように十分注意すること．
+\end{itembox}
+
+\paragraph{イタリックと数式}
+数式は通常イタリックで書くが，``math italic'' という特別なフォントを使う．
+違いは，{\it different}（通常の italic）と $different$（math italic）を見れば明
+らか．したがって，\$ は数式のみに使用する．
+
+\bigskip
+
+最後に，詳細な \TeX の使いかたは図書館にある書籍などを参考にすること．\TeX で綺
+麗な文章を書くコツは，
+\begin{center}
+ {\large \bf 「\TeX がやってくれることは \TeX に任せる！」}
+\end{center}
+です．
+
+\section{実験}
+"実際に行った"実験手順を説明する．ここでも，指導書の内容を丸写しせず，説明が不足
+している部分は補充し，不必要な注釈などは省くこと．\textbf{結果の内容が理解できる
+ように，および，行った実験が再現できるように，定義した規則やパラメータの設定値な
+どの実験条件を過不足なく明示しなければならない．}また，報告書で命令調はありえな
+いので，適切に書き直すなど語尾に注意しすること．プログラムを作成する際に工夫した
+点などがあれば，簡潔にまとめ記述するとよい．
+
+\section{結果}
+実験を行った結果得られた事実のみを記述する．その際，どの実験のどういうデータなの
+かを「文章」で説明する必要がある．また，実験データは，読み易いように表やグラフに
+まとめることが重要である．実験の生データをそのままレーポートに張り付けてはならな
+い．データを示すのに，表にすべきかグラフにすべきか迷ったときは，値に意味があるの
+なら表を，値の変化に意味があるのならグラフを使えば良い．
+
+また，結果の特徴的な箇所や注目して欲しい箇所に印を付けておくと，説明や考察が読み
+易くなる．例えば，
+
+\bigskip 
+
+\begin{quote}
+プログラム ``\texttt{sin.c}'' をコンパイルした結果，以下のようなエラーメッセージ
+を表示した．
+
+\begin{quote}
+ \begin{itembox}[l]{``\texttt{sin.c}'' のコンパイル結果}
+\begin{verbatim}
+	 % gcc sin.c
+	 /tmp/ccSjRAC5.o(.text+0x20): In function `main':
+	 : undefined reference to `sin'                          <-- (*)
+	 collect2: ld はステータス 1 で終了しました
+\end{verbatim}
+ \end{itembox}
+\end{quote}
+
+エラーメッセージの (\texttt{*}) は，関数 '\texttt{sin}' が未定義であることを意味
+しており，コンパイル時にオプション '\texttt{-lm}' を与えていないことが原因である．
+\end{quote}
+
+\bigskip \noindent
+といった具合に書くと読みやすくなる（\TeX の相互参照のようなもの）．
+
+\section{考察}
+「図から分かるように … となった．」のように結果を見れば明らかなことや，「正しい
+結果が得られたので作成したプログラムは正しい．」といった記述，感想を「考察」とし
+ているレポートが多々見られる．結果が得られるプロセスの詳しい説明や，実験条件を変
+化させたときの影響とその理由などを，\textbf{理論やデータなどの根拠を示して}記述
+すること．
+
+\section{感想}
+何か感想があれば書くこと．
+
+\section{課題}
+他人と同じ内容の記述は著しく評価が低くなるので注意すること．また，文献をそのまま
+引用しているために，記号に矛盾があったり，未定義の記号が使われるレポートを多く見
+かける．自分の言葉で整理し直すことを心がけること．
+
+% サブテーマが変われば \newpage でページを変更する
+\newpage
+\begin{center}
+ {\Large \bf サブテーマ II}
+\end{center}
+
+以下、サブテーマIのときと同様に書く．
+
+% ここから参考文献
+\begin{thebibliography}{9}
+\bibitem{book1}
+著者名1: ``タイトル1'' 出版社1，(出版年1)
+\bibitem{book2}
+著者名2: ``タイトル2'' 出版社2，(出版年2)
+\end{thebibliography}
+
+%%
+%  ここまで本文
+%%
+
+\appendix
+\section{プログラムリスト}
+プログラムは，説明のために必要な箇所または工夫をした箇所のみを本文に掲載し，プロ
+グラム全体のリストは付録に添付する．
+
+verbatim 環境では tab キーによるインデントを無視してしまうので十分注意すること．
+
+\newpage
+%%
+%  レポート提出時のチェックリスト
+%%
+
+\section*{チェックリスト}
+%チェックをした項目を〇に，該当しない項目は斜線に変更すること．
+
+\begin{tabular}{|l|l|l|} \hline
+ 項目                                       & 初回提出 & 再提出 \\ \hline
+ 表紙に必要な情報は記入されていますか？     & ×       & ×     \\ \hline
+ 必要な項目（目的・原理など）がありますか？ & ×       & ×     \\ \hline
+ 図や表に必要な情報は記述されていますか？   & ×       & ×     \\ \hline
+ 参考文献を正しく参照していますか？         & ×       & ×     \\ \hline
+ 正しく数式番号等を参照していますか？       & ×       & ×     \\ \hline
+ 誤字・脱字はありませんか？                 & ×       & ×     \\ \hline
+ 語尾は統一されていますか？                 & ×       & ×     \\ \hline
+ スタイルは崩れていませんか？               & ×       & ×     \\ \hline
+ 指示にしたがって正しく訂正されていますか？ & ／       & ×     \\ \hline
+\end{tabular} 
+
+\newpage
+%%
+%  再提出レポートの変更点
+%    初回提出時はコメントアウトすること
+%%
+
+\section*{再提出レポートの変更点}
+再提出レポートの訂正場所（何ページ何行目から何行目まで，何ページの図 2 といった
+具合に）をどのような指示に従って，どのように変更したのかを下の例のように書く．
+\begin{enumerate}
+ \item 3ページの5行目から7行目まで，「定義した推論規則の説明をして下さい．」と言
+       う指示に従い，説明文を付加した．
+
+ \item 5ページの図2に軸の説明および，キャプションを付加した． 
+\end{enumerate}
+
+\end{document}
+

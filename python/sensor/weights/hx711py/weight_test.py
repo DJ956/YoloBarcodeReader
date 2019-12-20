@@ -6,7 +6,7 @@ def main():
 
 	while True:
 		flag = sensor.exe()
-		print("Flag:{} Val:{} g_weight:{}".format(flag, sensor.val, sensor.g_weight))
+		print("Flag:{} Val:{}".format(flag, sensor.val))
 
 if __name__ == "__main__":
 	main()
