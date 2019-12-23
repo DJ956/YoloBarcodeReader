@@ -11,7 +11,7 @@
       $amount = $_POST["amount"];
 
       require("db.php");
-      $db = new db("localhost", "rabit", "pass", "rapid_cart");
+      $db = new db("localhost", "rapit", "pass", "rapit_cart");
       $balance = $db->update_balance(1, -$amount);
     ?>
 

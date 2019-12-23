@@ -12,7 +12,7 @@
       $cart_id = $_GET["cart_id"];
       print("<h2>カート".$cart_id."の中身</h2>");
 
-      $db = new db("localhost", "rabit", "pass", "rapid_cart");
+      $db = new db("localhost", "rapit", "pass", "rapit_cart");
       $result = $db->get_items_info($cart_id);
 
       $sum = 0;

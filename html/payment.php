@@ -14,7 +14,7 @@
         $cart_id = $_GET["cart_id"];
         $sum = $_GET["sum"];
 
-        $db = new db("localhost", "rabit", "pass", "rapid_cart");
+        $db = new db("localhost", "rapit", "pass", "rapit_cart");
         $balance = $db->update_balance(1, $sum);
         if($balance < 0){
           print("<h1>残高が不足しています</h1>");

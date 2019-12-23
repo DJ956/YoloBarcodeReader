@@ -7,7 +7,7 @@
   <body>
     <?php 
       require("db.php");
-      $db = new db("localhost", "rabit", "pass", "rapid_cart");
+      $db = new db("localhost", "rapit", "pass", "rapit_cart");
       $balance = $db->get_balance(1);
     ?>
 
