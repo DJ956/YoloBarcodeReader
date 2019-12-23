@@ -27,7 +27,7 @@ class sensor_w:
             self.val = self.hx.get_weight(5)
 
             if float(-self.val) < float(self.g_weight - RANGE):
-                self.inc_flag = -1
+                self.inc_flag = 2
                 self.g_weight = -self.val
             elif float(self.g_weight + RANGE) < float(-self.val):
                 self.inc_flag = 1

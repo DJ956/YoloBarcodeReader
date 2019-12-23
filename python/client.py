@@ -34,19 +34,20 @@ class Client:
 		sock.send(img_raw)
 
 		now = datetime.datetime.now()
-		sys.stdout.write("\r[{}]send msg:{}".format(now, size))
-		sys.stdout.flush()
+		print("[{}]send msg:{}".format(now, size))
 
 	def send_flag(self, sock, flag):
 		flag_data = "{}".format(flag).encode('utf-8')
 		sock.send(flag_data)
+		print("send flag:{}".format(flag_data))
 
 	def send_data(self, sock, data):
-		
 		for i in range(IMG_STACK_SIZE):
 			self.send_img(sock, data[i])
 
 		self.send_flag(sock, data[IMG_STACK_SIZE])
+		self.stack_flag.clear()
+		print("-" * 100)
 
 		
 	def handler(self):
@@ -79,15 +80,13 @@ class Client:
 
 		data = []
 		while True:
-			#print("Flag:{} Dis:{}".format(self.flag, self.sensor.dis))
 			#距離センサーに引っかかる
 			if self.flag == 1:
-				print("Flag:{} Dis:{}".format(self.flag, self.sensor.dis))
+				print("Dis:{}".format(self.sensor.dis))
 				for i in range(IMG_STACK_SIZE):
 					ret, frame = capture.read()
 					if ret == None:
 						continue
-					#self.send_img(sock, frame)
 					data.append(frame)
 					time.sleep(0.5)
 
@@ -107,10 +106,15 @@ class Client:
 							break
 						if end - start > HOLD_TIME:
 							print("C")
+							data.clear()
 							break
+
+				if not data:
+					continue
 
 				#画像群とフラグのセットを送信
 				self.send_data(sock, data)
+				data.clear()
 
 
 
