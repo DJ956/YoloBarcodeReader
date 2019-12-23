@@ -22,9 +22,9 @@ META = "./cfg/bb.data"
 
 #db
 HOST = "localhost"
-USER = "rabit"
+USER = "rapit"
 PW = "pass"
-DB = "rapid_cart"
+DB = "rapit_cart"
 
 WIDTH = 640
 HEIGHT = 480
@@ -87,26 +87,33 @@ class Server:
 
 	def read_data(self, con, address):
 		data = []
+		data_size = 0
 		for i in range(IMG_STACK_SIZE):
 			size = self.read_msg(con, address, BUFFER_SIZE)
 			img = self.read_img(con, address, size)
 			data.append(img)
+			data_size += size
+
+		for x in range(IMG_STACK_SIZE):
+			cv2.imwrite("./{}.png".format(x), data[x])
 
 		flag = self.read_msg(con, address, BUFFER_FLAG)
 		data.append(flag)
-		return data
+
+		data_size += 1
+		return data, data_size
 
 
 	def handler(self, con, address):
 		index = 0
 		while True:
-			data = self.read_data(con, address)
+			data, size = self.read_data(con, address)
 
 			for i in range(IMG_STACK_SIZE):
-				detections, resize_img = self.Yolo.run_yolo(img)
+				detections, resize_img = self.Yolo.run_yolo(data[i])
 				if len(detections) > 0:
 					barcode = reader.read_barcode(resize_img, detections)
-					if barcode not None:
+					if not barcode is None:
 						self.db.insert(code=barcode, cart_id=1)
 						print("detect:{}".format(barcode))
 						break
@@ -118,7 +125,7 @@ class Server:
 			sys.stdout.flush()
 
 			resize_img = darknet_video.cvDrawBoxes(detections, resize_img)
-			cv2.imshow("demo", resize_img)
+			#cv2.imshow("demo", resize_img)
 
 			if cv2.waitKey(1) == 27:
 				break
