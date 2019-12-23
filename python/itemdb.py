@@ -69,7 +69,7 @@ class itemdb:
 			self.cursor.rollback()
 			raise e
 		finally:
-			self.cursor.rollback()
+			self.cursor.close()
 			self.con.close()
 
 	"""

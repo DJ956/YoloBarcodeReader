@@ -30,6 +30,9 @@ WIDTH = 640
 HEIGHT = 480
 
 IMG_STACK_SIZE = 6
+INSERT_FLAG = 1
+DELETRE_FLAG = 2
+
 
 class Server:
 	def __init__(self, own_address, port):
@@ -114,15 +117,21 @@ class Server:
 				if len(detections) > 0:
 					barcode = reader.read_barcode(resize_img, detections)
 					if not barcode is None:
-						self.db.insert(code=barcode, cart_id=1)
-						print("detect:{}".format(barcode))
+						#追加
+						if data[IMG_STACK_SIZE] == INSERT_FLAG:
+							print("[+]detect:{}".format(barcode))
+							self.db.insert(code=barcode, cart_id=1)
+
+						#削除
+						elif data[IMG_STACK_SIZE] == DELETRE_FLAG:
+							print("[-]detect:{}".format(barcode))
+							self.db.delete(code=barcode, cart_id=1)
 						break
 
 			print("Flag:{}".format(data[IMG_STACK_SIZE]))
 
 			now = datetime.datetime.now()
-			sys.stdout.write("\r[{}]From:{} - {}".format(now, address, size))
-			sys.stdout.flush()
+			print("[{}]From:{} - {}".format(now, address, size))
 
 			resize_img = darknet_video.cvDrawBoxes(detections, resize_img)
 			#cv2.imshow("demo", resize_img)
