@@ -25,6 +25,7 @@ class Client:
 		self.sensor_w = sensor_w()
 		self.flag = 0
 		self.stack_flag = []
+		self.lock = threading.Lock()
 
 	def send_img(self, sock, img):
 		img_raw = img.tostring()
@@ -41,6 +42,7 @@ class Client:
 		sock.send(flag_data)
 
 	def send_data(self, sock, data):
+		
 		for i in range(IMG_STACK_SIZE):
 			self.send_img(sock, data[i])
 
@@ -50,6 +52,7 @@ class Client:
 	def handler(self):
 		prev = time.time()
 		while True:
+			print(self.stack_flag)
 			self.flag = self.sensor.get_flag()
 			weight_flag = self.sensor_w.exe()
 			#重量センサーのフラグが変化なし
@@ -58,8 +61,9 @@ class Client:
 
 			#重量センサーのフラグが変化アリ(-1 or 1) フラグ用のスタックに値を追加
 			now = time.time()
-			if (prev - now) > WEIGHT_CHECK_SPAN: #2秒以内に0以外のフラグが来たら誤作動の可能性があるので無視
-				self.stack_flag.append(weight_flag)
+			if (now - prev) > WEIGHT_CHECK_SPAN: #2秒以内に0以外のフラグが来たら誤作動の可能性があるので無視
+				with self.lock:
+					self.stack_flag.append(weight_flag)
 			prev = now
 
 
@@ -89,17 +93,20 @@ class Client:
 
 				#画像を撮り終わった後に追加or削除のフラグスタックを確認する
 				#フラグがあった場合
-				if len(self.stack_flag) != 0:
+				if self.stack_flag:
+					print("A")
 					data.append(self.stack_flag.pop())
 				#フラグがなかった場合　数秒フラグが出るのを待つ
 				else:
 					start = time.time()
 					while True:
 						end = time.time()
-						if len(self.stack_flag) != 0:
+						if self.stack_flag:
+							print("B")
 							data.append(self.stack_flag.pop())
 							break
 						if end - start > HOLD_TIME:
+							print("C")
 							break
 
 				#画像群とフラグのセットを送信
