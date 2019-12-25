@@ -33,6 +33,8 @@ IMG_STACK_SIZE = 6
 INSERT_FLAG = 1
 DELETRE_FLAG = 2
 
+FAILED = "0"
+SUCCESS = "1"
 
 class Server:
 	def __init__(self, own_address, port):
@@ -88,6 +90,13 @@ class Server:
 				
 		return img
 
+	"""
+	成否の送信
+	"""
+	def send_mode(self, con, address, mode):
+		mode = "{}".format(mode).encode('utf-8')
+		con.send(mode)
+
 	def read_data(self, con, address):
 		data = []
 		data_size = 0
@@ -120,11 +129,12 @@ class Server:
 						#追加
 						if data[IMG_STACK_SIZE] == INSERT_FLAG:
 							print("[+]detect:{}".format(barcode))
+							self.send_mode(con, address, SUCCESS)
 							self.db.insert(code=barcode, cart_id=1)
-
 						#削除
 						elif data[IMG_STACK_SIZE] == DELETRE_FLAG:
 							print("[-]detect:{}".format(barcode))
+							self.send_mode(con, address, FAILED)
 							self.db.delete(code=barcode, cart_id=1)
 						break
 
