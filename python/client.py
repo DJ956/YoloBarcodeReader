@@ -7,6 +7,7 @@ import threading
 import hcsr04
 import RPi.GPIO as GPIO
 from weight_sensor import sensor_w
+from led import notice_sensor
 
 #商品を取り出すまでの待機猶予
 HOLD_TIME = 5
@@ -17,6 +18,9 @@ WEIGHT_CHECK_SPAN = 2
 #画像スタックサイズ
 IMG_STACK_SIZE = 6
 
+SUCCESS = 1
+FAILED = 0
+
 class Client:
 	def __init__(self, address, port):
 		self.address = address
@@ -26,6 +30,7 @@ class Client:
 		self.flag = 0
 		self.stack_flag = []
 		self.lock = threading.Lock()
+		self.led = notice_sensor()
 
 	def send_img(self, sock, img):
 		img_raw = img.tostring()
@@ -49,6 +54,14 @@ class Client:
 		self.stack_flag.clear()
 		print("-" * 100)
 
+	def read_mode(self, sock):
+		try:
+			data = sock.recv(1)
+		except ConnectionResetError:
+			self.remove_connection(con, address)
+
+		mode = data.decode('utf-8')						
+		return int(mode)
 		
 	def handler(self):
 		prev = time.time()
@@ -83,6 +96,7 @@ class Client:
 			#距離センサーに引っかかる
 			if self.flag == 1:
 				print("Dis:{}".format(self.sensor.dis))
+				self.led.shine(self.led.green)
 				for i in range(IMG_STACK_SIZE):
 					ret, frame = capture.read()
 					if ret == None:
@@ -115,6 +129,11 @@ class Client:
 				#画像群とフラグのセットを送信
 				self.send_data(sock, data)
 				data.clear()
+				mode = self.read_mode(sock)
+				if mode == SUCCESS:
+					self.led.shine(self.led.blue)
+				elif mode == FAILED:
+					self.led.shine(self.led.red)
 
 
 
