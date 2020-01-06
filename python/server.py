@@ -125,7 +125,7 @@ class Server:
 				detections, resize_img = self.Yolo.run_yolo(data[i])
 				if len(detections) > 0:
 					barcode = reader.read_barcode(resize_img, detections)
-					if not barcode is None:
+					if not barcode is None:#イケてるやつ
 						#追加
 						if data[IMG_STACK_SIZE] == INSERT_FLAG:
 							print("[+]detect:{}".format(barcode))
@@ -134,9 +134,12 @@ class Server:
 						#削除
 						elif data[IMG_STACK_SIZE] == DELETRE_FLAG:
 							print("[-]detect:{}".format(barcode))
-							self.send_mode(con, address, FAILED)
+							self.send_mode(con, address, SUCCESS)
 							self.db.delete(code=barcode, cart_id=1)
 						break
+					else:#あかんかった場合
+						self.send_mode(con, address, FAILED)
+				
 
 			print("Flag:{}".format(data[IMG_STACK_SIZE]))
 
