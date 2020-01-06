@@ -1,0 +1,4 @@
+以下のページを参考にして,TeXをインストール
+***うまく行かない場合は適宜設定を変更***
+
+https://did2memo.net/2016/04/24/easy-latex-install-windows-10-2016-04/
