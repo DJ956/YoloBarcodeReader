@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  6 JAN 2020 15:25
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  8 JAN 2020 17:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -133,27 +133,27 @@ File: dvips.def 2017/06/20 v3.1d Graphics/color driver for dvips
 (./gra_thes_manabe.aux)
 \openout1 = `gra_thes_manabe.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <14.4> on input line 24.
+(Font)              <14.4> on input line 23.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 24.
-LaTeX Font Info:    Trying to load font information for U+lasy on input line 24
+(Font)              <7> on input line 23.
+LaTeX Font Info:    Trying to load font information for U+lasy on input line 23
 .
  (c:/w32tex/share/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
@@ -163,24 +163,24 @@ File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 
 ]
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <24.88> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 27.
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 26.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <24.88> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 27.
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 26.
  (./gra_thes_manabe.toc
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <12> not available
 (Font)              Font shape `JT1/gt/m/n' tried instead on input line 1.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
 (Font)              Font shape `JY1/gt/m/n' tried instead on input line 1.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 3.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 3.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 3.
 )
 \tf@toc=\write3
 \openout3 = `gra_thes_manabe.toc'.
 
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 28.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 28.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 28.
  [1
 
 ]
@@ -199,28 +199,33 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <17.28> not available
 
 ]
 第 3 章
-(./3.tex) [3
+(./3.tex
 
-]
-第 4 章
-(./4.tex) [4
+! LaTeX Error: Cannot determine size of graphic in picture/usecase1.png (no Bou
+ndingBox).
 
-]
-第 5 章
-(./5.tex) [5
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.15 ...graphics[width=15cm]{picture/usecase1.png}
+                                                  
+? 
+! Emergency stop.
+ ...                                              
+                                                  
+l.15 ...graphics[width=15cm]{picture/usecase1.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
 
-] [6
-
-] [7
-
-] (./gra_thes_manabe.aux) ) 
+ 
 Here is how much of TeX's memory you used:
- 855 strings out of 492749
- 10303 string characters out of 6141886
- 77932 words of memory out of 5000000
- 5309 multiletter control sequences out of 15000+600000
+ 853 strings out of 492749
+ 10460 string characters out of 6141886
+ 78932 words of memory out of 5000000
+ 5311 multiletter control sequences out of 15000+600000
  28147 words of font info for 107 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 32i,13n,26p,274b,317s stack positions out of 5000i,500n,10000p,500000b,80000s
-
-Output written on gra_thes_manabe.dvi (9 pages, 5268 bytes).
+ 32i,13n,26p,753b,317s stack positions out of 5000i,500n,10000p,500000b,80000s
+Output written on gra_thes_manabe.dvi (4 pages, 4660 bytes).
