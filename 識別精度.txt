@@ -1,0 +1,26 @@
+10cm(535)
+---------------------------------------------
+type1(pyonly):530,99%
+type2(gray):530,99%
+type3(gray&denoising):524,97%
+type4(yolo):0, 0.0%
+type5(yolo&gray):0, 0.0%
+type6(yolo&gray&denoising):
+
+15cm(458)
+---------------------------------------------
+type1(pyonly):1,0.21%
+type2(gray):0,0.0%
+type3(gray&denoising):
+type4(yolo):
+type5(yolo&gray):
+type6(yolo&gray&denoising):
+
+20cm()
+---------------------------------------------
+type1(pyonly):
+type2(gray):
+type3(gray&denoising):
+type4(yolo):
+type5(yolo&gray):
+type6(yolo&gray&denoising):
