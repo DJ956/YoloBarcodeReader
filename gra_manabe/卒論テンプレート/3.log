@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  8 JAN 2020 16:56
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  9 JAN 2020 14:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -12,14 +12,14 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.4 本
-      章では，V字開発モデルによる要求定義，基本設計，詳細設計について述べる...
+l.3 ￥
+      usepackage[dvipdfm]{graphicx}
 ? 
 ! Emergency stop.
  ...                                              
                                                   
-l.4 本
-      章では，V字開発モデルによる要求定義，基本設計，詳細設計について述べる...
+l.3 ￥
+      usepackage[dvipdfm]{graphicx}
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
@@ -31,5 +31,5 @@ Here is how much of TeX's memory you used:
  4563 multiletter control sequences out of 15000+600000
  7511 words of font info for 31 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 9i,0n,4p,284b,14s stack positions out of 5000i,500n,10000p,500000b,80000s
+ 9i,0n,4p,39b,14s stack positions out of 5000i,500n,10000p,500000b,80000s
 No pages of output.
