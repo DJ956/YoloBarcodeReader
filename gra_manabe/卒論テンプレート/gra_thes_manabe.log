@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  11 JAN 2020 17:42
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  13 JAN 2020 16:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -204,10 +204,10 @@ File: ./picture/vjimodel.eps Graphic file (type eps)
 
 ] [4]
 File: ./picture/summary1.eps Graphic file (type eps)
- <./picture/summary1.eps>
+ <./picture/summary1.eps> [5]
 File: ./picture/summary2.eps Graphic file (type eps)
 
-<./picture/summary2.eps>) [5] [6]
+<./picture/summary2.eps>) [6]
 第 3 章
 (./3.tex) (./3-1.tex
 File: ./picture/usecase1.eps Graphic file (type eps)
@@ -222,34 +222,34 @@ File: ./picture/usecase_qr.eps Graphic file (type eps)
 File: ./picture/usecase_ic.eps Graphic file (type eps)
  <./picture/usecase_ic.eps>) (./3-2.tex
 File: ./picture/class_ic.eps Graphic file (type eps)
- <./picture/class_ic.eps>
-File: ./picture/class_qr.eps Graphic file (type eps)
- <./picture/class_qr.eps>
-File: ./picture/class_qr_2.eps Graphic file (type eps)
-
-<./picture/class_qr_2.eps>) (./3-3.tex
-File: ./picture/sequence_ic.eps Graphic file (type eps)
- <./picture/sequence_ic.eps>
-File: ./picture/sequence_qr.eps Graphic file (type eps)
-
-<./picture/sequence_qr.eps>
-File: ./picture/sequence.eps Graphic file (type eps)
- <./picture/sequence.eps>) [7
+ <./picture/class_ic.eps> [7
 
 ] [8] [9] [10] [11]
-[12] [13] [14] [15] [16] [17]
+File: ./picture/class_qr.eps Graphic file (type eps)
+
+<./picture/class_qr.eps>
+File: ./picture/class_qr_2.eps Graphic file (type eps)
+ <./picture/class_qr_2.eps>) (./3-3.tex
+File: ./picture/sequence_ic.eps Graphic file (type eps)
+
+<./picture/sequence_ic.eps>
+File: ./picture/sequence_qr.eps Graphic file (type eps)
+ <./picture/sequence_qr.eps>
+File: ./picture/sequence.eps Graphic file (type eps)
+
+<./picture/sequence.eps>) [12] [13] [14] [15] [16]
 第 4 章
-(./4.tex) (./4-1.tex) (./4-2.tex) [18
+(./4.tex) (./4-1.tex) (./4-2.tex) [17
 
 ]
 第 5 章
-(./5.tex) (./5-1.tex) (./5-2.tex) [19
+(./5.tex) (./5-1.tex) (./5-2.tex) [18
 
 ]
 第 6 章
-(./5.tex) [20
+(./5.tex) [19
 
-] [21
+] [20
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 85--86
@@ -263,7 +263,7 @@ Overfull \hbox (15.82045pt too wide) in paragraph at lines 85--86
 nc111110.html\JY1/mc/m/n/12 ，
  []
 
-[22
+[21
 
 ] (./gra_thes_manabe.aux) ) 
 Here is how much of TeX's memory you used:
@@ -275,4 +275,4 @@ Here is how much of TeX's memory you used:
  929 hyphenation exceptions out of 8191
  32i,13n,26p,776b,355s stack positions out of 5000i,500n,10000p,500000b,80000s
 
-Output written on gra_thes_manabe.dvi (24 pages, 25536 bytes).
+Output written on gra_thes_manabe.dvi (23 pages, 26692 bytes).
