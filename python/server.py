@@ -5,6 +5,8 @@ import datetime
 import numpy as np
 import cv2
 import time
+import pyocr
+import pyocr.builders
 from pyzbar.pyzbar import decode
 import darknet_video
 import reader
@@ -29,7 +31,7 @@ DB = "rapit_cart"
 WIDTH = 640
 HEIGHT = 480
 
-IMG_STACK_SIZE = 6
+IMG_STACK_SIZE = 10
 INSERT_FLAG = 1
 DELETRE_FLAG = 2
 
@@ -38,6 +40,13 @@ SUCCESS = "1"
 
 class Server:
 	def __init__(self, own_address, port):
+		tools = pyocr.get_available_tools()
+		if len(tools) == 0:
+			print("Not found tools")
+			quit(-1)
+
+		self.tool = tools[0]
+		print("OCR tool name:{}".format(self.tool.get_name()))
 		self.address = own_address
 		self.port = port
 		self.clients = []
@@ -115,44 +124,53 @@ class Server:
 		data_size += 1
 		return data, data_size
 
+	#dbに商品コードを書き込む、削除する
+	def write2db(self, con, address, number, flag):
+		if flag == INSERT_FLAG:
+			print("[+]detect:{}".format(number))
+			self.send_mode(con, address, SUCCESS)
+			self.db.insert(code=number, cart_id=1)
+		elif flag == DELETRE_FLAG:
+			print("[-]detect:{}".format(num))
+			self.send_mode(con, address, SUCCESS)
+			self.db.delete(code=number, cart_id=1)
+
 
 	def handler(self, con, address):
-		index = 0
+		failed_flag = True
 		while True:
 			data, size = self.read_data(con, address)
-
 			for i in range(IMG_STACK_SIZE):
+				#最初にpyzbarで読み取る
+				is_detect, num = reader.read_barcode_pyzbar(data[i])
+				if is_detect:
+					self.write2db(con, address, num, flag=data[IMG_STACK_SIZE])
+					failed_flag = False
+					print("pyzbar")
+					break
+
+				#pyzbarが失敗したらyoloとtesseract-ocrで試す
 				detections, resize_img = self.Yolo.run_yolo(data[i])
-				if len(detections) > 0:
-					barcode = reader.read_barcode(resize_img, detections)
-					if not barcode is None:#イケてるやつ
-						#追加
-						if data[IMG_STACK_SIZE] == INSERT_FLAG:
-							print("[+]detect:{}".format(barcode))
-							self.send_mode(con, address, SUCCESS)
-							self.db.insert(code=barcode, cart_id=1)
-						#削除
-						elif data[IMG_STACK_SIZE] == DELETRE_FLAG:
-							print("[-]detect:{}".format(barcode))
-							self.send_mode(con, address, SUCCESS)
-							self.db.delete(code=barcode, cart_id=1)
-						break
-					else:#あかんかった場合
-						self.send_mode(con, address, FAILED)
-				
+				if len(detections) < 0:
+					continue
+
+				is_detect, num = reader.read_barcode_ocr(resize_img, detections, self.tool)
+				if is_detect:
+					self.write2db(con, address, num, flag=data[IMG_STACK_SIZE])
+					failed_flag = False
+					print("tesseract-ocr")
+					break
+
+			#あかんかった場合
+			if failed_flag:
+				self.send_mode(con, address, FAILED)
+				print("failed")
 
 			print("Flag:{}".format(data[IMG_STACK_SIZE]))
 
 			now = datetime.datetime.now()
 			print("[{}]From:{} - {}".format(now, address, size))
 
-			resize_img = darknet_video.cvDrawBoxes(detections, resize_img)
-			#cv2.imshow("demo", resize_img)
-
-			if cv2.waitKey(1) == 27:
-				break
-
-		cv2.destroyAllWindows()
 		self.remove_connection(con, address)
 
 def main():
