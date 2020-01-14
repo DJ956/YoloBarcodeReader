@@ -36,7 +36,3 @@ C:\w32tex\share\texworks\twdata\configuration\syntax-patterns.txt
 
 C:\w32tex\share\texworks
 にstyle.cssファイルをコピーする
-
-デスクトップかどこかに張り付けてあるであろうtextworksのショートカットを右クリックし、プロパティを開く
-リンク先を次に書き換える
-C:\w32tex\share\texworks\texworks.exe -stylesheet=C:\w32tex\share\texworks\style.css
