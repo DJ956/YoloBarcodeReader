@@ -1,0 +1,6 @@
+■画像が表示されないとき
+gsview32.exe　古いバージョンのpathになっている可能性
+https://oku.edu.mie-u.ac.jp/tex/mod/forum/discuss.php?d=699
+
+あとは下記URLの通りにすると画像表示できた
+https://oku.edu.mie-u.ac.jp/tex/mod/forum/discuss.php?d=2576

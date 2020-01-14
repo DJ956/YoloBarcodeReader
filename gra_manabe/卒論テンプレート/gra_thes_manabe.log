@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  13 JAN 2020 22:33
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  14 JAN 2020 16:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -230,13 +230,12 @@ File: ./picture/class_qr_2.eps Graphic file (type eps)
 
 <./picture/class_qr_2.eps>) (./3-3.tex
 File: ./picture/sequence_ic.eps Graphic file (type eps)
- <./picture/sequence_ic.eps>
+ <./picture/sequence_ic.eps> [12]
+[13]
 File: ./picture/sequence_qr.eps Graphic file (type eps)
-
-<./picture/sequence_qr.eps>
+ <./picture/sequence_qr.eps>
 File: ./picture/sequence.eps Graphic file (type eps)
- <./picture/sequence.eps>) [12] [13] [14] [15]
-[16]
+ <./picture/sequence.eps>) [14] [15] [16]
 第 4 章
 (./4.tex) (./4-1.tex) (./4-2.tex) [17
 
@@ -274,4 +273,4 @@ Here is how much of TeX's memory you used:
  929 hyphenation exceptions out of 8191
  32i,13n,26p,776b,355s stack positions out of 5000i,500n,10000p,500000b,80000s
 
-Output written on gra_thes_manabe.dvi (23 pages, 30116 bytes).
+Output written on gra_thes_manabe.dvi (23 pages, 30612 bytes).
