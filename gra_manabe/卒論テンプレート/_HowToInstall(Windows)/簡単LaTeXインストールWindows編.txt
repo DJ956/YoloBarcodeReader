@@ -1,4 +1,30 @@
 以下のページを参考にして,TeXをインストール
 ***うまく行かない場合は適宜設定を変更***
-
 https://did2memo.net/2016/04/24/easy-latex-install-windows-10-2016-04/
+-----------------------------------------------------------------------------
+gsv50w32.exeは存在しないので
+URL:http://www.ghostgum.com.au/software/gsview.htm
+からDLして実行
+-----------------------------------------------------------------------------
+TeXworksのパスは
+C:\w32tex\share\texworks\texworks.exe
+-----------------------------------------------------------------------------
+■画像が表示されないとき
+https://oku.edu.mie-u.ac.jp/tex/mod/forum/discuss.php?d=699
+gsview32.exe　古いバージョンのpathになっている可能性
+環境変数の
+C:\Program Files (x86)\gs\gs9.23\bin
+-> C:\Program Files (x86)\gs\gs9.50\bin
+
+C:\Program Files (x86)\gs\gs9.23\lib
+-> C:\Program Files (x86)\gs\gs9.50\bin
+に変更する
+
+あとは下記URLの通りにすると画像表示できた
+URL:https://oku.edu.mie-u.ac.jp/tex/mod/forum/discuss.php?d=2576
+gsview-5.0.exeを実行して
+options->Saferのチェックを外す->Advanced Configure->Ghostscript Options:の末尾に-dSAFER
+-----------------------------------------------------------------------------
+png to epsは
+Meta file to eps converter
+URL:https://wiki.lyx.org/Windows/MetafileToEPSConverter
