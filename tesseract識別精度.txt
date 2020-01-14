@@ -28,3 +28,9 @@ tesseract-ocr
 pyzbar-218
 無加工
 	149,68%
+
+[535n]
+10cm
+	287,53%
+15cm
+	

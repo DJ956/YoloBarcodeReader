@@ -16,7 +16,7 @@ HOLD_TIME = 5
 WEIGHT_CHECK_SPAN = 2
 
 #画像スタックサイズ
-IMG_STACK_SIZE = 10
+IMG_STACK_SIZE = 6
 
 SUCCESS = 1
 FAILED = 0
@@ -121,7 +121,6 @@ class Client:
 						if end - start > HOLD_TIME:
 							print("C")
 							data.clear()
-							self.stack_flag.clear()
 							break
 
 				if not data:
@@ -140,6 +139,7 @@ class Client:
 
 		GPIO.cleanup()
 		capture.release()
+		cv2.destroyAllWindows()
 		sock.close()
 		print("Disconnect")
 
