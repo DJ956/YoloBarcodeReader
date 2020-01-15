@@ -8,14 +8,14 @@
 \begingroup}{\endgroup\par}
 
 %論文名
-\title{論理回路に対する抗ノイズテストパターン生成}
+\title{商品識別システム}
 %教官名
 \kyoukan{高橋寛教授}
 \second{王森レイ講師}
 %名前
-\author{～～}
+\author{}
 %提出日
-\date{平成～～年～月～日提出}
+\date{令和～～年～月～日提出}
 %講座名
 \kouza{\gt 愛媛大学工学部情報工学科情報システム工学講座}
 
@@ -31,14 +31,6 @@
 %--ここから本文--
 %第1章　まえがき
 \chapter{まえがき}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width = 9cm]{class_ic.eps}
-\caption{ユースケース図(66)}
-\label{usecase1}
-\end{figure}
-
 \input{1}
 
 %第2章　準備
@@ -46,18 +38,23 @@
 \input{2}
 
 %第3章　
-\chapter{抗ノイズテストパターン生成法}
+\chapter{システムの設計}
 \input{3}
+\input{3-1}
+\input{3-2}
 
 %第4章
-\chapter{実験結果・考察}
+\chapter{実装内容・検証結果}
 \input{4}
 
 %第5章
-\chapter{あとがき}
+\chapter{システムの評価・考察}
 \input{5}
-%--ここまで本文--
 
+%第6章
+\chapter{まとめ・今後の課題}
+
+%--ここまで本文--
 
 %謝辞
 \newpage
@@ -79,8 +76,26 @@
 %ここから参考文献
 
 %--例--
-\bibitem{Interconnect}
-Bram Kruseman , Ananta K. Majihi , Wilmar Heuvalman , Jennifer Dworak“NIM-X : A Noise Index Model-Based X-Filling technique to Overcome the Power Supply Switching Noise Effects on Path Delay Test" IEEE Trans. on VLSI Test Symp. ,pp.809-813, May. 2012.
+\bibitem{population}
+平成28年版 情報通信白書｜人口減少社会の到来，総務省，https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/h28/html/nc111110.html，2016年7月
+
+\bibitem{amazongo}
+Amazon GOでミライ体験！レジ無しAIコンビニの仕組み、技術と課題 https://orange-operation.jp/posrejihikaku/self-checkout/10331.html 2017-6-13
+
+\bibitem{self_register}
+セミセルフレジのメーカーまとめ。価格・製品特徴比較【2019年版】 https://rejichoice.jp/semi-self-regi/
+2019-3-11
+
+\bibitem{v_model}
+
+\bibitem{uml}
+
+\bibitem{yolo}
+https://pjreddie.com/darknet/yolo/
+
+\bibitem{pyzbar}
+https://github.com/NaturalHistoryMuseum/pyzbar
+
 %ここまで参考文献
 
 \end{thebibliography}
