@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  15 JAN 2020 22:18
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  16 JAN 2020 16:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -177,13 +177,13 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 3.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 3.
-)
+ [1
+
+])
 \tf@toc=\write3
 \openout3 = `gra_thes_manabe.toc'.
 
- [1
-
-] [2]
+ [2]
 第 1 章
 (./1.tex [1
 
@@ -226,36 +226,40 @@ File: ./picture/usecase_saishu.eps Graphic file (type eps)
  <./picture/usecase_saishu.eps>) (./3-2.tex
 File: ./picture/class_ic.eps Graphic file (type eps)
  <./picture/class_ic.eps>
+[14]
 File: ./picture/class_qr.eps Graphic file (type eps)
-
-<./picture/class_qr.eps>
+ <./picture/class_qr.eps>
 File: ./picture/class_qr_2.eps Graphic file (type eps)
- <./picture/class_qr_2.eps>) (./3-3.tex [14] [15]
-[16]
+ <./picture/class_qr_2.eps> [15] [16] [17]
+Overfull \hbox (2.01701pt too wide) in paragraph at lines 73--80
+ [][][] 
+ []
+
+) (./3-3.tex
 File: ./picture/sequence_ic.eps Graphic file (type eps)
  <./picture/sequence_ic.eps>
 File: ./picture/sequence_qr.eps Graphic file (type eps)
  <./picture/sequence_qr.eps>
 File: ./picture/sequence.eps Graphic file (type eps)
 
-<./picture/sequence.eps>) [17] [18] [19]
+<./picture/sequence.eps>) [18] [19] [20] [21]
 第 4 章
 (./4.tex) (./4-1.tex
 Overfull \hbox (6.9531pt too wide) in paragraph at lines 13--21
  [][][] 
  []
 
-[20
+[22
 
-]) (./4-2.tex) [21] [22]
+]) (./4-2.tex) [23]
 第 5 章
-(./5.tex) (./5-1.tex) (./5-2.tex) [23
+(./5.tex) (./5-1.tex) (./5-2.tex) [24
 
 ]
 第 6 章
-(./5.tex) [24
+(./5.tex) [25
 
-] [25
+] [26
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 85--86
@@ -275,16 +279,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 89--90
 　 \OT1/cmr/m/n/12 2019 \JY1/mc/m/n/12 年
  []
 
-[26
+[27
 
 ] (./gra_thes_manabe.aux) ) 
 Here is how much of TeX's memory you used:
- 965 strings out of 492749
- 12081 string characters out of 6141886
+ 966 strings out of 492749
+ 12088 string characters out of 6141886
  81932 words of memory out of 5000000
- 5387 multiletter control sequences out of 15000+600000
+ 5388 multiletter control sequences out of 15000+600000
  28336 words of font info for 108 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
  32i,14n,26p,1335b,355s stack positions out of 5000i,500n,10000p,500000b,80000s
 
-Output written on gra_thes_manabe.dvi (29 pages, 46220 bytes).
+Output written on gra_thes_manabe.dvi (30 pages, 50116 bytes).
