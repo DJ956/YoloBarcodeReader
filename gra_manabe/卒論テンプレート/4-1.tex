@@ -4,30 +4,28 @@
 
 \section{実装}
 
-第3章で述べた優先度の高いとした機能部分について実装を行った．本研究ではグループで開発を行った．サーバ側を段原丞治が，Raspberry Piと各種センサについてを筆者が実装した．Raspberry Piが制御した各種センサの実装環境について表\ref{jissou}に示す．
+第3章で述べた優先度の高いとした機能部分について実装を行った．本研究ではグループで開発を行った．サーバ側を段原丞治が，Raspberry Piと各種センサについてを筆者が実装した．Raspberry Pi はRaspberry Pi 3 Model Bを使用した．Raspberry Piが制御した各種センサの実装環境について表\ref{jissou}に示す．
 
 
 \begin{table}[htb]
 \begin{center}
 \caption{実装環境}
-\begin{tabular}{|l|c|c|} \hline
-実装環境 & センサ & 開発言語 \\ \hline \hline
-Raspberry Pi 3 Model B & ロジクール ウェブカメラ C615 & python \\
-Raspberry Pi 3 Model B & HY-SRF05超音波距離センサモジュール & python \\
-Raspberry Pi 3 Model B & ロードセル　シングルポイント(ビーム型)3kg & python \\
-Raspberry Pi 3 Model B & SODIAL(R) 100 5mm & python \\ \hline
+\begin{tabular}{|c|c|c|} \hline
+センサ & 個数 & 開発言語 \\ \hline \hline
+ロジクール ウェブカメラ C615 & 1 & python \\
+HY-SRF05超音波距離センサモジュール & 1 & python \\
+ロードセル　シングルポイント(ビーム型)3kg & 1 & python \\
+SODIAL(R) 100 5mm & 3 & python \\ \hline
 \end{tabular}
 \label{jissou}
 \end{center}
 \end{table}
 
 
-上記のセンサをショッピングバスケットに取り付け，実装を行った．表\ref{jissou}に述べた各種センサの選定については3.2節に述べた．ショッピングバスケットのサイズは33L，寸法はW510×D360×H240mmである．
+上記のセンサをショッピングバスケットに取り付け，実装を行った．表\ref{jissou}に述べた各種センサの選定については3.2節に述べた．ショッピングバスケットのサイズは33L，寸法はW510×D360×H240mmである．ショッピングバスケットを以下カゴと呼ぶ．
 
+WebカメラはカゴのW510×D180×H150mmの位置に底にカメラを向けて設置した．180×180mmのアクリル板をネジでロードセルに留め，Webカメラから100mm下に設置した．超音波センサの設置場所については，ロードセル上部のアクリル板と同じ高さと，Webカメラと同じ高さの2種類の高さの両方の設置場所で実装した．LEDについては緑，青，赤の3色のLEDを抵抗と共にブレッドボードに設置した．
 
+それぞれのセンサを制御するためにpythonを開発言語として使用した．センサを稼働し続けるためにはループ処理を行う必要がある．しかしながら，ループ外でセンサが閾値を超えたかどうかを確認する必要もあったため，センサの処理は別スレッドで動作させることとした．
 
-%選定を3-2へ移動した
-
-
-
-%カゴのどの位置・高さにどのように設置したか
+%Raspberry Pi側でしたこと
