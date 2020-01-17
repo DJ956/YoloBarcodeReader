@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  16 JAN 2020 16:34
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  17 JAN 2020 13:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -235,31 +235,31 @@ Overfull \hbox (2.01701pt too wide) in paragraph at lines 73--80
  [][][] 
  []
 
-) (./3-3.tex
+) (./3-3.tex [18]
 File: ./picture/sequence_ic.eps Graphic file (type eps)
  <./picture/sequence_ic.eps>
 File: ./picture/sequence_qr.eps Graphic file (type eps)
  <./picture/sequence_qr.eps>
 File: ./picture/sequence.eps Graphic file (type eps)
 
-<./picture/sequence.eps>) [18] [19] [20] [21]
+<./picture/sequence.eps>) [19] [20] [21] [22]
 第 4 章
 (./4.tex) (./4-1.tex
 Overfull \hbox (6.9531pt too wide) in paragraph at lines 13--21
  [][][] 
  []
 
-[22
+[23
 
-]) (./4-2.tex) [23]
+]) (./4-2.tex) [24]
 第 5 章
-(./5.tex) (./5-1.tex) (./5-2.tex) [24
+(./5.tex) (./5-1.tex) (./5-2.tex) [25
 
 ]
 第 6 章
-(./5.tex) [25
+(./5.tex) [26
 
-] [26
+] [27
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 85--86
@@ -279,16 +279,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 89--90
 　 \OT1/cmr/m/n/12 2019 \JY1/mc/m/n/12 年
  []
 
-[27
+[28
 
 ] (./gra_thes_manabe.aux) ) 
 Here is how much of TeX's memory you used:
- 966 strings out of 492749
- 12088 string characters out of 6141886
+ 967 strings out of 492749
+ 12094 string characters out of 6141886
  81932 words of memory out of 5000000
- 5388 multiletter control sequences out of 15000+600000
+ 5389 multiletter control sequences out of 15000+600000
  28336 words of font info for 108 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
  32i,14n,26p,1335b,355s stack positions out of 5000i,500n,10000p,500000b,80000s
 
-Output written on gra_thes_manabe.dvi (30 pages, 50116 bytes).
+Output written on gra_thes_manabe.dvi (31 pages, 52668 bytes).
