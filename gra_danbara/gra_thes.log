@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  17 JAN 2020 14:54
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  18 JAN 2020 15:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -210,21 +210,21 @@ File: ./pic/usecase_saishu.eps Graphic file (type eps)
  <./pic/usecase_saishu.eps>) (./3-2.tex
 File: ./pic/class_final.eps Graphic file (type eps)
 
-<./pic/class_final.eps>) [6
+<./pic/class_final.eps> [6
 
-] [7] [8]
+] [7] [8]) [9]
 第 4 章
-(./4.tex [9
+(./4.tex [10
 
-]) [10]
+]) [11]
 第 5 章
-(./5.tex) [11
+(./5.tex) [12
 
 ]
 第 6 章
-[12
+[13
 
-] [13
+] [14
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 80--81
@@ -250,16 +250,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 86--88
 1/cmr/m/n/12 2019 \JY1/mc/m/n/12 年版 】
  []
 
-[14
+[15
 
 ] (./gra_thes.aux) ) 
 Here is how much of TeX's memory you used:
  893 strings out of 492749
  10753 string characters out of 6141886
- 78932 words of memory out of 5000000
+ 79932 words of memory out of 5000000
  5337 multiletter control sequences out of 15000+600000
  28336 words of font info for 108 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 32i,13n,26p,827b,317s stack positions out of 5000i,500n,10000p,500000b,80000s
+ 32i,13n,26p,827b,355s stack positions out of 5000i,500n,10000p,500000b,80000s
 
-Output written on gra_thes.dvi (16 pages, 22640 bytes).
+Output written on gra_thes.dvi (17 pages, 29540 bytes).
