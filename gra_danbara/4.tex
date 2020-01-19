@@ -22,6 +22,39 @@
 
 
 \subsection*{決済システム}
-　設計では決済システムが動作するのはユーザが退店する際に自動で行われることになっているがその機能を実装するには時間の都合上難しいと判断したため、仮の決済用Webページを作成して代用している。
+　設計では決済システムが動作するのはユーザが退店する際に自動で行われることになっているがその機能を実装するには時間の都合上難しいと判断したため、仮の決済用Webページを作成して代用している。ページ作成にはPHPを使用している。
 
 \section{検証}
+　V字モデルに従って4.1節で述べた実装部分に関するテストを行うことで要件を満たしているかどうかを確認する。以下にそれぞれのテスト項目を表で示す。
+
+\subsection*{サーバ通信}
+　サーバ通信の検証で行った単体テストを以下の表\ref{server_test}に示す。
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=12cm]{./pic/server_test.eps}
+\caption{サーバ通信単体テスト}
+\label{server_test}
+\end{figure}
+
+\subsection*{Yoloによるバーコード領域特定}
+　Yoloにおけるバーコード検知の検証で行った単体テスト項目を以下の表\ref{yolo_test}に示す。
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=12cm]{./pic/yolo_test.eps}
+\caption{Yoloによるバーコード領域特定単体テスト}
+\label{yolo_test}
+\end{figure}
+
+\subsection*{DBを使用した商品情報の管理}
+　DBを使用した商品情報の管理の単体テストは
+
+\subsection*{決済システム}
+　決済システムにおける単体テストを以下の\ref{db_test}に示す
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=12cm]{./pic/db_test.eps}
+\caption{決済システム単体テスト}
+\label{db_test}
+\end{figure}
+
+
