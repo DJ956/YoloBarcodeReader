@@ -13,16 +13,69 @@
 　Yoloの実行はサーバ側で行う。当初クライアント側であるRaspberryPiでYoloを実行すればサーバは不要になり通信におけるタイムラグもなくなることが期待されたが、残念ながらラズパイの性能ではYoloを高い識別精度を保ったままリアルタイムに動作させることは性能上難しかったためサーバで行うことになった。
 
 \subsection*{DBを使用した商品情報の管理}
-　カゴの中の商品を管理と、商品自体の情報の管理にDBを使用した。MariaDBを使用した。カゴDBの構造を表に示す。
+　カゴの中の商品を管理と、商品自体の情報の管理にDBを使用した。商品MariaDBを使用した。カゴDBの構造を以下に示す。
+初めに商品自体のデータを管理するitemテーブルを\ref{item_db}に示す。janはJANコードのことであり、商品識別番号のことである。titleは商品名のことである。price商品の価格を示す。
+image\_urlは商品の画像があるURLを示している。最後のimage\_rawはこのシステムでは使用していないが、画像データそのものを格納できるようにしている。
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=12cm]{./pic/item_db.eps}
+\caption{itemテーブル}
+\label{item_db}
+\end{figure}
 
-%%%%カゴDB表とそれぞれの意味
+\newpage
 
-次に商品DBの機能を表に示す。
+次にカートのテーブルcartテーブルの構造を図\ref{cart_db}に示す。id行の固有番号を示すためにある。この番号をでカートごとの区別を行う。janはJANコードのことである。cart\_idはカートの固有番号を示す。この番号があることで複数運用した際も区別することができる。
 %%%商品DB
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=12cm]{./pic/cart_db.eps}
+\caption{cartテーブル}
+\label{cart_db}
+\end{figure}
 
+
+顧客テーブルの構造を図\ref{customer_db}に示す。この顧客テーブルはシステムの動作テストを行う際に必要だったため作成した。動作用に仮の顧客情報を管理する。idは顧客の固有番号を示し、balanceは顧客の所持金額を示す。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=12cm]{./pic/customer.eps}
+\caption{customerテーブル}
+\label{customer_db}
+\end{figure}
 
 \subsection*{決済システム}
-　設計では決済システムが動作するのはユーザが退店する際に自動で行われることになっているがその機能を実装するには時間の都合上難しいと判断したため、仮の決済用Webページを作成して代用している。ページ作成にはPHPを使用している。
+　設計では決済システムが動作するのはユーザが退店する際に自動で行われることになっているがその機能を実装するには時間の都合上難しいと判断したため、仮の決済用Webページを作成して代用している。ページ作成にはPHPを使用している。以下にWebページでの動作の流れを示す。
+
+\subsection*{カート画面}
+　本来はユーザがこのような画面を操作することなく自動で決済が行われるのでこれは動作テスト用に作成している。以下の図\ref{web_cart}は初めにどのカートを使用しているかを選択するためにある。
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=15cm]{./pic/web/1.eps}
+\caption{Webページ カート画面}
+\label{web_cart}
+\end{figure}
+
+\subsection*{カート内商品一覧}
+　こちらの図\ref{web_cart_items}はカート内にある購入予定の商品の一覧を表している。表示内容は商品名と価格、商品画像と個数の4つである。ページ内にある緑のボタンを押すと会計が行われる。
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=15cm]{./pic/web/2.eps}
+\caption{Webページ カート内商品一覧}
+\label{web_cart_items}
+\end{figure}
+
+\subsection*{決済完了画面}
+　図\ref{web_cart_items}のページでボタンを押すと図\ref{web_checksum}画面に移行し、顧客の所持金から購入金額が差し引かれ、残高が表示される。また、所持金が購入金額が下回っていた場合は所持金額が足りないと警告され会計は行われない。
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=10cm,height=10cm]{./pic/web/3.eps}
+\caption{Webページ 決済完了}
+\label{web_checksum}
+\end{figure}
+
+
+\newpage
 
 \section{検証}
 　V字モデルに従って4.1節で述べた実装部分に関するテストを行うことで要件を満たしているかどうかを確認する。以下にそれぞれのテスト項目を表で示す。
