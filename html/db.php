@@ -58,18 +58,19 @@
 
 			$result = array();
 			foreach($jans as $jan){
-				if($item_stmt = mysqli_prepare($con, "SELECT title, price, image_url FROM item WHERE jan = ?")){
+				if($item_stmt = mysqli_prepare($con, "SELECT title, price, image_url, jan FROM item WHERE jan = ?")){
 					$item_stmt->bind_param("i", $jan);
 
 					$item_stmt->execute();
 
-					$item_stmt->bind_result($title, $price, $image_url);
+					$item_stmt->bind_result($title, $price, $image_url, $code);
 
 					$item_stmt->fetch();
 					$items = array(
 						"title" => $title,
 						"price" => $price,
-						"image_url" => $image_url);
+						"image_url" => $image_url,
+						"jan" => $code);
 					array_push($result, $items);
 					$item_stmt->close();
 				}
