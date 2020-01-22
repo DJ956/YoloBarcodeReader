@@ -34,16 +34,65 @@ LEDが正しく点灯するかどうか確認した．各LEDを抵抗と共に�
 
 \subsection{単体テスト}
 
-V字モデルに従い，詳細設計を満たしているかどうかを確認する．各実装対象の単体テストの内容を表\ref{tantai}に示す．
+V字モデルに従い，詳細設計を満たしているかどうかを確認する．実装対象の各単体テストの内容を表\ref{chouonpa}，表\ref{rodoseru}，表\ref{webcamera}，表\ref{data}に示す．
+
+
+\begin{figure}[htbp]
+\centering
+\caption{超音波センサの単体テスト}
+\includegraphics[width = 15cm]{./picture/chouonpa.eps}
+\label{chouonpa}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\caption{ロードセルの単体テスト}
+\includegraphics[width = 15cm]{./picture/rodoseru.eps}
+\label{rodoseru}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\caption{Webカメラの単体テスト}
+\includegraphics[width = 15cm]{./picture/webcamera.eps}
+\label{webcamera}
+\end{figure}
 
 \begin{figure}[htbp]
 \centering
 \caption{単体テスト}
-\includegraphics[width = 15cm]{./picture/tantai.eps}
-\label{tantai}
+\includegraphics[width = 15cm]{./picture/data.eps}
+\label{data}
 \end{figure}
+
+単体テストの第一段階として，確認内容の頭に*印のついていないテスト項目の機能テストを行った．*印のついているテスト項目についてはLEDの点灯に関するものであり，追加を優先する機能ではないと判断し，第二段階のテストに含めた．第一段階の単体テストは動作を確認できたため，第二段階として確認内容の頭に*印のついているテスト項目を含む機能テストを行った．*印のついているテスト項目についても動作を確認できた．
+
 
 \subsection{結合テスト}
 
+V字モデルに従い，基本設計を満たしているかどうかを確認する．各実装対象の結合テストの内容を表\ref{ketsugo}に示す．
+
+
+\begin{figure}[htbp]
+\centering
+\caption{結合テスト}
+\includegraphics[width = 15cm]{./picture/ketsugo.eps}
+\label{ketsugo}
+\end{figure}
+
+結合テストの際も，*印以外のテスト項目の機能テストを第一段階として行った．テスト項目14，15の画像をサーバに送信する際，Webカメラから撮影した画像とフラグをセットする順番について問題があった．超音波センサが反応するタイミングとロードセルが反応するタイミングが固定ではなく，どちらが先になるかが予想できなかった．画像とフラグをセットにしてデータを送信する際，画像が先に届くか，フラグが先に届くかが決まっている必要があったため画像とフラグをセットにする方法について考慮する必要があった．解決策として，フラグをキューへ追加し，画像撮影後，画像を画像用の配列へ追加，その後キューからフラグを取り出し，画像の後にフラグを入れセットにして送信する方法をとった．画像を撮影後，キューが空の場合はフラグがたつまで一定時間待機することとした．上記方法で再度テストを行ったところ，正しく動作を確認した．*印を含める第二段階のテストを行い，動作を確認できた．
+
 
 \subsection{総合テスト}
+
+V字モデルに従い，要求分析を満たしているかどうかを確認する．各実装対象のシナリオに基づいた総合テストの内容を表\ref{sogo}に示す．
+
+
+\begin{figure}[htbp]
+\centering
+\caption{総合テスト}
+\includegraphics[width = 15cm]{./picture/sogo.eps}
+\label{sogo}
+\end{figure}
+
+総合テストでは，3.1節の表\ref{sina}のシナリオに沿って動作しているかを確認する．シナリオより確認の流れを表\ref{sogo}より確認した．
