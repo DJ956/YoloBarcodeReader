@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  21 JAN 2020 15:55
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  22 JAN 2020 17:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -129,7 +129,11 @@ File: dvips.def 2017/06/20 v3.1d Graphics/color driver for dvips
 ))
 \Gin@req@height=\dimen125
 \Gin@req@width=\dimen126
-) (./gra_thes.aux)
+) (./gra_thes.aux
+
+LaTeX Warning: Label `db_test' multiply defined.
+
+)
 \openout1 = `gra_thes.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
@@ -164,27 +168,37 @@ LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <24.88> not available
 (Font)              Font shape `JT1/gt/m/n' tried instead on input line 27.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <24.88> not available
 (Font)              Font shape `JY1/gt/m/n' tried instead on input line 27.
- (./gra_thes.toc
-LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <12> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 1.
-LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 1.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 3.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 3.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 3.
-)
+ (./gra_thes.toc)
 \tf@toc=\write3
 \openout3 = `gra_thes.toc'.
 
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 28.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 28.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 28.
 
 [1
 
 ]
 第 1 章
-(./1.tex) [1
+(./1.tex
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <12> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 3.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 3.
+
+
+LaTeX Warning: Citation `population' on page 1 undefined on input line 3.
+
+
+LaTeX Warning: Citation `amazongo' on page 1 undefined on input line 3.
+
+
+LaTeX Warning: Citation `self_register' on page 1 undefined on input line 3.
+
+) [1
 
 
 ]
@@ -199,92 +213,129 @@ LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <14.4> not available
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <14.4> not available
 (Font)              Font shape `JY1/gt/m/n' tried instead on input line 6.
 File: ./pic/vjimodel.eps Graphic file (type eps)
- <./pic/vjimodel.eps> [2
+ <./pic/vjimodel.eps>
 
-] [3]
+LaTeX Warning: Citation `uml' on page 2 undefined on input line 17.
+
+[2
+
+]
+
+LaTeX Warning: Citation `yolo' on page 3 undefined on input line 31.
+
+
+LaTeX Warning: Citation `pyzbar' on page 3 undefined on input line 35.
+
+[3]
 File: ./pic/summary.eps Graphic file (type eps)
- <./pic/summary.eps>) [4] [5]
+ <./pic/summary.eps>) [4]
 第 3 章
 (./3.tex) (./3-1.tex
 File: ./pic/usecase_saishu.eps Graphic file (type eps)
  <./pic/usecase_saishu.eps>) (./3-2.tex
+
+LaTeX Warning: Citation `v_model' on page 5 undefined on input line 3.
+
 File: ./pic/class_final.eps Graphic file (type eps)
+<./pic/class_final.eps> [5
 
-<./pic/class_final.eps> [6
+] [6] [7]
 
-] [7] [8]) [9]
+LaTeX Warning: Reference `sequece' on page 8 undefined on input line 28.
+
+File: ./pic/sequence_final.eps Graphic file (type eps)
+<./pic/sequence_final.eps>) [8] [9]
 第 4 章
 (./4.tex [10
 
 ]
+
+LaTeX Warning: Citation `pyzbar' on page 11 undefined on input line 53.
+
+
+LaTeX Warning: Citation `pyzbar' on page 11 undefined on input line 53.
+
+[11]
 File: ./pic/item_db.eps Graphic file (type eps)
- <./pic/item_db.eps> [11]
+ <./pic/item_db.eps> [12]
 File: ./pic/cart_db.eps Graphic file (type eps)
  <./pic/cart_db.eps>
 File: ./pic/customer.eps Graphic file (type eps)
-
-<./pic/customer.eps>
+ <./pic/customer.eps> [13]
 File: ./pic/web/1.eps Graphic file (type eps)
- <./pic/web/1.eps>
-File: ./pic/web/2.eps Graphic file (type eps)
- <./pic/web/2.eps> [12]
-File: ./pic/web/3.eps Graphic file (type eps)
 
-<./pic/web/3.eps> [13] [14]
+<./pic/web/1.eps>
+File: ./pic/web/2.eps Graphic file (type eps)
+ <./pic/web/2.eps>
+File: ./pic/web/3.eps Graphic file (type eps)
+ <./pic/web/3.eps> [14] [15]
 File: ./pic/server_test.eps Graphic file (type eps)
- <./pic/server_test.eps>
+
+<./pic/server_test.eps>
 File: ./pic/yolo_test.eps Graphic file (type eps)
  <./pic/yolo_test.eps>
-[15]
+
+LaTeX Warning: Reference `table_test' on page 16 undefined on input line 144.
+
+File: ./pic/table_test.eps Graphic file (type eps)
+<./pic/table_test.eps> [16]
 File: ./pic/db_test.eps Graphic file (type eps)
- <./pic/db_test.eps>) [16]
+ <./pic/db_test.eps> [17]
+File: ./pic/join_test.eps Graphic file (type eps)
+ <./pic/join_test.eps>
+[18]
+File: ./pic/integrated_test.eps Graphic file (type eps)
+ <./pic/integrated_test.eps>) [19]
 第 5 章
-(./5.tex) [17
+(./5.tex) [20
 
 ]
 第 6 章
-[18
+(./6.tex) [21
 
-] [19
+] [22
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 80--81
+Underfull \hbox (badness 10000) in paragraph at lines 81--82
 []\JY1/mc/m/n/12 平成 \OT1/cmr/m/n/12 28 \JY1/mc/m/n/12 年版 情報通信白書 ｜ 人
 口減少社会の到来 ， 総務省 ，
  []
 
 
-Overfull \hbox (15.82045pt too wide) in paragraph at lines 80--81
+Overfull \hbox (15.82045pt too wide) in paragraph at lines 81--82
 \OT1/cmr/m/n/12 https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/h28/html/
 nc111110.html\JY1/mc/m/n/12 ，
  []
 
 
-Underfull \hbox (badness 3229) in paragraph at lines 83--84
+Underfull \hbox (badness 3229) in paragraph at lines 84--85
 []\OT1/cmr/m/n/12 Amazon GO \JY1/mc/m/n/12 でミライ体験 ！ レジ無し \OT1/cmr/m/
 n/12 AI \JY1/mc/m/n/12 コンビニの仕組み 、 技術と課題
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 86--88
+Underfull \hbox (badness 10000) in paragraph at lines 87--89
 []\JY1/mc/m/n/12 セミセルフレジのメ ーカ ーまとめ 。 価格 ・ 製品特徴比較 【\OT
 1/cmr/m/n/12 2019 \JY1/mc/m/n/12 年版 】
  []
 
-[20
+[23
 
 ] (./gra_thes.aux)
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 937 strings out of 492749
- 11549 string characters out of 6141886
- 79932 words of memory out of 5000000
- 5374 multiletter control sequences out of 15000+600000
+ 962 strings out of 492749
+ 12015 string characters out of 6141886
+ 83932 words of memory out of 5000000
+ 5392 multiletter control sequences out of 15000+600000
  28336 words of font info for 108 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
  32i,13n,26p,966b,355s stack positions out of 5000i,500n,10000p,500000b,80000s
 
-Output written on gra_thes.dvi (22 pages, 38508 bytes).
+Output written on gra_thes.dvi (25 pages, 41660 bytes).
