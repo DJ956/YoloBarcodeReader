@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  22 JAN 2020 18:06
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  29 JAN 2020 16:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -172,11 +172,11 @@ LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <12> not available
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
 (Font)              Font shape `JY1/gt/m/n' tried instead on input line 1.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 3.
+(Font)              <12> on input line 4.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 3.
+(Font)              <8> on input line 4.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 3.
+(Font)              <6> on input line 4.
  [1
 
 ])
@@ -191,39 +191,40 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 ]) [2]
 第 2 章
 (./2.tex
-LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <17.28> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 6.
-LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <17.28> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 6.
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <14.4> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 9.
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 7.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <14.4> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 9.
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 7.
 File: ./picture/vjimodel.eps Graphic file (type eps)
  <./picture/vjimodel.eps> [3
 
-] [4] [5]
+]) [4] [5]
+第 3 章
+(./3.tex) (./3-1.tex
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <17.28> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 4.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <17.28> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 4.
+ [6
+
+]
 File: ./picture/summary1.eps Graphic file (type eps)
  <./picture/summary1.eps>
 File: ./picture/summary2.eps Graphic file (type eps)
-
-<./picture/summary2.eps>) [6] [7]
-第 3 章
-(./3.tex) (./3-1.tex
+ <./picture/summary2.eps>)
+(./3-2.tex [7]
 File: ./picture/usecase1.eps Graphic file (type eps)
- <./picture/usecase1.eps> [8
-
-]
+ <./picture/usecase1.eps>
 File: ./picture/usecase3.eps Graphic file (type eps)
- <./picture/usecase3.eps>
-[9]
+ <./picture/usecase3.eps> [8] [9]
 File: ./picture/usecase_qr.eps Graphic file (type eps)
- <./picture/usecase_qr.eps> [10]
+
+<./picture/usecase_qr.eps> [10] [11]
 File: ./picture/usecase_ic.eps Graphic file (type eps)
- <./picture/usecase_ic.eps> [11]
+ <./picture/usecase_ic.eps> [12]
 File: ./picture/usecase_saishu.eps Graphic file (type eps)
 
-<./picture/usecase_saishu.eps> [12] [13]) (./3-2.tex
+<./picture/usecase_saishu.eps> [13]) (./3-3.tex
 File: ./picture/class_ic.eps Graphic file (type eps)
  <./picture/class_ic.eps>
 File: ./picture/class_qr.eps Graphic file (type eps)
@@ -240,9 +241,9 @@ Overfull \hbox (2.01701pt too wide) in paragraph at lines 77--84
  [][][] 
  []
 
-) (./3-3.tex
+) (./3-4.tex
 Overfull \hbox (3.8252pt too wide) in paragraph at lines 110--2
-[]\JY1/mc/m/n/12 表 \OT1/cmr/m/n/12 3.7 \JY1/mc/m/n/12 において ， 検知範囲が大
+[]\JY1/mc/m/n/12 表 \OT1/cmr/m/n/12 3.8 \JY1/mc/m/n/12 において ， 検知範囲が大
 きな感圧センサを比較対象として選んだものの ， $\OT1/cmr/m/n/12 40\OML/cmm/m/it/
 12 mm \OMS/cmsy/m/n/12 ^^B
  []
@@ -258,19 +259,25 @@ File: ./picture/sequence.eps Graphic file (type eps)
 第 4 章
 (./4.tex) (./4-1.tex [23
 
-] [24] [25]) (./4-2.tex [26]
+] [24] [25]) (./4-2.tex
+File: ./picture/webcamera.eps Graphic file (type eps)
+ <./picture/webcamera.eps>
+Overfull \hbox (3.84772pt too wide) in paragraph at lines 24--25
+[]\JY1/mc/m/n/12 まず， 表 \OT1/cmr/m/n/12 4.5 \JY1/mc/m/n/12 における項目 \OT1
+/cmr/m/n/12 1 \JY1/mc/m/n/12 のテストを行 っ た ． 対象商品をカメラから \OT1/cm
+r/m/n/12 100mm\JY1/mc/m/n/12 ， \OT1/cmr/m/n/12 150mm\JY1/mc/m/n/12 ，
+ []
+
+[26]
 File: ./picture/chouonpa.eps Graphic file (type eps)
  <./picture/chouonpa.eps>
 File: ./picture/rodoseru.eps Graphic file (type eps)
-
-<./picture/rodoseru.eps>
-File: ./picture/webcamera.eps Graphic file (type eps)
- <./picture/webcamera.eps>
+ <./picture/rodoseru.eps>
 File: ./picture/data.eps Graphic file (type eps)
  <./picture/data.eps>
-[27] [28]
+[27]
 File: ./picture/ketsugo.eps Graphic file (type eps)
- <./picture/ketsugo.eps> [29]
+ <./picture/ketsugo.eps> [28] [29]
 File: ./picture/sogo.eps Graphic file (type eps)
  <./picture/sogo.eps>) [30]
 第 5 章
@@ -283,33 +290,37 @@ File: ./picture/sogo.eps Graphic file (type eps)
 ] [34
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 85--86
+Underfull \hbox (badness 10000) in paragraph at lines 86--87
 []\JY1/mc/m/n/12 平成 \OT1/cmr/m/n/12 28 \JY1/mc/m/n/12 年版 情報通信白書 ｜ 人
 口減少社会の到来 ， 総務省 ，
  []
 
 
-Overfull \hbox (15.82045pt too wide) in paragraph at lines 85--86
+Overfull \hbox (15.82045pt too wide) in paragraph at lines 86--87
 \OT1/cmr/m/n/12 https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/h28/html/
 nc111110.html\JY1/mc/m/n/12 ，
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 89--90
+Underfull \hbox (badness 10000) in paragraph at lines 90--91
 []\JY1/mc/m/n/12 一般社団法人　全国ス ーパ ーマ ーケ ッ ト協会 ， 年次統計調査
 　 \OT1/cmr/m/n/12 2019 \JY1/mc/m/n/12 年
  []
 
 [35
 
-] (./gra_thes_manabe.aux) ) 
+] (./gra_thes_manabe.aux)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
- 994 strings out of 492749
- 12641 string characters out of 6141886
+ 997 strings out of 492749
+ 12660 string characters out of 6141886
  81932 words of memory out of 5000000
- 5413 multiletter control sequences out of 15000+600000
+ 5414 multiletter control sequences out of 15000+600000
  28336 words of font info for 108 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 32i,14n,28p,1417b,355s stack positions out of 5000i,500n,10000p,500000b,80000s
+ 32i,14n,26p,1463b,357s stack positions out of 5000i,500n,10000p,500000b,80000s
 
-Output written on gra_thes_manabe.dvi (38 pages, 78996 bytes).
+Output written on gra_thes_manabe.dvi (38 pages, 78372 bytes).
