@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  28 JAN 2020 20:53
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  29 JAN 2020 18:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -184,7 +184,14 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 ]
 第 1 章
-(./1.tex) [1
+(./1.tex
+
+LaTeX Warning: Reference `yolo' on page 1 undefined on input line 9.
+
+
+LaTeX Warning: Reference `opencv' on page 1 undefined on input line 9.
+
+) [1
 
 
 ] [2]
@@ -201,70 +208,70 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <14.4> not available
 File: ./pic/vjimodel.eps Graphic file (type eps)
  <./pic/vjimodel.eps> [3
 
-]) [4]
+] [4]) [5]
 第 3 章
 (./3.tex) (./3-1.tex
 File: ./pic/summary.eps Graphic file (type eps)
- <./pic/summary.eps>) (./3-2.tex [5
+ <./pic/summary.eps>) (./3-2.tex [6
 
 ]
 File: ./pic/usecase_saishu.eps Graphic file (type eps)
 
 <./pic/usecase_saishu.eps>) (./3-3.tex
 
-LaTeX Warning: Citation `sequence' on page 6 undefined on input line 3.
+LaTeX Warning: Citation `sequence' on page 7 undefined on input line 3.
 
 File: ./pic/class_final.eps Graphic file (type eps)
-<./pic/class_final.eps> [6] [7] [8]
+<./pic/class_final.eps> [7] [8] [9]
 File: ./pic/sequence_final.eps Graphic file (type eps)
- <./pic/sequence_final.eps>) [9] [10]
+ <./pic/sequence_final.eps>) [10] [11]
 第 4 章
-(./4.tex [11
+(./4.tex [12
 
-] [12]
+] [13]
 Overfull \hbox (6.70442pt too wide) in paragraph at lines 53--54
 []\OT1/cmr/m/n/12 Yolo \JY1/mc/m/n/12 を使用した理由は 、 \OT1/cmr/m/n/12 pyzba
 r[[]] \JY1/mc/m/n/12 の識別精度にある問題があ っ たからである 。 \OT1/cmr/m/n/1
 2 pyzbar[[]]
  []
 
-[13]
+[14]
 File: ./pic/item_db.eps Graphic file (type eps)
- <./pic/item_db.eps> [14]
+ <./pic/item_db.eps> [15]
 File: ./pic/cart_db.eps Graphic file (type eps)
  <./pic/cart_db.eps>
 File: ./pic/customer.eps Graphic file (type eps)
- <./pic/customer.eps> [15]
+ <./pic/customer.eps> [16]
 File: ./pic/web/1.eps Graphic file (type eps)
 
 <./pic/web/1.eps>
 File: ./pic/web/2.eps Graphic file (type eps)
  <./pic/web/2.eps>
 File: ./pic/web/3.eps Graphic file (type eps)
- <./pic/web/3.eps> [16] [17]
+ <./pic/web/3.eps> [17] [18]
 File: ./pic/server_test.eps Graphic file (type eps)
 
 <./pic/server_test.eps>
 File: ./pic/yolo_test.eps Graphic file (type eps)
  <./pic/yolo_test.eps>
 File: ./pic/table_test.eps Graphic file (type eps)
- <./pic/table_test.eps> [18]
+ <./pic/table_test.eps> [19]
 File: ./pic/db_test.eps Graphic file (type eps)
 
-<./pic/db_test.eps> [19]
+<./pic/db_test.eps> [20]
 File: ./pic/join_test.eps Graphic file (type eps)
- <./pic/join_test.eps> [20]
+ <./pic/join_test.eps> [21]
 File: ./pic/integrated_test.eps Graphic file (type eps)
 
-<./pic/integrated_test.eps>) [21]
+<./pic/integrated_test.eps>) [22]
 第 5 章
-(./5.tex [22
+(./5.tex [23
 
-]) [23]
+]) [24]
 第 6 章
-(./6.tex) [24
+(./6.tex) [25
 
-] [25
+] [26
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 82--83
@@ -290,7 +297,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 88--90
 1/cmr/m/n/12 2019 \JY1/mc/m/n/12 年版 】
  []
 
-[26
+[27
 
 ] (./gra_thes.aux)
 
@@ -298,12 +305,12 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 967 strings out of 492749
- 12059 string characters out of 6141886
+ 969 strings out of 492749
+ 12073 string characters out of 6141886
  83932 words of memory out of 5000000
- 5395 multiletter control sequences out of 15000+600000
+ 5397 multiletter control sequences out of 15000+600000
  28336 words of font info for 108 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 32i,13n,26p,925b,353s stack positions out of 5000i,500n,10000p,500000b,80000s
+ 32i,13n,26p,889b,353s stack positions out of 5000i,500n,10000p,500000b,80000s
 
-Output written on gra_thes.dvi (28 pages, 50424 bytes).
+Output written on gra_thes.dvi (29 pages, 53528 bytes).

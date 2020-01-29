@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  15 JAN 2020 21:10
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  29 JAN 2020 18:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -13,13 +13,13 @@ Type  H <return>  for immediate help.
  ...                                              
                                                   
 l.2 本
-      章では本文中に使用する用語、実験環境およびシステム概要について述べる
+      章では本研究で使用した用語、技術について述べる。本研究はV字モデルに従...
 ? 
 ! Emergency stop.
  ...                                              
                                                   
 l.2 本
-      章では本文中に使用する用語、実験環境およびシステム概要について述べる
+      章では本研究で使用した用語、技術について述べる。本研究はV字モデルに従...
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
@@ -31,5 +31,5 @@ Here is how much of TeX's memory you used:
  4563 multiletter control sequences out of 15000+600000
  7511 words of font info for 31 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 9i,0n,4p,78b,14s stack positions out of 5000i,500n,10000p,500000b,80000s
+ 9i,0n,4p,323b,14s stack positions out of 5000i,500n,10000p,500000b,80000s
 No pages of output.
