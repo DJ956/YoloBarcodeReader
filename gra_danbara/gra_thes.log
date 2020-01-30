@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  29 JAN 2020 18:31
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  30 JAN 2020 19:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -217,12 +217,10 @@ File: ./pic/summary.eps Graphic file (type eps)
 ]
 File: ./pic/usecase_saishu.eps Graphic file (type eps)
 
-<./pic/usecase_saishu.eps>) (./3-3.tex
-
-LaTeX Warning: Citation `sequence' on page 7 undefined on input line 3.
-
+<./pic/usecase_saishu.eps>) (./3-3.tex) (./3-4.tex [7] [8]
 File: ./pic/class_final.eps Graphic file (type eps)
-<./pic/class_final.eps> [7] [8] [9]
+
+<./pic/class_final.eps> [9]
 File: ./pic/sequence_final.eps Graphic file (type eps)
  <./pic/sequence_final.eps>) [10] [11]
 第 4 章
@@ -274,25 +272,25 @@ File: ./pic/integrated_test.eps Graphic file (type eps)
 ] [26
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 82--83
+Underfull \hbox (badness 10000) in paragraph at lines 83--84
 []\JY1/mc/m/n/12 平成 \OT1/cmr/m/n/12 28 \JY1/mc/m/n/12 年版 情報通信白書 ｜ 人
 口減少社会の到来 ， 総務省 ，
  []
 
 
-Overfull \hbox (15.82045pt too wide) in paragraph at lines 82--83
+Overfull \hbox (15.82045pt too wide) in paragraph at lines 83--84
 \OT1/cmr/m/n/12 https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/h28/html/
 nc111110.html\JY1/mc/m/n/12 ，
  []
 
 
-Underfull \hbox (badness 3229) in paragraph at lines 85--86
+Underfull \hbox (badness 3229) in paragraph at lines 86--87
 []\OT1/cmr/m/n/12 Amazon GO \JY1/mc/m/n/12 でミライ体験 ！ レジ無し \OT1/cmr/m/
 n/12 AI \JY1/mc/m/n/12 コンビニの仕組み 、 技術と課題
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 88--90
+Underfull \hbox (badness 10000) in paragraph at lines 89--91
 []\JY1/mc/m/n/12 セミセルフレジのメ ーカ ーまとめ 。 価格 ・ 製品特徴比較 【\OT
 1/cmr/m/n/12 2019 \JY1/mc/m/n/12 年版 】
  []
@@ -305,12 +303,12 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 969 strings out of 492749
- 12073 string characters out of 6141886
+ 972 strings out of 492749
+ 12092 string characters out of 6141886
  83932 words of memory out of 5000000
- 5397 multiletter control sequences out of 15000+600000
+ 5398 multiletter control sequences out of 15000+600000
  28336 words of font info for 108 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 32i,13n,26p,889b,353s stack positions out of 5000i,500n,10000p,500000b,80000s
+ 32i,13n,27p,889b,355s stack positions out of 5000i,500n,10000p,500000b,80000s
 
-Output written on gra_thes.dvi (29 pages, 53528 bytes).
+Output written on gra_thes.dvi (29 pages, 54948 bytes).
