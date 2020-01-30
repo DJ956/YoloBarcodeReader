@@ -11,14 +11,15 @@ V字モデルに従い，詳細設計を満たしているかどうかを確認�
 
 \subsection*{Webカメラ}
 
-Webカメラの単体テストの項目を表\ref{webcamera}に示す．
+
+Webカメラの単体テストを表\ref{t_web}に示す．
 
 
 \begin{table}[htbp]
 \centering
-\caption{Webカメラの単体テスト項目}
-\includegraphics[width = 15cm]{./picture/webcamera.eps}
-\label{webcamera}
+\caption{Webカメラの単体テスト}
+\includegraphics[width = 15cm]{./picture/tantai_web.eps}
+\label{t_web}
 \end{table}
 
 まず，表\ref{webcamera}における項目1のテストを行った．対象商品をカメラから100mm，150mm，200mmと離し，バーコードを読み取りが可能か，テストを行った．カゴの高さが240mmかつ，Webカメラの設置場所はカゴの上部90mmのため，150～200mm程度までバーコードが認識できれば要件を満たすとする．
@@ -32,13 +33,14 @@ Webカメラの単体テストの項目を表\ref{webcamera}に示す．
 
 \subsection*{超音波センサ}
 
-超音波センサの単体テスト項目を表\ref{chouonpa}に示す．
+超音波センサの単体テストを表\ref{t_chou}に示す．
+
 
 \begin{table}[htbp]
 \centering
-\caption{超音波センサの単体テスト項目}
-\includegraphics[width = 15cm]{./picture/chouonpa.eps}
-\label{chouonpa}
+\caption{超音波センサの単体テスト}
+\includegraphics[width = 15cm]{./picture/tantai_chou.eps}
+\label{t_chou}
 \end{table}
 
 最初に，超音波センサが正しく反応しているか，要求を満たしているかテストを行った．要求としてはカゴの横幅360mmなので，360mm以内を10mm程ずつ測ることができるかどうか確認した．超音波センサは正しく反応し，360mm以上の距離を1mmより小さい距離ずつ測ることができ，要求を満たした．
@@ -47,13 +49,14 @@ Webカメラの単体テストの項目を表\ref{webcamera}に示す．
 
 \subsection*{ロードセル}
 
-ロードセルの単体テスト項目を表\ref{rodoseru}に示す．
+ロードセルの単体テストを表\ref{t_rodoseru}に示す．
+
 
 \begin{table}[htbp]
 \centering
-\caption{ロードセルの単体テスト項目}
-\includegraphics[width = 15cm]{./picture/rodoseru.eps}
-\label{rodoseru}
+\caption{ロードセルの単体テスト}
+\includegraphics[width = 15cm]{./picture/tantai_rodo.eps}
+\label{t_rodoseru}
 \end{table}
 
 ロードセルが正しく反応しているか，要求を満たしているかテストを行った．要求として，重量の増減を確認できるか，3kgまでの重量を1g程ずつはかることができるかどうか確認した．ロードセルは正しく反応し，対象商品を1gより小さい値ずつ測ることができた．そのためロードセルは要求を満たした．
@@ -61,13 +64,14 @@ Webカメラの単体テストの項目を表\ref{webcamera}に示す．
 
 \subsection*{データ送信}
 
-データ送信における単体テスト項目を表\ref{data}に示す．
+データ送信における単体テストを表\ref{t_data}に示す．
+
 
 \begin{table}[htbp]
 \centering
-\caption{データ送信の単体テスト項目}
-\includegraphics[width = 15cm]{./picture/data.eps}
-\label{data}
+\caption{データ送信の単体テスト}
+\includegraphics[width = 15cm]{./picture/tantai_data.eps}
+\label{t_data}
 \end{table}
 
 第一段階の機能テストを行い，機能項目を満たしたことを確認した．同様に，第二段階の機能テストを行い，機能項目を満たしたことを確認した．
@@ -75,29 +79,33 @@ Webカメラの単体テストの項目を表\ref{webcamera}に示す．
 
 \subsection{結合テスト}
 
-V字モデルに従い，基本設計を満たしているかどうかを確認する．各実装対象の結合テストの項目を表\ref{ketsugo}に示す．
+
+V字モデルに従い，基本設計を満たしているかどうかを確認する．各実装対象の結合テストを表\ref{t_ketsugo}に示す．
 
 
 \begin{table}[htbp]
 \centering
-\caption{結合テスト項目}
-\includegraphics[width = 15cm]{./picture/ketsugo.eps}
-\label{ketsugo}
+\caption{結合テスト}
+\includegraphics[width = 15cm]{./picture/t_ketsugo.eps}
+\label{t_ketsugo}
 \end{table}
 
-結合テストの際も，*印以外のテスト項目の機能テストを第一段階として行った．テスト項目14，15の画像をサーバに送信する際，Webカメラから撮影した画像とフラグをセットする順番について問題があった．超音波センサが反応するタイミングとロードセルが反応するタイミングが固定ではなく，どちらが先になるかが予想できなかった．画像とフラグをセットにしてデータを送信する際，画像が先に届くか，フラグが先に届くかが決まっている必要があったため画像とフラグをセットにする方法について考慮する必要があった．解決策として，フラグをキューへ追加し，画像撮影後，画像を画像用の配列へ追加，その後キューからフラグを取り出し，画像の後にフラグを入れセットにして送信する方法をとった．画像を撮影後，キューが空の場合はフラグがたつまで一定時間待機することとした．上記方法で再度テストを行ったところ，正しく動作を確認した．*印を含める第二段階のテストを行い，動作を確認できた．
+結合テストの際も，*印以外のテスト項目の機能テストを第一段階として行った．テスト項目14，15の画像をサーバに送信する際，Webカメラから撮影した画像とフラグをセットする順番について問題があった．超音波センサが反応するタイミングとロードセルが反応するタイミングが固定ではなく，どちらが先になるかが予想できなかった．画像とフラグをセットにしてデータを送信する際，画像が先に届くか，フラグが先に届くかが決まっている必要があったため画像とフラグをセットにする方法について考慮する必要があった．解決策として，フラグをキューへ追加し，画像撮影後，画像を画像用の配列へ追加，その後キューからフラグを取り出し，画像の後にフラグを入れセットにして送信する方法をとった．画像を撮影後，キューが空の場合はフラグがたつまで一定時間待機することとした．上記方法で再度テストを行ったところ，正しく動作を確認した．
+
+次に，*印を含める第二段階のテストを行った．テスト項目17のLEDの点滅について，点灯のほうがテストの際に確認がしやすかったため，項目17は点滅ではなく点灯として動作を確認した．テスト項目18においては，LED赤・青が誤作動し，複数回点灯することがあったため△とした．しかしながら，実際にユーザに正しく情報を伝えることができており，比較的優先度の低いテスト項目だったため，そのまま総合テストへ移行した．
 
 
 \subsection{総合テスト}
 
-V字モデルに従い，要求分析を満たしているかどうかを確認する．各実装対象のシナリオに基づいた総合テストの項目を表\ref{sogo}に示す．
+
+V字モデルに従い，要求分析を満たしているかどうかを確認する．各実装対象のシナリオに基づいた総合テストを表\ref{t_sogo}に示す．
 
 
 \begin{table}[htbp]
 \centering
-\caption{総合テスト項目}
-\includegraphics[width = 15cm]{./picture/sogo.eps}
-\label{sogo}
+\caption{総合テスト}
+\includegraphics[width = 15cm]{./picture/t_sogo.eps}
+\label{t_sogo}
 \end{table}
 
-総合テストでは，3.1節の表\ref{sina}のシナリオに沿って動作しているかを確認する．シナリオより確認の流れを表\ref{sogo}より確認した．
+総合テストでは，3.1節の表\ref{sina}のシナリオに沿って動作しているかを確認する．テスト項目1-8においては，LED点灯の誤作動が度々あったため△とした．しかしながら，ユーザに通知するべき情報は正しく通知できていることを確認した．また，シナリオの流れも含め，表\ref{sogo}を確認した．

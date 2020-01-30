@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  29 JAN 2020 16:21
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  31 JAN 2020 00:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -209,85 +209,89 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <17.28> not available
 
 ]
 File: ./picture/summary1.eps Graphic file (type eps)
- <./picture/summary1.eps>
+ <./picture/summary1.eps> [7]
 File: ./picture/summary2.eps Graphic file (type eps)
- <./picture/summary2.eps>)
-(./3-2.tex [7]
+ <./picture/summary2.eps>) (./3-2.tex [8]
 File: ./picture/usecase1.eps Graphic file (type eps)
- <./picture/usecase1.eps>
+ <./picture/usecase1.eps> [9]
 File: ./picture/usecase3.eps Graphic file (type eps)
- <./picture/usecase3.eps> [8] [9]
+ <./picture/usecase3.eps> [10]
 File: ./picture/usecase_qr.eps Graphic file (type eps)
 
-<./picture/usecase_qr.eps> [10] [11]
+<./picture/usecase_qr.eps> [11]
 File: ./picture/usecase_ic.eps Graphic file (type eps)
  <./picture/usecase_ic.eps> [12]
 File: ./picture/usecase_saishu.eps Graphic file (type eps)
 
-<./picture/usecase_saishu.eps> [13]) (./3-3.tex
+<./picture/usecase_saishu.eps>
+File: ./picture/sogo.eps Graphic file (type eps)
+ <./picture/sogo.eps> [13] [14]) (./3-3.tex
 File: ./picture/class_ic.eps Graphic file (type eps)
- <./picture/class_ic.eps>
+
+<./picture/class_ic.eps>
 File: ./picture/class_qr.eps Graphic file (type eps)
-
-<./picture/class_qr.eps>
+ <./picture/class_qr.eps>
 File: ./picture/class_final.eps Graphic file (type eps)
- <./picture/class_final.eps> [14] [15]
-Overfull \hbox (9.19354pt too wide) in paragraph at lines 53--61
- [][][] 
- []
+ <./picture/class_final.eps>
+File: ./picture/ketsugo.eps Graphic file (type eps)
 
-[16]
-Overfull \hbox (2.01701pt too wide) in paragraph at lines 77--84
+<./picture/ketsugo.eps> [15] [16]
+Overfull \hbox (9.19354pt too wide) in paragraph at lines 63--71
  [][][] 
- []
-
-) (./3-4.tex
-Overfull \hbox (3.8252pt too wide) in paragraph at lines 110--2
-[]\JY1/mc/m/n/12 表 \OT1/cmr/m/n/12 3.8 \JY1/mc/m/n/12 において ， 検知範囲が大
-きな感圧センサを比較対象として選んだものの ， $\OT1/cmr/m/n/12 40\OML/cmm/m/it/
-12 mm \OMS/cmsy/m/n/12 ^^B
  []
 
 [17]
+Overfull \hbox (2.01701pt too wide) in paragraph at lines 87--94
+ [][][] 
+ []
+
+[18]) (./3-4.tex [19]
 File: ./picture/sequence_ic.eps Graphic file (type eps)
  <./picture/sequence_ic.eps>
 File: ./picture/sequence_qr.eps Graphic file (type eps)
  <./picture/sequence_qr.eps>
 File: ./picture/sequence.eps Graphic file (type eps)
 
-<./picture/sequence.eps> [18] [19] [20] [21]) [22]
-第 4 章
-(./4.tex) (./4-1.tex [23
-
-] [24] [25]) (./4-2.tex
+<./picture/sequence.eps> [20] [21] [22] [23]
 File: ./picture/webcamera.eps Graphic file (type eps)
  <./picture/webcamera.eps>
-Overfull \hbox (3.84772pt too wide) in paragraph at lines 24--25
-[]\JY1/mc/m/n/12 まず， 表 \OT1/cmr/m/n/12 4.5 \JY1/mc/m/n/12 における項目 \OT1
-/cmr/m/n/12 1 \JY1/mc/m/n/12 のテストを行 っ た ． 対象商品をカメラから \OT1/cm
-r/m/n/12 100mm\JY1/mc/m/n/12 ， \OT1/cmr/m/n/12 150mm\JY1/mc/m/n/12 ，
- []
-
-[26]
 File: ./picture/chouonpa.eps Graphic file (type eps)
- <./picture/chouonpa.eps>
+
+<./picture/chouonpa.eps>
 File: ./picture/rodoseru.eps Graphic file (type eps)
  <./picture/rodoseru.eps>
 File: ./picture/data.eps Graphic file (type eps)
- <./picture/data.eps>
-[27]
-File: ./picture/ketsugo.eps Graphic file (type eps)
- <./picture/ketsugo.eps> [28] [29]
-File: ./picture/sogo.eps Graphic file (type eps)
- <./picture/sogo.eps>) [30]
+ <./picture/data.eps>)
+[24] [25]
+第 4 章
+(./4.tex) (./4-1.tex [26
+
+]
+File: ./picture/sensa_img.eps Graphic file (type eps)
+ <./picture/sensa_img.eps> [27] [28] [29]) (./4-2.tex
+File: ./picture/tantai_web.eps Graphic file (type eps)
+
+<./picture/tantai_web.eps> [30]
+File: ./picture/tantai_chou.eps Graphic file (type eps)
+ <./picture/tantai_chou.eps>
+File: ./picture/tantai_rodo.eps Graphic file (type eps)
+
+<./picture/tantai_rodo.eps>
+File: ./picture/tantai_data.eps Graphic file (type eps)
+ <./picture/tantai_data.eps> [31]
+File: ./picture/t_ketsugo.eps Graphic file (type eps)
+
+<./picture/t_ketsugo.eps> [32]
+File: ./picture/t_sogo.eps Graphic file (type eps)
+ <./picture/t_sogo.eps>) [33] [34]
 第 5 章
-(./5.tex [31
+(./5.tex [35
 
-]) [32]
+]) [36]
 第 6 章
-(./6.tex) [33
+(./6.tex) [37
 
-] [34
+] [38
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 86--87
@@ -307,20 +311,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 90--91
 　 \OT1/cmr/m/n/12 2019 \JY1/mc/m/n/12 年
  []
 
-[35
+[39
 
-] (./gra_thes_manabe.aux)
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+] (./gra_thes_manabe.aux) ) 
 Here is how much of TeX's memory you used:
- 997 strings out of 492749
- 12660 string characters out of 6141886
+ 1032 strings out of 492749
+ 13402 string characters out of 6141886
  81932 words of memory out of 5000000
- 5414 multiletter control sequences out of 15000+600000
+ 5442 multiletter control sequences out of 15000+600000
  28336 words of font info for 108 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 32i,14n,26p,1463b,357s stack positions out of 5000i,500n,10000p,500000b,80000s
+ 32i,14n,26p,1471b,358s stack positions out of 5000i,500n,10000p,500000b,80000s
 
-Output written on gra_thes_manabe.dvi (38 pages, 78372 bytes).
+Output written on gra_thes_manabe.dvi (42 pages, 83840 bytes).

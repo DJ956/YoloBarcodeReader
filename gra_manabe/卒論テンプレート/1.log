@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  10 JAN 2020 15:10
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  30 JAN 2020 20:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -12,15 +12,15 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.5 近
-      年の日本において，少子高齢化の進行により，生産年齢人口は1995年をピーク...
+l.10 本
+       論文では，Webカメラと超音波センサ，ロードセルなどのセンサを用い，安価...
 
 ? 
 ! Emergency stop.
  ...                                              
                                                   
-l.5 近
-      年の日本において，少子高齢化の進行により，生産年齢人口は1995年をピーク...
+l.10 本
+       論文では，Webカメラと超音波センサ，ロードセルなどのセンサを用い，安価...
 
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -33,5 +33,5 @@ Here is how much of TeX's memory you used:
  4563 multiletter control sequences out of 15000+600000
  7511 words of font info for 31 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 9i,0n,4p,142b,14s stack positions out of 5000i,500n,10000p,500000b,80000s
+ 9i,0n,4p,211b,14s stack positions out of 5000i,500n,10000p,500000b,80000s
 No pages of output.
