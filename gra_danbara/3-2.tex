@@ -8,3 +8,26 @@
 \caption{ユースケース図}
 \label{usecase}
 \end{figure}
+
+次に、ユースケース図を基に商品識別システムのシナリオを以下の表\ref{scenario}に示す。
+\begin{table}[htb]
+\begin{center}
+\caption{商品識別システムのシナリオ}
+\begin{tabular}{|l|c|} \hline
+ & シナリオ \\ \hline \hline
+買い物 & 商品を置く→バーコード認識→商品DB追加・削除→結果通知 \\
+決済 & ユーザが退店する→決済を行う \\ \hline
+\end{tabular}
+\label{scenario}
+\end{center}
+\end{table}
+
+%ここおかしい
+次に、要求定義を満たすテスト項目を以下の表\ref{./pic/integrated_test}を示す。
+
+\begin{table}[htbp]
+\centering
+\caption{総合テスト}
+\includegraphics[width=15cm]{./pic/integrated_test.eps}
+\label{integrated_test}
+\end{table}
