@@ -1,8 +1,8 @@
 \contentsline {chapter}{\numberline {第 1 章}まえがき}{1}%
 \contentsline {chapter}{\numberline {第 2 章}準備}{3}%
-\contentsline {section}{\numberline {2.1}設計に用いた用語解説}{3}%
+\contentsline {section}{\numberline {2.1}設計に用いた用語解説(参考文献)}{3}%
 \contentsline {section}{\numberline {2.2}画像処理に用いた技術の用語解説}{5}%
-\contentsline {chapter}{\numberline {第 3 章}システムの設計}{6}%
+\contentsline {chapter}{\numberline {第 3 章}開発するシステムの設計}{6}%
 \contentsline {section}{\numberline {3.1}システムの概要}{6}%
 \contentsline {section}{\numberline {3.2}要求定義}{7}%
 \contentsline {section}{\numberline {3.3}設計}{9}%
