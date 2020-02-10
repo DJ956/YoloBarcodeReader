@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  9 FEB 2020 19:38
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.sjis) (TeX Live 2019/W32TeX) (preloaded format=platex 2019.12.11)  10 FEB 2020 14:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -307,6 +307,6 @@ Here is how much of TeX's memory you used:
  5421 multiletter control sequences out of 15000+600000
  28336 words of font info for 108 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 32i,14n,26p,889b,360s stack positions out of 5000i,500n,10000p,500000b,80000s
+ 32i,14n,26p,889b,326s stack positions out of 5000i,500n,10000p,500000b,80000s
 
-Output written on gra_thes.dvi (34 pages, 59972 bytes).
+Output written on gra_thes.dvi (34 pages, 59884 bytes).
